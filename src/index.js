@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/_loginSty.css';
+import './css/Style.css';
 import './css/_timerSty.css';
 
-import Renderer from './login/renderer';
+import Renderer from './login/Login';
 
 ReactDOM.render(<Renderer />, document.getElementById('root'));
