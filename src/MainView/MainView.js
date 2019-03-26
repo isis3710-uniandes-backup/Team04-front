@@ -44,14 +44,12 @@ class MainView extends Component{
 
     addLocation(){
         var partida = document.getElementById('inLocationPartida').value;
-        console.log(document.getElementById('inLocationPartida'));
         var llegada = document.getElementById('inLocationLlegada').value;
         var fechaPartida = this.state.fechaPartida;
         var fechaRegreso = this.state.fechaRegreso;
         var tipoHabitacion = document.getElementById('controlHabitacion').value;
         var tipoTransporte = document.getElementById('controlTransporte').value;
         var data = {partida: partida, llegada: llegada, fechaPartida: fechaPartida, fechaRegreso: fechaRegreso}
-        console.log(data);
         var locations = this.state.listLocations;
         locations.push(data);
         this.setState({
