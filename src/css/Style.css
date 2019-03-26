@@ -8,6 +8,39 @@ html, body, #root {
     color: #272F32;
     font-size: 10vw;
   }
+  p{
+    padding: 10px;
+    width: 50%;
+    margin-left: 25vh;
+    font-size: 1vw;
+  }
+  .travelsParams {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .nombres{
+    padding: 10px;
+    width: 50%;
+    margin-left: 25vh;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 3vw;
+  }
+  .subT{
+    padding: 1vh;
+    width: auto;
+    margin: auto;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 3vw;
+    position: relative;
+  }
+  .content{
+    padding: 20px;
+  }
+  .profile{
+    padding:5px;
+    border:5px solid #272F32;
+    float: left;
+  }
   .bgi{
     background: url('../../src/login/banner.jpg');
     background-position: center; 

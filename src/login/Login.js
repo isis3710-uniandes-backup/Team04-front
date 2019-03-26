@@ -1,6 +1,10 @@
 import React from "react"
 import DatePicker from "react-datepicker";
+import ReactDOM from 'react-dom';
 import "react-datepicker/dist/react-datepicker.css";
+import User from "../../src/Profiles/UserProfile"
+
+import '../../src/css/Style.css'
 
 class App extends React.Component {
 
@@ -34,10 +38,6 @@ class App extends React.Component {
 
                     {this.state.isLoginOpen && <LoginBox />}
                     {this.state.isRegisterOpen && <RegisterBox />}
-
-
-
-
                 </div>
 
             </div>
@@ -91,22 +91,34 @@ class LoginBox extends React.Component {
         } if (this.state.password === "") {
             this.showValidationError("password", "Password cannot be empty");
         }
-        else{
+        else {
             let usuario = this.state.username;
             let pass = this.state.password;
-            fetch('/users',{
+            let actualUser = {
+                username: usuario,
+                nombres: "",
+                nacionalidad: "",
+                nacimiento: new Date(),
+                password: pass,
+                type: "",
+            };
+            fetch('/users', {
                 method: 'GET',
-                headers: {"Content-Type": "application/json"}
-              })
-              .then(function(response){
-                return response.json()
-              }).then(function(body){
-                for(let user of body){
-                    if(user.usuario === usuario && user.contrasenia === pass){
-                        console.log("LOGIN EXITOSO");
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(function (response) {
+                    return response.json()
+                }).then(function (body) {
+                    for (let user of body) {
+                        if (user.usuario === usuario && user.contrasenia === pass) {
+                            actualUser.nombres = user.nombres;
+                            actualUser.nacionalidad = user.nacionalidad;
+                            actualUser.nacimiento = user.fechaNacimiento;
+                            ReactDOM.render(<User usuario={actualUser} />, document.getElementById('root'));
+                            console.log("LOGIN EXITOSO");
+                        }
                     }
-                }
-              });
+                });
         }
 
     }
@@ -222,36 +234,38 @@ class RegisterBox extends React.Component {
         });
     }
 
-
-
-    
     submitRegister(e) {
         if (this.state.username === "") {
             this.showValidationError("username", "Username cannot be empty");
         } if (this.state.password === "") {
             this.showValidationError("password", "Password cannot be empty");
         }
-        else{
+        else {
             let register = this;
-            fetch('/users',{
+            let dia = this.state.nacimiento.getDate();
+            let month = this.state.nacimiento.getMonth();
+            let year = this.state.nacimiento.getFullYear();
+            let dateString = dia + "-" +(month + 1) + "-" + year;
+            console.log(dateString);
+            fetch('/users', {
                 method: 'POST',
                 body: JSON.stringify({
-                  nombres: this.state.nombres,
-                  apellidos: this.state.nombres,
-                  nacionalidad: this.state.nacionalidad,
-                  correo: "correo",
-                  fechaNacimiento: this.state.nacimiento,
-                  username: this.state.username,
-                  password: this.state.password
+                    nombres: this.state.nombres,
+                    apellidos: this.state.nombres,
+                    nacionalidad: this.state.nacionalidad,
+                    correo: "correo",
+                    fechaNacimiento: dateString,
+                    username: this.state.username,
+                    password: this.state.password
                 }),
-                headers: {"Content-Type": "application/json"}
-              })
-              .then(function(response){
-                  register.setState({registerState:response.statusText });
-                return response.json()
-              }).then(function(body){
-                console.log(body);
-              });
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(function (response) {
+                    register.setState({ registerState: response.statusText });
+                    return response.json()
+                }).then(function (body) {
+                    console.log(body);
+                });
         }
     }
 
@@ -269,7 +283,7 @@ class RegisterBox extends React.Component {
 
         let pwdWeak = false, pwdMedium = false, pwdStrong = false, formConfimation = false;
 
-        if(this.state.registerState === "Created"){
+        if (this.state.registerState === "Created") {
             formConfimation = "Usuario registrado correctamente!!"
         }
 
@@ -298,7 +312,7 @@ class RegisterBox extends React.Component {
 
                     <div className="input-group">
                         <label htmlFor="nombres">Nombre Completo</label>
-                        <input type="text" name="nombres" className="login-input" placeholder="Nombres" onChange={this.onNameChanged.bind(this)}/>
+                        <input type="text" name="nombres" className="login-input" placeholder="Nombres" onChange={this.onNameChanged.bind(this)} />
                     </div>
 
                     <div className="input-group">
@@ -330,9 +344,9 @@ class RegisterBox extends React.Component {
                         <label className="form-check-label" htmlFor="empresatype">Usuario Regular</label>
                     </div>
 
-                    
+
                     <div className="datepicker">
-                    <label htmlFor="type">Fecha de Nacimiento:&nbsp; </label>
+                        <label htmlFor="type">Fecha de Nacimiento:&nbsp; </label>
                         <DatePicker
                             selected={this.state.nacimiento}
                             onChange={this.handleChange.bind(this)}
