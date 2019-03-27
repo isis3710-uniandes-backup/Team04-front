@@ -3,6 +3,9 @@ html, body, #root {
     height: 100%;
     box-sizing: border-box;
   }
+  a {
+    color: #79BDC6;
+  }
   h1 {
     font-family: 'Oleo Script', Helvetica, sans-serif;
     color: #272F32;
@@ -16,6 +19,7 @@ html, body, #root {
   }
   .travelsParams {
     font-weight: bold;
+    color: #272F32;
     font-size: 20px;
   }
   .nombres{
