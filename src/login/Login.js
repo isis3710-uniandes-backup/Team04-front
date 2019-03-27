@@ -101,7 +101,7 @@ class LoginBox extends React.Component {
                 username: usuario,
                 nombres: "",
                 nacionalidad: "",
-                nacimiento: new Date(),
+                fechaNacimiento: new Date(),
                 password: pass,
                 idUsuario: "",
                 type: "",
@@ -110,6 +110,7 @@ class LoginBox extends React.Component {
                 method: 'GET',
                 headers: { "Content-Type": "application/json" }
             })
+
                 .then(function (response) {
                     return response.json()
                 }).then(function (body) {
@@ -117,8 +118,9 @@ class LoginBox extends React.Component {
                         if (user.usuario === usuario && user.contrasenia === pass) {
                             actualUser.nombres = user.nombres;
                             actualUser.nacionalidad = user.nacionalidad;
-                            actualUser.nacimiento = user.fechaNacimiento;
+                            actualUser.fechaNacimiento = user.fechaNacimiento;
                             actualUser.idUsuario = user.id;
+                            actualUser.correo = user.correo;
                             ReactDOM.render(<User usuario={actualUser} />, document.getElementById('root'));
                             console.log("LOGIN EXITOSO");
                         }
@@ -177,6 +179,7 @@ class RegisterBox extends React.Component {
             username: "",
             nombres: "",
             nacionalidad: "",
+            correo: "",
             nacimiento: new Date(),
             password: "",
             type: "",
@@ -214,6 +217,10 @@ class RegisterBox extends React.Component {
 
     onNacionalidadChanged(e) {
         this.setState({ nacionalidad: e.target.value });
+    }
+
+    onCorreoChange(e) {
+        this.setState({ correo: e.target.value });
     }
 
     onPasswordChanged(e) {
@@ -257,7 +264,7 @@ class RegisterBox extends React.Component {
                     nombres: this.state.nombres,
                     apellidos: this.state.nombres,
                     nacionalidad: this.state.nacionalidad,
-                    correo: "correo",
+                    correo: this.state.correo,
                     fechaNacimiento: dateString,
                     username: this.state.username,
                     password: this.state.password
@@ -268,6 +275,9 @@ class RegisterBox extends React.Component {
                     register.setState({ registerState: response.statusText });
                     return response.json()
                 }).then(function (body) {
+                    ReactDOM.render(<User usuario={body} />, document.getElementById('root'));
+                    console.log(body);
+                    console.log("LOGIN EXITOSO");
                 });
         }
     }
@@ -321,6 +331,11 @@ class RegisterBox extends React.Component {
                     <div className="input-group">
                         <label htmlFor="nacionalidad">Nacionalidad</label>
                         <input type="text" name="nacionalidad" className="login-input" placeholder="Nacionalidad" onChange={this.onNacionalidadChanged.bind(this)} />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="nacionalidad">Correo</label>
+                        <input type="text" name="correo" className="login-input" placeholder="Correo" onChange={this.onCorreoChange.bind(this)} />
                     </div>
 
                     <div className="input-group">
