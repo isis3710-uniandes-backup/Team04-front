@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import Stars from './Stars.js';
 import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
+import HostalData from './HostalData.js';
 
 class MainView extends Component{
     constructor(props){
@@ -25,7 +26,6 @@ class MainView extends Component{
       
     }
     
-
     handleChangePartida(date){
         this.setState({
             fechaPartida: date
@@ -58,17 +58,17 @@ class MainView extends Component{
         })
     }
     render(){
-        return(
-            <div className="container-fluid main">
+        return( 
+            <div className="main">
                 <div className="container-fluid" id="containerLoginButtons">
                     <button className="btn btn-primary" id="loginButton" type="button" > Login</button>
                     <button className="btn btn-primary" id="signInButton" type="button" > Sign In</button>
                 </div>
-                <div className="container-fluid banner" id="mainBanner">
+                <div className="banner" id="mainBanner">
                     <h1>MultiTravel</h1>
                 </div>
 
-                <div className="container-fluid content row" id="contentMainView">
+                <div className="content row" id="contentMainView">
 
                     <div className="col-2 listSelectedLocations">
                         <div className="card" >
@@ -112,9 +112,9 @@ class MainView extends Component{
                         </div>
                     </div>
 
-                    <div className="container col-10 inputData text-left">
+                    <div className="col-10 inputData text-left">
                         <div className="row">
-                            <div className="container-fluid text-left col">
+                            <div className=" text-left col">
                                 <label id="buscarSalida">Lugar Partida:</label>
                                 
                                 <div className="input-group md-form form-sm form-1 pl-0">
@@ -127,7 +127,7 @@ class MainView extends Component{
                                 </div>
                             </div>
 
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <label id="buscarSalida">Lugar Llegada:</label>
                                 
                                 <div className="input-group md-form form-sm form-1 pl-0">
@@ -140,7 +140,7 @@ class MainView extends Component{
                                 </div>
                             </div>
                             
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <label id="buscarSalida">Fecha Partida:</label>
                                 <DatePicker id="dateFechaPartida"
                                     selected={this.state.fechaPartida} 
@@ -149,7 +149,7 @@ class MainView extends Component{
                             </div>
                         
                         
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <label id="buscarSalida">Fecha Regreso:</label>
                                 <DatePicker id="dateFechaRegreso" 
                                     selected={this.state.fechaRegreso} 
@@ -157,28 +157,23 @@ class MainView extends Component{
                                 />
                             </div>
 
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <label id="buscarSalida">Tipo de Habitación:</label>
-                                <select className="form-control" id="controlHabitacion">
-                                <option>Individual</option>
-                                <option>Doble</option>
-                                <option>Familiar</option>
-                                <option>Múltiple</option>
-                                </select>
+                                <Combobox options={['Individual', 'Doble','Familiar', 'Múltiple']}></Combobox>
                             </div>
 
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <label id="buscarSalida">Tipo de Transporte:</label>
                                  <Combobox options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
                             </div>
 
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <button className="btn btn-primary" type="button" id="buscar">Buscar</button>
                             </div>
                         </div>
 
                         <div className="row ">
-                            <div className="container-fluid text-left col" id="precioMaxNoche">
+                            <div className="text-left col" id="precioMaxNoche">
                                 <label id="buscarSalida">Precio por noche:</label>
                                 <div className="row">
                                 
@@ -187,18 +182,17 @@ class MainView extends Component{
                                 </div>
                             </div>
 
-                            <div className="container-fluid text-left col">
-                                <label id="buscarSalida">Número de estrellas:</label>
+                            <div className="text-left col">
                                 <Stars></Stars>
                             </div>
 
-                            <div className="container-fluid text-left col">
+                            <div className=" text-left col">
                                 <label id="labelPuntuacion">Puntuación:</label>
 
                                 <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4','3.5 - 4.4','2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
 
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <label>Ubicación</label>
                                 <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#ubicacionModal">
                                 Ubicación</button>
@@ -227,7 +221,7 @@ class MainView extends Component{
                                 </div>
                             </div>
 
-                            <div className="container-fluid text-left col">
+                            <div className="text-left col">
                                 <label>Más filtros</label>
                                 <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#filtrosModal">
                                 Filtros</button>
@@ -255,6 +249,12 @@ class MainView extends Component{
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <br></br>
+                        <div className="card">
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item card"><HostalData></HostalData></li>
+                                </ul>
                         </div>
                     </div>
                 </div>

@@ -34,8 +34,19 @@ class HostalData extends Component{
                                 <div className="col ">
                                     <label>Mejor precio:</label>
                                     <label>200000$</label>
+                                    <label>Tipo Transporte:</label>
+                                    <label>Terrestre</label>
                                 </div>
-                            </div>
+                                <div className="col">
+                                    <label>Otras opciones:</label>
+                                    
+                                        <div className="list-group">
+                                            <button type="button" className="list-group-item list-group-item-action">Bogotá - Cartagena : Avión</button>
+                                        </div>
+                                        <br></br>
+                                    <button type="button" className="btn btn-primary" >Agregar</button>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
