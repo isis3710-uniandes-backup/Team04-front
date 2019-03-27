@@ -3,7 +3,8 @@ import './MainView.css';
 import ListLocations from './ListLocations.js';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import DatePicker from "react-datepicker";
- 
+import Stars from './Stars.js';
+import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
 
 class MainView extends Component{
@@ -49,7 +50,7 @@ class MainView extends Component{
         var fechaRegreso = this.state.fechaRegreso;
         var tipoHabitacion = document.getElementById('controlHabitacion').value;
         var tipoTransporte = document.getElementById('controlTransporte').value;
-        var data = {partida: partida, llegada: llegada, fechaPartida: fechaPartida, fechaRegreso: fechaRegreso}
+        var data = {partida: partida, llegada: llegada, fechaPartida: fechaPartida, fechaRegreso: fechaRegreso, tipoHabitacion: tipoHabitacion, tipoTransporte: tipoTransporte}
         var locations = this.state.listLocations;
         locations.push(data);
         this.setState({
@@ -117,11 +118,11 @@ class MainView extends Component{
                                 <label id="buscarSalida">Lugar Partida:</label>
                                 
                                 <div className="input-group md-form form-sm form-1 pl-0">
-                                    <div className="input-group-prepend">
+                                    {/* <div className="input-group-prepend">
                                         <span className="input-group-text purple lighten-3" id="basic-text1">
                                             <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
                                         </span>
-                                    </div>
+                                    </div> */}
                                     <input id="inLocationPartida" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.partida} aria-label="Search"/>
                                 </div>
                             </div>
@@ -131,9 +132,9 @@ class MainView extends Component{
                                 
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text purple lighten-3" id="basic-text1">
+                                        {/* <span className="input-group-text purple lighten-3" id="basic-text1">
                                             <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
-                                        </span>
+                                        </span> */}
                                     </div>
                                     <input id="inLocationLlegada" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.llegada} aria-label="Search"/>
                                 </div>
@@ -168,11 +169,7 @@ class MainView extends Component{
 
                             <div className="container-fluid text-left col">
                                 <label id="buscarSalida">Tipo de Transporte:</label>
-                                <select className="form-control" id="controlTransporte">
-                                <option>Aire</option>
-                                <option>Mar</option>
-                                <option>Tierra</option>
-                                </select>
+                                 <Combobox options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
                             </div>
 
                             <div className="container-fluid text-left col">
@@ -192,37 +189,13 @@ class MainView extends Component{
 
                             <div className="container-fluid text-left col">
                                 <label id="buscarSalida">Número de estrellas:</label>
-                                <div className="row">
-                                    <div className="container">
-                                        <div className="starrating risingstar d-flex justify-content-center flex-row-reverse">
-                                            <input type="radio" id="star5" name="rating" value="5"/>
-                                            <label htmlFor="star5" title="5 star">5</label>
-                                            <input type="radio" id="star4" name="rating" value="4"/>
-                                            <label htmlFor="star4" title="4 star">4</label>
-                                            <input type="radio" id="star3" name="rating" value="3"/>
-                                            <label htmlFor="star3" title="3 star">3</label>
-                                            <input type="radio" id="star2" name="rating" value="2"/>
-                                            <label htmlFor="star2" title="2 star">2</label>
-                                            <input type="radio" id="star1" name="rating" value="1"/>
-                                            <label htmlFor="star1" title="1 star">1</label>
-                                        </div>
-                                    </div>
-                                </div>
+                                <Stars></Stars>
                             </div>
 
                             <div className="container-fluid text-left col">
                                 <label id="labelPuntuacion">Puntuación:</label>
-                                <select className="form-control" id="selectPuntuación">
-                                <option>8.5+</option>
-                                <option>7.5 - 8.4</option>
-                                <option>6.5 - 7.4</option>
-                                <option>5.5 - 6.4</option>
-                                <option>4.5 - 5.4</option>
-                                <option>3.5 - 4.4</option>
-                                <option>2.5 - 3.4</option>
-                                <option>1.5 - 2.4</option>
-                                <option>0.5 - 1.4</option>
-                                </select>
+
+                                <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4','3.5 - 4.4','2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
 
                             <div className="container-fluid text-left col">

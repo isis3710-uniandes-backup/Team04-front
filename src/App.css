@@ -17,8 +17,7 @@
   max-height: 60px;
 }
 
-.material-icons{
-  
+.navbar-brand > .material-icons{
   position: fixed;
   bottom: 0;
 }
