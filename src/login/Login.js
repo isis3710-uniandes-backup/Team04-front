@@ -23,7 +23,8 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="root-container bgi">
+            <div className="bgi">
+                <div className="root-container">
                 <h1>MultiTravel</h1>
                 <div className="box-controller">
                     <div className={"controller " + (this.state.isLoginOpen ? "selected-controller" : "")} onClick={this.showLoginBox.bind(this)}>
@@ -41,6 +42,8 @@ class App extends React.Component {
                 </div>
 
             </div>
+            </div>
+            
         )
     }
 }
@@ -100,6 +103,7 @@ class LoginBox extends React.Component {
                 nacionalidad: "",
                 nacimiento: new Date(),
                 password: pass,
+                idUsuario: "",
                 type: "",
             };
             fetch('/users', {
@@ -114,6 +118,7 @@ class LoginBox extends React.Component {
                             actualUser.nombres = user.nombres;
                             actualUser.nacionalidad = user.nacionalidad;
                             actualUser.nacimiento = user.fechaNacimiento;
+                            actualUser.idUsuario = user.id;
                             ReactDOM.render(<User usuario={actualUser} />, document.getElementById('root'));
                             console.log("LOGIN EXITOSO");
                         }
@@ -246,7 +251,6 @@ class RegisterBox extends React.Component {
             let month = this.state.nacimiento.getMonth();
             let year = this.state.nacimiento.getFullYear();
             let dateString = dia + "-" +(month + 1) + "-" + year;
-            console.log(dateString);
             fetch('/users', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -264,7 +268,6 @@ class RegisterBox extends React.Component {
                     register.setState({ registerState: response.statusText });
                     return response.json()
                 }).then(function (body) {
-                    console.log(body);
                 });
         }
     }
