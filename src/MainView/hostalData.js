@@ -21,9 +21,9 @@ class HostalData extends Component{
                         <div className="card-body">
                             <div className="row">
                                 <div className="col">
-                                    <label>Nombre</label>
+                                    <label data-toggle="collapse" data-target="#extraDataCollapse" role="button" aria-expanded="false" aria-controls="extraDataCollapse">Nombre</label>
                                     <Stars></Stars>
-                                    <label>Ubicación</label>
+                                    <label data-toggle="collapse" data-target="#extraDataCollapse" role="button" aria-expanded="false" aria-controls="extraDataCollapse">Ubicación</label>
                                     <div>
                                     <a data-toggle="collapse" data-target="#extraDataCollapse" role="button" aria-expanded="false" aria-controls="extraDataCollapse">
                                         <MaterialIcon icon="location_on"></MaterialIcon>
@@ -148,11 +148,61 @@ class HostalData extends Component{
                             </div>
                         </div>
                         <div class="tab-pane fade" id="opciones" role="tabpanel" aria-labelledby="opciones-tab">
-                            <div className="">
-
+                            <div className="card mb-12">
+                                <div className="row no-grutters">
+                                    <div className="col-md-4">
+                                            <div class="card">
+                                                <div class="jumbotron card-img-top">
+                                                    <h1 class="display-4 text-center">8.5</h1>
+                                                </div>
+                                                <div className="card-body">
+                                                    <label class="lead">Puntuación basada en 45 usuarios</label>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <ul className="list-group list-group-flush">
+                                            <li className="list-group-item">
+                                                <div className="row">
+                                                    <div className="col-md-4">
+                                                        <h2 className="display-4">10</h2>
+                                                        <label>Viajero</label> <br></br>
+                                                        <label>Fecha opinión:</label> <br></br>
+                                                        <label>11 Agosto 2018</label> <br></br>
+                                                        <label>Fecha Estadia</label> <br></br>
+                                                        <label>Agosto 2018</label>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <label>Muy bien ubicado, pequeño pero acogedor.</label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                            <div class="tab-pane fade" id="ofertas" role="tabpanel" aria-labelledby="ofertas-tab">...</div>
+                            <div className="tab-pane fade" id="ofertas" role="tabpanel" aria-labelledby="ofertas-tab">
+                                <div className="card mb-12">
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item">
+                                            <div className="row no-grutters">
+                                                <div className="col-md-2"> 
+                                                    <img src="//ie1.trivago.com/images/partnerlogos/452_mx_co.png"></img>
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <div>Habitación doble</div> <br></br>
+                                                    <div>Desayuno Gratis</div>
+                                                </div>
+                                                <div className="col-md-2">
+                                                    <label>$135.980</label>
+                                                    <span class="slideout-deal__quantifier">/noche</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
