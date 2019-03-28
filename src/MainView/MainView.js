@@ -3,6 +3,8 @@ import './MainView.css';
 import ListLocations from './ListLocations.js';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import DatePicker from "react-datepicker";
+import ReactDOM from 'react-dom';
+import Login from "../../src/login/Login"
  
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,6 +23,7 @@ class MainView extends Component{
         this.handleChangePartida = this.handleChangePartida.bind(this);
         this.handleChangeRegreso = this.handleChangeRegreso.bind(this);
         this.addLocation = this.addLocation.bind(this);
+        //console.log(this.props.usuario);
       
     }
     
@@ -56,12 +59,16 @@ class MainView extends Component{
             listLocations: locations
         })
     }
+
+    sendLogin(){
+        ReactDOM.render(<Login />, document.getElementById('root'));
+    }
+
     render(){
         return(
             <div className="container-fluid main">
                 <div className="container-fluid" id="containerLoginButtons">
-                    <button className="btn btn-primary" id="loginButton" type="button" > Login</button>
-                    <button className="btn btn-primary" id="signInButton" type="button" > Sign In</button>
+                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign In</button>
                 </div>
                 <div className="container-fluid banner" id="mainBanner">
                     <h1>MultiTravel</h1>

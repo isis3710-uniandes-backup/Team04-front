@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
-import MaterialIcon, {colorPalette} from 'material-icons-react';
+import MaterialIcon, { colorPalette } from 'material-icons-react';
 import MainView from './MainView/MainView.js';
 
 
+let user = "";
 class App extends Component {
-  renderMainView(){
-    return (<MainView></MainView>)
+
+  constructor(props) {
+    super(props);
+    if (typeof this.props.usuario !== 'undefined') {
+      if (this.props.usuario.logueado) {
+        user = this.props.usuario;
+      }
+    }
+    this.state = {};
+  }
+
+  renderMainView() {
+    return (<MainView usuario={user}></MainView>)
   }
 
   render() {
@@ -30,7 +42,7 @@ class App extends Component {
             <div className="col">
               <a className="navbar-brand" id="locationbutton" href="/app">
                 <MaterialIcon icon="location_on" size={40} color='#272F32' alt="Locations"></MaterialIcon>
-              </a>              
+              </a>
             </div>
           </div>
         </nav>

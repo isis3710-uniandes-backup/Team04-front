@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import User from "../../src/Profiles/UserProfile"
 
 import '../../src/css/Style.css'
+import MainApp from "../App";
 
 class App extends React.Component {
 
@@ -105,6 +106,7 @@ class LoginBox extends React.Component {
                 password: pass,
                 idUsuario: "",
                 type: "",
+                logueado: true
             };
             fetch('/users', {
                 method: 'GET',
@@ -121,7 +123,7 @@ class LoginBox extends React.Component {
                             actualUser.fechaNacimiento = user.fechaNacimiento;
                             actualUser.idUsuario = user.id;
                             actualUser.correo = user.correo;
-                            ReactDOM.render(<User usuario={actualUser} />, document.getElementById('root'));
+                            ReactDOM.render(<MainApp usuario={actualUser} />, document.getElementById('root'));
                             console.log("LOGIN EXITOSO");
                         }
                     }
@@ -267,7 +269,7 @@ class RegisterBox extends React.Component {
                     correo: this.state.correo,
                     fechaNacimiento: dateString,
                     username: this.state.username,
-                    password: this.state.password
+                    password: this.state.password,
                 }),
                 headers: { "Content-Type": "application/json" }
             })
@@ -275,8 +277,8 @@ class RegisterBox extends React.Component {
                     register.setState({ registerState: response.statusText });
                     return response.json()
                 }).then(function (body) {
-                    ReactDOM.render(<User usuario={body} />, document.getElementById('root'));
-                    console.log(body);
+                    body.logueado = true;
+                    ReactDOM.render(<MainApp usuario={body} />, document.getElementById('root'));
                     console.log("LOGIN EXITOSO");
                 });
         }

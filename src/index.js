@@ -3,6 +3,6 @@ import ReactDOM from 'react-dom';
 import './css/Style.css';
 import './css/_timerSty.css';
 
-import Renderer from './login/Login';
+import Renderer from './App';
 
 ReactDOM.render(<Renderer />, document.getElementById('root'));

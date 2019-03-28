@@ -82,7 +82,7 @@ class User extends React.Component {
                         <div className="container fluid">
                             <div className="col">
                                 <a className="navbar-brand" href="/app" arial-label="MultiTravel">
-                                    <img className="iconHome" src="/mainIcon.png" height="40px" width="60px" alt="Home"></img>
+                                    <img className="iconHome" src="/icons/mainIcon.png" height="40px" width="60px" alt="Home"></img>
                                 </a>
                             </div>
 
