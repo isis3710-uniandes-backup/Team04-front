@@ -1,8 +1,5 @@
-import React, { Component } from "react"
-import ReactDOM from 'react-dom';
-import "react-datepicker/dist/react-datepicker.css";
+import React from "react"
 import '../../src/css/Style.css'
-import MainApp from "../App";
 /* Import Components */
 import Input from "./Input";
 import Select from "./Select";
