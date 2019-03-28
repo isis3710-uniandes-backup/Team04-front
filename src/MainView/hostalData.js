@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import './hostalData.css';
+import './HostalData.css';
 import Stars from './Stars.js';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import CardCollapse from './CardCollapse';
@@ -102,7 +102,7 @@ class HostalData extends Component{
     }
 
     renderCarouselItem(){
-        return this.state.imagenes.map((image, i) =>{
+        return this.state.imagenes.map((imagen, i) =>{
             if(i == 1){
                 return(
                     <div className={"carousel-item active"}>

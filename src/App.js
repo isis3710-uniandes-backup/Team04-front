@@ -26,7 +26,6 @@ class App extends Component {
   }
 
   Profile(e){
-    console.log("PROFILE?");
     ReactDOM.render(<Profile usuario={user} />, document.getElementById('root'));
   }
 

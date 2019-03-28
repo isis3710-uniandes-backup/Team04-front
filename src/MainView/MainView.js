@@ -21,9 +21,10 @@ class MainView extends Component {
             fechaRegreso: new Date(),
             precioMaxNoche: 1008214,
             partida: 'Bogotá',
-            llegada: 'San Aandrés',
+            llegada: 'San Andrés',
             resultadosBusqueda: "",
-            user: ""
+            user: "",
+            viajeCreado: false
         }
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
@@ -37,7 +38,7 @@ class MainView extends Component {
 
         if (typeof this.props.usuario !== 'undefined') {
             if (this.props.usuario.logueado) {
-                this.setState({ user: this.props.usuario });
+                this.state.user = this.props.usuario;
             }
         }
 
@@ -81,13 +82,26 @@ class MainView extends Component {
         const arraySubViajes = this.state.listLocations;
         const subViajes2 = [];
         let i = 0;
+
+
+
         arraySubViajes.map(viaje => {
+
+            let diaLlegada = viaje.fechaPartida.getDate();
+            let monthLlegada = viaje.fechaPartida.getMonth();
+            let yearLlegada = viaje.fechaPartida.getFullYear();
+            let dateStringLlegada = diaLlegada + "-" + (monthLlegada + 1) + "-" + yearLlegada;
+
+            let diaPartida = viaje.fechaRegreso.getDate();
+            let monthPartida = viaje.fechaRegreso.getMonth();
+            let yearPartida = viaje.fechaRegreso.getFullYear();
+            let dateStringPartida = diaPartida + "-" +(monthPartida + 1) + "-" + yearPartida;
             const viaje2 = {
-                nombre: "sub-viaje"+i,
+                nombre: "sub-viaje" + i,
                 empresa: "empresa",
-                metodoDeViaje: "Viaje "+viaje.tipoTransporte,
-                fechaInicio: viaje.fechaPartida,
-                fechaFin: viaje.fechaRegreso,
+                metodoDeViaje: "Viaje " + viaje.tipoTransporte,
+                fechaInicio: dateStringLlegada,
+                fechaFin: dateStringPartida,
                 origen: viaje.partida,
                 destino: viaje.llegada,
             }
@@ -99,27 +113,44 @@ class MainView extends Component {
     CrearViaje() {
         let me = this;
         let subViajesact = this.subViajes();
-        fetch('/viajes', {
-            method: 'POST',
-            body: JSON.stringify({
-                idUsuario: me.state.user.id,
-                nombre: "viaje1",
-                empresa: "empresa1",
-                fechaInicio: me.state.listLocations[0].fechaPartida,
-                fechaFin: me.state.listLocations.slice(-1).pop().fechaRegreso,
-                origen: me.state.listLocations[0].partida,
-                destino: me.state.listLocations.slice(-1).pop().llegada,
-                subViajes: subViajesact,
-                viajeAgendado: true
-            }),
-            headers: { "Content-Type": "application/json" }
-        })
-            .then(function (response) {
-                return response.json()
-            }).then(function (body) {
-                console.log(body);
-                
-            });
+        if(this.state.listLocations.length === 0)
+        {
+            this.setState({ viajeCreado: "0" });
+        }
+        else
+        {
+            if (typeof this.state.user.idUsuario === 'undefined') {
+                ReactDOM.render(<Login />, document.getElementById('root'));
+            }
+            else {
+    
+                fetch('/viajes', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        idUsuario: me.state.user.idUsuario,
+                        nombre: "viaje1",
+                        empresa: "empresa1",
+                        fechaInicio: me.state.listLocations[0].fechaPartida,
+                        fechaFin: me.state.listLocations.slice(-1).pop().fechaRegreso,
+                        origen: me.state.listLocations[0].partida,
+                        destino: me.state.listLocations.slice(-1).pop().llegada,
+                        subViajes: subViajesact,
+                        viajeAgendado: true
+                    }),
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(function (response) {
+                        me.setState({ viajeCreado: response.statusText });
+                        return response.json();
+                    }).then(function (body) {
+                        me.state.viajeCreado = true;
+                    });
+            }
+
+        }
+        
+
+
     }
 
     buscar() {
@@ -163,6 +194,14 @@ class MainView extends Component {
 
     render() {
         //TODO a renderBusqueda en la linea 294 le hace falta los parametros
+        let viajeConfirmation = false;
+
+        if(this.state.viajeCreado === "Created"){
+            viajeConfirmation = "Viaje Creado";
+        }
+        else if(this.state.viajeCreado === "0"){
+            viajeConfirmation = "No hay viajes agregados";
+        }
         return (
             <div className="main">
                 <div className="container-fluid" id="containerLoginButtons">
@@ -216,6 +255,8 @@ class MainView extends Component {
                             <div className="btn-CrearViaje">
                                 <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> Crear Viaje</button>
                             </div>
+                            
+                            <small className="confirmation">{viajeConfirmation ? viajeConfirmation : ""}</small>
 
                         </div>
                     </div>
@@ -344,8 +385,8 @@ class MainView extends Component {
                                                 </button>
                                             </div>
 
-                                            <div className="modal-body">
-                                                <h2>Body</h2>
+                                            <div className="modal-body" id="map">
+                                                
                                             </div>
 
                                             <div className="modal-footer">

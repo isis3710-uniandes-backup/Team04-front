@@ -121,7 +121,7 @@ class LoginBox extends React.Component {
                             actualUser.nombres = user.nombres;
                             actualUser.nacionalidad = user.nacionalidad;
                             actualUser.fechaNacimiento = user.fechaNacimiento;
-                            actualUser.idUsuario = user.id;
+                            actualUser.idUsuario = user.idUsuario;
                             actualUser.correo = user.correo;
                             ReactDOM.render(<MainApp usuario={actualUser} />, document.getElementById('root'));
                             console.log("LOGIN EXITOSO");
@@ -279,7 +279,6 @@ class RegisterBox extends React.Component {
                 }).then(function (body) {
                     body.logueado = true;
                     ReactDOM.render(<MainApp usuario={body} />, document.getElementById('root'));
-                    console.log("LOGIN EXITOSO");
                 });
         }
     }

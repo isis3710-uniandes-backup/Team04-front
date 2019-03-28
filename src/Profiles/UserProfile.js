@@ -24,6 +24,7 @@ class User extends React.Component {
             }).then(function (body) {
                 for (let viaje of body) {
                     if (viaje.idUsuario === idusuario) {
+
                         viajes.push(viaje);
                     }
                 }
