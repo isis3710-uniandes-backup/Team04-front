@@ -16,7 +16,7 @@ Once cloned, execute cmd in the repository folder and run the following commands
 npm install
 npm run dev-start
 ```
-You should see he following message:
+You should see the following message:
 
 ```bash
 app running on port 3001
