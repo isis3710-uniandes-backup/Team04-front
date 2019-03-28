@@ -1,14 +1,11 @@
 import React from "react"
 /* Import Components */
 import Input from "./Input";
-import Select from "./Select";
 import Button from "./Button";
-import '../../src/css/Style.css'
+import TextArea from "./TextArea";
+import '../../src/css/Style.css';
 import MainApp from "../App";
 import ReactDOM from 'react-dom';
-const SERVICIO_AEREO = "Servicio Aereo";
-const SERVICIO_MARITIMO = "Servicio Maritimo";
-const SERVICIO_TERRESTRE = "Servicio Terrestre";
 
 
 class App extends React.Component {
@@ -19,10 +16,10 @@ class App extends React.Component {
                 <div className="root-container">
                   <h1>MultiTravel</h1>
                   <div className="box-controller">
-                        Registrar Servicio de Transporte
+                        Registrar Servicio de Hospedaje
                   </div>
                 <div className="box-container">
-                     <RegisterService />
+                     <RegisterHostal />
                 </div>
               </div>
             </div>
@@ -31,18 +28,20 @@ class App extends React.Component {
     }
 }
 
-class RegisterService extends React.Component {
+class RegisterHostal extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = { 
-            serviceType: "",
-            newService: {                
-                origen: "",
-                destino: "",
-                ruta: [],
+            newHostal: {
+                nombre: "",
+                descripcion: "",
+                precio: "",
+                telefono: "",
+                sitioweb:"",
+                ciudad: "",
+                direccion: ""                
             },            
-            serviceOptions: [SERVICIO_AEREO,SERVICIO_MARITIMO,SERVICIO_TERRESTRE]
         };
         this.handleTextArea = this.handleTextArea.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -55,27 +54,19 @@ class RegisterService extends React.Component {
         let name = e.target.name;
         this.setState(
           prevState => ({
-            newService: {
-              ...prevState.newService,
+            newHostal: {
+              ...prevState.newHostal,
               [name]: value
             }
           }),
-          () => console.log(this.state.newService)
+          () => console.log(this.state.newHostal)
         );
     }
 
     handleFormSubmit(e) {
         e.preventDefault();
-        const servicio = this.state.serviceType
-        let url = "";
-        if(servicio === SERVICIO_AEREO){
-            url="localhost:3001/serviciosa";
-        } else if (servicio === SERVICIO_MARITIMO){
-            url="localhost:3001/serviciosm";
-        } else if (servicio === SERVICIO_TERRESTRE){
-            url="localhost:3001/serviciost";
-        }
-        let serviceData = this.state.newService;
+        const url = "localhost:3001/hostales/";
+        const serviceData = this.state.newHostal;
     
         fetch(url, {
           method: "POST",
@@ -96,10 +87,14 @@ class RegisterService extends React.Component {
         e.preventDefault();
         this.setState({
             serviceType: "",
-            newService: {                
-                origen: "",
-                destino: "",
-                ruta: [],
+            newHostal: {                
+              nombre: "",
+              descripcion: "",
+              precio: "",
+              telefono: "",
+              sitioweb:"",
+              ciudad: "",
+              direccion: ""    
             },
         });
     }
@@ -107,42 +102,60 @@ class RegisterService extends React.Component {
     render() {
         return (
           <form className="container-fluid" onSubmit={this.handleFormSubmit}>
-            <Select
-              title={"Tipo de servicio"}
-              name={"serviceType"}
-              options={this.state.serviceOptions}
-              value={this.state.serviceType}
-              placeholder={"Elige el tipo de servicio"}
-              handleChange={this.handleInput}
-            />{" "}
-            {/* Tipo del servicio */}
             <Input
               inputType={"text"}
-              name={"origen"}
-              title={"Origen"}
-              value={this.state.newService.origen}
+              name={"ciudad"}
+              title={"Ubicación geografica por ciudad:"}
+              value={this.state.newHostal.ciudad}
               placeholder={"Ingresa una ciudad"}
               handleChange={this.handleInput}
             />{" "}
-            {/* Origen */}
+            {/* ciudad */}
             <Input
               inputType={"text"}
-              name={"destino"}
-              title={"Destino"}
-              value={this.state.newService.destino}
-              placeholder={"Ingresa una ciudad"}
+              name={"nombre"}
+              title={"Nombre del Hospedaje"}
+              value={this.state.newHostal.nombre}
+              placeholder={"Ingresa el nombre de tu hospedaje"}
               handleChange={this.handleInput}
             />{" "}
-            {/* Destino */}
+            {/* nombre */}
             <Input
               inputType={"text"}
-              name={"rute"}
-              title={"Ruta"}
-              value={this.state.newService.ruta}
-              placeholder={"Agrega un camino"}
+              name={"precio"}
+              title={"Precio por noche:"}
+              value={this.state.newHostal.precio}
+              placeholder={"Ingresa el precio por noche"}
               handleChange={this.handleInput}
             />{" "}
-            {/* Ruta */}
+            {/* precio */}
+            <Input
+              inputType={"text"}
+              name={"direccion"}
+              title={"Direción:"}
+              value={this.state.newHostal.direccion}
+              placeholder={"Ingresa tu dirección"}
+              handleChange={this.handleInput}
+            />{" "}
+            {/* direccion */}
+            <Input
+              inputType={"text"}
+              name={"telefono"}
+              title={"Teléfono:"}
+              value={this.state.newHostal.telefono}
+              placeholder={"Ingresa un telefono"}
+              handleChange={this.handleInput}
+            />{" "}
+            {/* telefono */}
+            <TextArea
+              title={"Descripción:"}
+              rows={10}
+              value={this.state.newHostal.descripcion}
+              name={"descripcion"}
+              handleChange={this.handleInput}
+              placeholder={"Describe tu servicio de hospedaje."}
+            />{" "}
+            {/* Descripcion */}
             <Button
               action={this.handleFormSubmit}
               type={"primary"}
