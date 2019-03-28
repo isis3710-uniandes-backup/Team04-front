@@ -2,68 +2,96 @@ import React, { Component} from 'react';
 import './HostalData.css';
 import Stars from './Stars.js';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
+import CardCollapse from './CardCollapse';
 class HostalData extends Component{
     constructor(props){
         super(props);
         this.state={
-            name: ""
+            ciudad: '',
+            descripcion: '',
+            direccion: '',
+            id: 0,
+            imagenes: [],
+            nombre: '',
+            precio: 0,
+            puntuacion: '',
+            sitioWeb: '',
+            telefono: '',
+            tipo: '',
+            actividades: []
         }
     }
+    setDataToState(){
+        var hostalData = this.props.data;
+        this.setState({
+            id: this.props.id,
+            nombre: hostalData.nombre,
+            descripcion: hostalData.descripcion,
+            precio: hostalData.precio,
+            telefono: hostalData.telefono,
+            sitioWeb: hostalData.sitioWeb,
+            ciudad: hostalData.ciudad,
+            direccion: hostalData.direccion,
+            puntuacion: hostalData.puntuacion,
+            imagenes: hostalData.imagenes,
+            tipo: hostalData.tipo,
+            actividades: hostalData.actividades
+        })
+    }
+
+    renderActividades(idParent){
+        return this.state.actividades.map((actividad, i) =>{
+            return(<CardCollapse id={i++} key={i++} idParent={idParent} data={actividad}></CardCollapse>)
+        })
+    }
     render(){
+        //TODO agregar el tipo a los transportes para poder diferenciarlos aquí
+        this.setDataToState();
         return(
-            <div className="mainContainer">
+        <div className="mainContainer" id ={this.state.id}>
             <div className="card mb-12">
                 <div className="row no-gutters">
                     <div className="col-md-4">
-                        <img className="card-img" src="http://imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_650,q_auto,w_1000/itemimages/40/10/4010756.jpeg" alt={this.state.name + " Main Image"} id="mainImage"/>
+                        <img className="card-img" src={this.state.imagenes[0]} alt={this.state.nombre + " Main Image"} id={"mainImage" + this.state.id}/>
                     </div>
                     <div className="col-md-8">
                         <div className="card-body">
                             <div className="row">
                                 <div className="col">
-                                    <label data-toggle="collapse" data-target="#extraDataCollapse" role="button" aria-expanded="false" aria-controls="extraDataCollapse">Nombre</label>
+                                    <label data-toggle="collapse" data-target={"#extraDataCollapse" + this.state.id} role="button" aria-expanded="false" aria-controls={"extraDataCollapse"+ this.state.id}>Nombre</label>
                                     <Stars></Stars>
-                                    <label data-toggle="collapse" data-target="#extraDataCollapse" role="button" aria-expanded="false" aria-controls="extraDataCollapse">Ubicación</label>
+                                    <label data-toggle="collapse" data-target={"#extraDataCollapse" + this.state.id} role="button" aria-expanded="false" aria-controls={"extraDataCollapse"+ this.state.id}>Ubicación</label>
                                     <div>
-                                    <a data-toggle="collapse" data-target="#extraDataCollapse" role="button" aria-expanded="false" aria-controls="extraDataCollapse">
+                                    <a data-toggle="collapse" data-target={"#extraDataCollapse" + this.state.id} role="button" aria-expanded="false" aria-controls={"extraDataCollapse"+ this.state.id}>
                                         <MaterialIcon icon="location_on"></MaterialIcon>
                                         <label>Cartagena, a 0,5 Kilometros del aeropuerto</label>
                                     </a>
                                 </div>
                                 </div>
                                 <div className="col ">
-                                    <label>Mejor precio:</label>
-                                    <label>200000$</label>
+                                    <label>Precio:</label>
+                                    <label>{this.state.precio}</label>
                                     <label>Tipo Transporte:</label>
-                                    <label>Terrestre</label>
-                                </div>
-                                <div className="col">
-                                    <label>Otras opciones:</label>
-                                    
-                                        <div className="list-group">
-                                            <button type="button" className="list-group-item list-group-item-action">Bogotá - Cartagena : Avión</button>
-                                        </div>
-                                        <br></br>
-                                    <button type="button" className="btn btn-primary" >Agregar</button>
+                                    <label>{this.state.tipo}</label>
                                 </div>
                             </div> 
                         </div>
                     </div>
                 </div>
             </div>
-             <div className="row collapse" id="extraDataCollapse">
-                <div className="card mb-12">
+             <div className="row collapse" id={"extraDataCollapse"+ this.state.id}>
+                {/* <div className="card mb-12">
                     <div className="row no-gutters">
                         
                     </div>
-                </div>
+                </div> */}
                 <div className="col">
-                    <ul className="nav nav-tabs" id="extraDataTab" role="tablist">
+                    <ul className="nav nav-tabs" id={"extraDataTab" + this.state.id} role="tablist">
                         <li className="nav-item">
-                            <a className="nav-link active" id="information-tab" data-toggle="tab" href="#information" role="tab" aria-controls="information" aria-selected="true">Información</a>
+                            <a className="nav-link active" id={"information-tab" + this.state.id} data-toggle="tab" href={"#information" + this.state.id} role="tab" aria-controls={"information" + this.state.id} aria-selected="true">Información</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" id="imagenes-tab" data-toggle="tab" href="#imagenes" role="tab" aria-controls="imagenes" aria-selected="false">Imagenes</a>
+                            <a className="nav-link" id={"imagenes-tab"+ this.state.id} data-toggle="tab" href={"#imagenes" + this.state.id} role="tab" aria-controls={"imagenes" + this.state.id}aria-selected="false">Imagenes</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" id="opciones-tab" data-toggle="tab" href="#opciones" role="tab" aria-controls="opciones" aria-selected="false">Opiniones</a>
@@ -73,7 +101,7 @@ class HostalData extends Component{
                         </li>
                     </ul>
                     <div className="tab-content" id="myTabContent">
-                        <div className="tab-pane fade show active" id="information" role="tabpanel" aria-labelledby="information-tab">
+                        <div className="tab-pane fade show active" id={"information" + this.state.id} role="tabpanel" aria-labelledby={"information-tab" + this.state.id}>
                             <div className="row">
                                 <div className="col-4">
                                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3924.3671021232103!2d-75.48493448468737!3d10.392389892582822!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef625cb6649c1af%3A0xc2bfbac2309ea48a!2sHotel+Ibiza!5e0!3m2!1ses-419!2sco!4v1553637222477" frameborder="0" allowfullscreen>
@@ -81,7 +109,7 @@ class HostalData extends Component{
                                 </div>
                                 <div className="col">
                                     <label>Servicios y actividades cercanas</label>
-                                    <div className="accordion" id="accordionActividades">
+                                    <div className="accordion" id={"accordionActividades" + this.state.id}>
                                         <div className="card">
                                             <div className="card-header" id="headingOne">
                                                 <h2 className="mb-0">
@@ -129,7 +157,7 @@ class HostalData extends Component{
                             </div>
                             
                         </div>
-                        <div className="tab-pane fade" id="imagenes" role="tabpanel" aria-labelledby="imagenes-tab">
+                        <div className="tab-pane fade" id={"imagenes" + this.state.id} role="tabpanel" aria-labelledby={"imagenes-tab"+ this.state.id}>
                             <div id="extraDataCarouselmagenes" className="carousel slide" data-ride="carousel">
                                 <ol className="carousel-indicators">
                                     <li data-target="#extraDataCarouselmagenes" data-slide-to="0" className="active"></li>
