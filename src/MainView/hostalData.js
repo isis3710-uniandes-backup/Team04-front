@@ -3,10 +3,13 @@ import './hostalData.css';
 import Stars from './Stars.js';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import CardCollapse from './CardCollapse';
+import { cpus } from 'os';
 class HostalData extends Component{
+    //TODO los comentarios no se van a renderizar porque no están tan elaborados, solo se mostrará la puntuación
     constructor(props){
         super(props);
         this.state={
+            comentarios: [],
             ciudad: '',
             descripcion: '',
             direccion: '',
@@ -17,15 +20,20 @@ class HostalData extends Component{
             puntuacion: '',
             sitioWeb: '',
             telefono: '',
-            tipo: '',
             actividades: []
         }
-
+        
+        this.setDataToState = this.setDataToState
+        this.renderActividades = this.renderActividades.bind(this);
+        this.renderComentarios = this.renderComentarios.bind(this);
+        this.renderCarouselItem = this.renderCarouselItem.bind(this);
+        this.renderCarouselIndicators = this.renderCarouselIndicators.bind(this);
         //TODO puede que falten declaraciones de métodos en el constructos
     }
+    
     setDataToState(){
         var hostalData = this.props.data;
-        this.setState({
+    this.setState({
             id: this.props.id,
             nombre: hostalData.nombre,
             descripcion: hostalData.descripcion,
@@ -36,8 +44,8 @@ class HostalData extends Component{
             direccion: hostalData.direccion,
             puntuacion: hostalData.puntuacion,
             imagenes: hostalData.imagenes,
-            tipo: hostalData.tipo,
-            actividades: hostalData.actividades
+            actividades: hostalData.actividades,
+            comentarios: hostalData.comentarios
         })
     }
 
@@ -47,13 +55,82 @@ class HostalData extends Component{
         })
     }
 
-    renderCarouseItems(){
-
+    //TODO terminar de renderizar los comentarios
+    renderComentarios(){
+        var valoracionPromedio = 0;
+        for(var comment in this.state.comentarios){
+            valoracionPromedio  += comment.valor;
+        }
+        valoracionPromedio /= this.state.comentarios.length;
+        return this.state.comentarios.map((comentario,i) =>{
+            return(
+                <div className="card mb-12">
+                    <div className="row no-grutters">
+                        <div className="col-md-4">
+                                <div className="card">
+                                    <div className="jumbotron card-img-top">
+                                        <h1 className="display-4 text-center">8.5</h1>
+                                    </div>
+                                    <div className="card-body">
+                                        <label className="lead">Puntuación basada en 45 usuarios</label>
+                                    </div>
+                                </div>
+                        </div>
+                        <div className="col-md-8">
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item">
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <h2 className="display-4">10</h2>
+                                            <label>Viajero</label> <br></br>
+                                            <label>Fecha opinión:</label> <br></br>
+                                            <label>11 Agosto 2018</label> <br></br>
+                                            <label>Fecha Estadia</label> <br></br>
+                                            <label>Agosto 2018</label>
+                                        </div>
+                                        <div className="col-md-8">
+                                            <label>Muy bien ubicado, pequeño pero acogedor.</label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            )
+        })
     }
+
+    renderCarouselItem(){
+        return this.state.imagenes.map((image, i) =>{
+            if(i == 1){
+                return(
+                    <div className={"carousel-item active"}>
+                    <img className="carouselImage d-block" src={imagen} alt="image"/>
+                </div>
+                )
+            }
+            return (
+                <div className={"carousel-item"}>
+                    <img className="carouselImage d-block" src={imagen} alt="image"/>
+                </div>
+            )
+        })
+    }
+
+    renderCarouselIndicators(){
+        var indicators = this.state.imagenes.slice(0,this.state.imagenes.length-1);
+        return indicators.map(i =>{
+            if(i == 1){
+                return (<li data-target={"#extraDataCarouselmagenes"+ this.state.id}  className="active" data-slide-to={(i++)-1}></li>)
+            }
+            return (<li  data-target= {"#extraDataCarouselmagenes"+ this.state.id} data-slide-to={(i++)-1}></li>)
+        })
+    }
+    render
+
     render(){
-        //TODO agregar el tipo a los transportes para poder diferenciarlos aquí -- Linea 76--
         //TODO agregar las actividades de forma correcta. -- Render en linea 114 --
-        //TODO Hacer que las fotos se rendericen solas, independientemente del número de fotos que tenga un hostal.
         this.setDataToState();
         return(
         <div className="mainContainer" id ={this.state.id}>
@@ -79,8 +156,8 @@ class HostalData extends Component{
                                 <div className="col ">
                                     <label>Precio:</label>
                                     <label>{this.state.precio}</label>
-                                    <label>Tipo Transporte:</label>
-                                    <label>{this.state.tipo}</label>
+                                    {/* <label>Tipo Transporte:</label>
+                                    <label>{this.state.tipo}</label> */}
                                 </div>
                             </div> 
                         </div>
@@ -102,11 +179,12 @@ class HostalData extends Component{
                             <a className="nav-link" id={"imagenes-tab"+ this.state.id} data-toggle="tab" href={"#imagenes" + this.state.id} role="tab" aria-controls={"imagenes" + this.state.id}aria-selected="false">Imagenes</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" id="opciones-tab" data-toggle="tab" href="#opciones" role="tab" aria-controls="opciones" aria-selected="false">Opiniones</a>
+                            <a className="nav-link" id="opciones-tab" data-toggle="tab" href="#opciones" role="tab" aria-controls="opciones" aria-selected="false">Puntuación</a>
                         </li>
-                        <li className="nav-item">
+
+                        {/* <li className="nav-item">
                             <a className="nav-link" id="ofertas-tab" data-toggle="tab" href="#ofertas" role="tab" aria-controls="ofertas" aria-selected="false">Ofertas</a>
-                        </li>
+                        </li> */}
                     </ul>
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id={"information" + this.state.id} role="tabpanel" aria-labelledby={"information-tab" + this.state.id}>
@@ -130,12 +208,14 @@ class HostalData extends Component{
                         <div className="tab-pane fade" id={"imagenes" + this.state.id} role="tabpanel" aria-labelledby={"imagenes-tab"+ this.state.id}>
                             <div id={"extraDataCarouselmagenes"+ this.state.id} className="carousel slide" data-ride="carousel">
                              {/**Pasar esto a componente para que se haga solo por cada foto que haya para eso es CarouselIndicators y CarouselItem*/}
-                                <ol className="carousel-indicators">
-                                    <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="0" className="active"></li>
+                             <ol className="carousel-indicators">
+                                    {this.renderCarouselIndicators()}
+                             </ol>
+                                    {/* <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="0" className="active"></li>
                                     <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="1"></li>
-                                    <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="2"></li>
-                                </ol>
-                                <div className="carousel-inner container">
+                                    <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="2"></li> */}
+
+                                {/* <div className="carousel-inner container">
                                     <div className="carousel-item active">
                                         <img className="carouselImage d-block" src="//imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_650,q_auto,w_1000/itemimages/59/75/5975238.jpeg" alt="image"/>
                                     </div>
@@ -145,7 +225,11 @@ class HostalData extends Component{
                                     <div className="carousel-item">
                                         <img className="carouselImage d-block" src="//imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_470,q_auto,w_805/partnerimages/27/99/279942242.jpeg" alt="image"/>
                                     </div>
+                                </div> */}
+                                <div className="carousel-inner container">
+                                    {this.renderCarouselItem()}
                                 </div>
+                                
                                 <a className="carousel-control-prev" href={"#extraDataCarouselmagenes"+ this.state.id} role="button" data-slide="prev">
                                     <MaterialIcon icon="keyboard_arrow_left" color="#272F32" size={30}></MaterialIcon>
                                     <span className="sr-only">Previous</span>
@@ -157,41 +241,11 @@ class HostalData extends Component{
                             </div>
                         </div>
                         <div className="tab-pane fade" id="opciones" role="tabpanel" aria-labelledby="opciones-tab">
-                            <div className="card mb-12">
-                                <div className="row no-grutters">
-                                    <div className="col-md-4">
-                                            <div className="card">
-                                                <div className="jumbotron card-img-top">
-                                                    <h1 className="display-4 text-center">8.5</h1>
-                                                </div>
-                                                <div className="card-body">
-                                                    <label className="lead">Puntuación basada en 45 usuarios</label>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    <div className="col-md-8">
-                                        <ul className="list-group list-group-flush">
-                                            <li className="list-group-item">
-                                                <div className="row">
-                                                    <div className="col-md-4">
-                                                        <h2 className="display-4">10</h2>
-                                                        <label>Viajero</label> <br></br>
-                                                        <label>Fecha opinión:</label> <br></br>
-                                                        <label>11 Agosto 2018</label> <br></br>
-                                                        <label>Fecha Estadia</label> <br></br>
-                                                        <label>Agosto 2018</label>
-                                                    </div>
-                                                    <div className="col-md-8">
-                                                        <label>Muy bien ubicado, pequeño pero acogedor.</label>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            {/* Aquí van los comentarios cuando estén más elaborados */}
+                            <label>{this.state.puntuacion}</label>
                         </div>
-                            <div className="tab-pane fade" id="ofertas" role="tabpanel" aria-labelledby="ofertas-tab">
+                        {/**Aquí van las ofertas cuando estén bien elaboradas. Por el momento no hay nada que las represente */}
+                            {/* <div className="tab-pane fade" id="ofertas" role="tabpanel" aria-labelledby="ofertas-tab">
                                 <div className="card mb-12">
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item">
@@ -211,7 +265,7 @@ class HostalData extends Component{
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
