@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import Stars from './Stars.js';
 import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
-import HostalData from './hostalData.js';
+import HostalData from './HostalData.js';
 import TransportData from './TransportData.js';
 import Busqueda from './Busqueda';
 import ReactDOM from 'react-dom';
