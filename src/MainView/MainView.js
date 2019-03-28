@@ -7,6 +7,7 @@ import Stars from './Stars.js';
 import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
 import HostalData from './HostalData.js';
+import TransportData from './TransportData.js';
 
 class MainView extends Component{
     constructor(props){
@@ -17,12 +18,16 @@ class MainView extends Component{
             fechaRegreso: new Date(),
             precioMaxNoche: 1008214,
             partida: 'Bogotá',
-            llegada: 'Cartagena'
+            llegada: 'Cartagena',
+            resultadosBusqueda: []
         }
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
         this.handleChangeRegreso = this.handleChangeRegreso.bind(this);
         this.addLocation = this.addLocation.bind(this);
+        this.compareHostales= this.compareHostales.bind(this);
+        this.buscar = this.buscar.bind(this);
+        this.renderBusqueda = this.renderBusqueda.bind(this);
       
     }
     
@@ -57,6 +62,38 @@ class MainView extends Component{
             listLocations: locations
         })
     }
+
+    buscar(){
+        var partida = document.getElementById('inLocationPartida').value;
+        var llegada = document.getElementById('inLocationLlegada').value;
+        fetch('http://localhost:3001/hostales/cities/'+llegada).then(response =>{
+            JSON.parse(response);
+        }).then( responseHostales =>{
+            fetch('http://localhost:3001/transportes/'+partida+'/'+llegada).then(response =>{
+                JSON.parse(response);
+            }).then(responseTransportes=>{
+                renderBusqueda(responseHostales,responseHostales);
+            })
+        })
+    }
+
+    compareHostales(a,b){
+        if(a.precio < b.precio){
+            return -1;
+        }else if(a.precio > b.precio){
+            return 1;
+        }else{return 0}
+    }
+
+    renderBusqueda(responseHostales, responseTransportes){
+
+        //Cómo traer los hostale más baratos y los transportes más baratos?
+        responseHostales.sort(this.compareHostales);
+        return this.state.resultadosBusqueda.map( (resultado,i)=>{
+            return (<div></div>);
+        })
+    }
+
     render(){
         return( 
             <div className="main">
@@ -115,7 +152,7 @@ class MainView extends Component{
                     <div className="col-10 inputData text-left">
                         <div className="row">
                             <div className=" text-left col">
-                                <label id="buscarSalida">Lugar Partida:</label>
+                                <label id="lbBuscarPartida">Lugar Partida:</label>
                                 
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     {/* <div className="input-group-prepend">
@@ -128,7 +165,7 @@ class MainView extends Component{
                             </div>
 
                             <div className="text-left col">
-                                <label id="buscarSalida">Lugar Llegada:</label>
+                                <label id="lbBuscarLlegada">Lugar Llegada:</label>
                                 
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     <div className="input-group-prepend">
@@ -141,7 +178,7 @@ class MainView extends Component{
                             </div>
                             
                             <div className="text-left col">
-                                <label id="buscarSalida">Fecha Partida:</label>
+                                <label id="lbBuscarFechaPartida">Fecha Partida:</label>
                                 <DatePicker id="dateFechaPartida"
                                     selected={this.state.fechaPartida} 
                                     onChange={this.handleChangePartida}
@@ -150,7 +187,7 @@ class MainView extends Component{
                         
                         
                             <div className="text-left col">
-                                <label id="buscarSalida">Fecha Regreso:</label>
+                                <label id="lbBuscarFechaRegreso">Fecha Regreso:</label>
                                 <DatePicker id="dateFechaRegreso" 
                                     selected={this.state.fechaRegreso} 
                                     onChange={this.handleChangeRegreso}
@@ -158,13 +195,13 @@ class MainView extends Component{
                             </div>
 
                             <div className="text-left col">
-                                <label id="buscarSalida">Tipo de Habitación:</label>
-                                <Combobox options={['Individual', 'Doble','Familiar', 'Múltiple']}></Combobox>
+                                <label id="lbBuscarTipoHabitacion">Tipo de Habitación:</label>
+                                <Combobox id="controlHabitacion" options={['Individual', 'Doble','Familiar', 'Múltiple']}></Combobox>
                             </div>
 
                             <div className="text-left col">
-                                <label id="buscarSalida">Tipo de Transporte:</label>
-                                 <Combobox options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
+                                <label id="lbBuscarTipoTransporte">Tipo de Transporte:</label>
+                                 <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
                             </div>
 
                             <div className="text-left col">
@@ -174,7 +211,7 @@ class MainView extends Component{
 
                         <div className="row ">
                             <div className="text-left col" id="precioMaxNoche">
-                                <label id="buscarSalida">Precio por noche:</label>
+                                <label id="lbBuscarPrecioNoche">Precio por noche:</label>
                                 <div className="row">
                                 
                                 <input type="range" className="form-control-range col" id="formControlRange"></input>
@@ -252,9 +289,9 @@ class MainView extends Component{
                         </div>
                         <br></br>
                         <div className="card">
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item card"><HostalData></HostalData></li>
-                                </ul>
+                            <div className="accordion" id="accordionResultados">
+                                {this.renderBusqueda} 
+                            </div>
                         </div>
                     </div>
                 </div>
