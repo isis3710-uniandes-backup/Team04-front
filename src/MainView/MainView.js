@@ -8,6 +8,7 @@ import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
 import HostalData from './HostalData.js';
 import TransportData from './TransportData.js';
+import Busqueda from './Busqueda';
 
 class MainView extends Component{
     constructor(props){
@@ -19,7 +20,7 @@ class MainView extends Component{
             precioMaxNoche: 1008214,
             partida: 'Bogotá',
             llegada: 'Cartagena',
-            resultadosBusqueda: []
+            resultadosBusqueda: {}
         }
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
@@ -72,7 +73,9 @@ class MainView extends Component{
             fetch('http://localhost:3001/transportes/'+partida+'/'+llegada).then(response =>{
                 JSON.parse(response);
             }).then(responseTransportes=>{
-                renderBusqueda(responseHostales,responseHostales);
+                //TODO después de tener los hostales de la ciudad de llegada --primer fetch -- y de tener los transportes de partida
+                // y llegada; cómo obtener los más baratos y renderizarlos en parejas. (Lo de renderizarlos en parejas es solo mandarlos al componente Busqueda --revisarlo--)
+                renderBusqueda(responseHostales,responseTransportes);
             })
         })
     }
@@ -87,14 +90,15 @@ class MainView extends Component{
 
     renderBusqueda(responseHostales, responseTransportes){
 
-        //Cómo traer los hostale más baratos y los transportes más baratos?
-        responseHostales.sort(this.compareHostales);
+        // TODO Cómo traer los hostale más baratos y los transportes más baratos? 
+        //resultado.transporte es solo un ejemplo de lo que podría ser
         return this.state.resultadosBusqueda.map( (resultado,i)=>{
-            return (<div></div>);
+            return (<Busqueda id={i++} key={i++} transporte={resultado.transporte} alojamiento={resultado.alojamiento}></Busqueda>);
         })
     }
 
     render(){
+        //TODO a renderBusqueda en la linea 294 le hace falta los parametros
         return( 
             <div className="main">
                 <div className="container-fluid" id="containerLoginButtons">
@@ -290,7 +294,7 @@ class MainView extends Component{
                         <br></br>
                         <div className="card">
                             <div className="accordion" id="accordionResultados">
-                                {this.renderBusqueda} 
+                                {this.state.resultadosBusqueda} 
                             </div>
                         </div>
                     </div>

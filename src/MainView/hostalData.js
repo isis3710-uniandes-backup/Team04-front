@@ -20,6 +20,8 @@ class HostalData extends Component{
             tipo: '',
             actividades: []
         }
+
+        //TODO puede que falten declaraciones de métodos en el constructos
     }
     setDataToState(){
         var hostalData = this.props.data;
@@ -44,8 +46,14 @@ class HostalData extends Component{
             return(<CardCollapse id={i++} key={i++} idParent={idParent} data={actividad}></CardCollapse>)
         })
     }
+
+    renderCarouseItems(){
+
+    }
     render(){
-        //TODO agregar el tipo a los transportes para poder diferenciarlos aquí
+        //TODO agregar el tipo a los transportes para poder diferenciarlos aquí -- Linea 76--
+        //TODO agregar las actividades de forma correcta. -- Render en linea 114 --
+        //TODO Hacer que las fotos se rendericen solas, independientemente del número de fotos que tenga un hostal.
         this.setDataToState();
         return(
         <div className="mainContainer" id ={this.state.id}>
@@ -59,7 +67,7 @@ class HostalData extends Component{
                             <div className="row">
                                 <div className="col">
                                     <label data-toggle="collapse" data-target={"#extraDataCollapse" + this.state.id} role="button" aria-expanded="false" aria-controls={"extraDataCollapse"+ this.state.id}>Nombre</label>
-                                    <Stars></Stars>
+                                    <Stars id={"starsHostalData" + this.state.id}></Stars>
                                     <label data-toggle="collapse" data-target={"#extraDataCollapse" + this.state.id} role="button" aria-expanded="false" aria-controls={"extraDataCollapse"+ this.state.id}>Ubicación</label>
                                     <div>
                                     <a data-toggle="collapse" data-target={"#extraDataCollapse" + this.state.id} role="button" aria-expanded="false" aria-controls={"extraDataCollapse"+ this.state.id}>
@@ -110,59 +118,22 @@ class HostalData extends Component{
                                 <div className="col">
                                     <label>Servicios y actividades cercanas</label>
                                     <div className="accordion" id={"accordionActividades" + this.state.id}>
-                                        <div className="card">
-                                            <div className="card-header" id="headingOne">
-                                                <h2 className="mb-0">
-                                                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                        Carnaval Decembrino
-                                                    </button>
-                                                </h2>
-                                            </div>
-                                            <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionActividades">
-                                                <div className="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="card">
-                                            <div className="card-header" id="headingTwo">
-                                                <h2 className="mb-0">
-                                                    <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                    Collapsible Group Item #2
-                                                    </button>
-                                                </h2>
-                                            </div>
-                                            <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionActividades">
-                                                <div className="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="card">
-                                            <div className="card-header" id="headingThree">
-                                                <h2 className="mb-0">
-                                                    <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                    Collapsible Group Item #3
-                                                    </button>
-                                                </h2>
-                                            </div>
-                                            <div id="collapseThree" className="collapse" aria-labelledby="headingThree" data-parent="#accordionActividades">
-                                                <div className="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                                </div>
-                                            </div>
-                                        </div>
+                                    {/** Creo que algo malo estoy haciendo llamando de esta forma los renders. Creo que debería simplemente llamar al arreglo
+                                        Al igual creo que así puede funcionar. Así se está renderizando MainView dentro de App
+                                    */}
+                                        {this.renderActividades("accordionActividades" + this.state.id)}
                                     </div>
                                 </div>
                             </div>
                             
                         </div>
                         <div className="tab-pane fade" id={"imagenes" + this.state.id} role="tabpanel" aria-labelledby={"imagenes-tab"+ this.state.id}>
-                            <div id="extraDataCarouselmagenes" className="carousel slide" data-ride="carousel">
+                            <div id={"extraDataCarouselmagenes"+ this.state.id} className="carousel slide" data-ride="carousel">
+                             {/**Pasar esto a componente para que se haga solo por cada foto que haya para eso es CarouselIndicators y CarouselItem*/}
                                 <ol className="carousel-indicators">
-                                    <li data-target="#extraDataCarouselmagenes" data-slide-to="0" className="active"></li>
-                                    <li data-target="#extraDataCarouselmagenes" data-slide-to="1"></li>
-                                    <li data-target="#extraDataCarouselmagenes" data-slide-to="2"></li>
+                                    <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="0" className="active"></li>
+                                    <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="1"></li>
+                                    <li data-target={"#extraDataCarouselmagenes"+ this.state.id} data-slide-to="2"></li>
                                 </ol>
                                 <div className="carousel-inner container">
                                     <div className="carousel-item active">
@@ -175,12 +146,11 @@ class HostalData extends Component{
                                         <img className="carouselImage d-block" src="//imgcy.trivago.com/c_limit,d_dummy.jpeg,f_auto,h_470,q_auto,w_805/partnerimages/27/99/279942242.jpeg" alt="image"/>
                                     </div>
                                 </div>
-                                <a className="carousel-control-prev" href="#extraDataCarouselmagenes" role="button" data-slide="prev">
+                                <a className="carousel-control-prev" href={"#extraDataCarouselmagenes"+ this.state.id} role="button" data-slide="prev">
                                     <MaterialIcon icon="keyboard_arrow_left" color="#272F32" size={30}></MaterialIcon>
                                     <span className="sr-only">Previous</span>
                                 </a>
-                                <a className="carousel-control-next" href="#extraDataCarouselmagenes" role="button" data-slide="next">
-                                    {/* <span className="carousel-control-next-icon" aria-hidden="true"></span> */}
+                                <a className="carousel-control-next" href={"#extraDataCarouselmagenes"+ this.state.id} role="button" data-slide="next">
                                     <MaterialIcon icon="keyboard_arrow_right" color="#272F32" size={30}></MaterialIcon>
                                     <span className="sr-only">Next</span>
                                 </a>

@@ -4,39 +4,48 @@ import HostalData from './HostalData.js';
 class Busqueda extends Component{
     constructor(props){
         super(props)
+        this.state = {
+            id: 0,
+            transporte: '',
+            alojamiento: ''
+        }
     }
 
+    setDataToState(){
+        this.setState({
+            id: this.props.id,
+            transporte = this.props.data.transporte,
+            alojamiento = this.props.data.alojamiento
+        })
+    }
     render(){
-        var id = this.props.id;
-        var transporte = this.props.data.transporte;
-        var alojamiento = this.props.data.alojamiento;
         return(
             <div>
                 <div className="card">
-                    <div className="card-header" id={"headingTransporte" +id}>
+                    <div className="card-header" id={"headingTransporte" +this.state.id}>
                         <h2 className="mb-0">
-                            <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"collapse" + id} aria-expanded="true" aria-controls={"collapse"+id}>
+                            <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"collapse" + this.state.id} aria-expanded="true" aria-controls={"collapse"+this.state.id}>
                                 Transporte
                             </button>
                         </h2>
                     </div>
-                    <div id={"collapse"+id} className="collpse show" aria-labelledby={"headingTransporte"+id} data-parent="#accordionResultados">
+                    <div id={"collapse"+this.state.id} className="collpse show" aria-labelledby={"headingTransporte"+this.state.id} data-parent="#accordionResultados">
                         <div className="card-body">
-                            <TransportData id={"transportData"+id} data={transporte}></TransportData>
+                            <TransportData id={"transportData"+this.state.id} data={this.state.transporte}></TransportData>
                         </div>
                     </div>
                 </div>
                 <div className="card">
-                    <div className="card-header" id={"headingHostal"+ id}>
+                    <div className="card-header" id={"headingHostal"+ this.state.id}>
                         <h2 className="mb-0">
-                            <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target={"#collapse"+ id} aria-expanded="false" aria-controls={"collapse"+ id}>
+                            <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target={"#collapse"+ this.state.id} aria-expanded="false" aria-controls={"collapse"+ this.state.id}>
                                 Alojamiento
                             </button>
                         </h2>
                     </div>
-                    <div id={"collapse" +id} className="collapse" aria-labelledby={"headingHostal"+ id} data-parent="#accordionResultados">
+                    <div id={"collapse" +this.state.id} className="collapse" aria-labelledby={"headingHostal"+ this.state.id} data-parent="#accordionResultados">
                         <div className="card-body">
-                            <HostalData id={"hostalData"+ id} data={alojamiento}></HostalData>
+                            <HostalData id={"hostalData"+ this.state.id} data={this.state.alojamiento}></HostalData>
                         </div>
                     </div>
                 </div> 
