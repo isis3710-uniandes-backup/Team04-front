@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import './HostalData.css';
+import './hostalData.css';
 import Stars from './Stars.js';
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import CardCollapse from './CardCollapse';

@@ -11,21 +11,22 @@ class TransportData extends Component{
             origen: '',
             destino: ''
         }
-    }
 
-    setDataToState(){
         var transportData = this.props.data;
         this.setState({
             id: this.props.id,
             image: transportData.image,
-            rutas: ttransportData.rutas,
+            rutas: transportData.rutas,
             origen: transportData.origen,
             destino: transportData.destino
         })
     }
 
+    setDataToState(){
+        
+    }
+
     render(){
-        setDataToState();
         //TODO El atributo rutas de los servicios tiene que ser cambiados para poder realizar el dibujo en Google Maps
         return(
             <div className="card mb-12" id={this.state.id}>

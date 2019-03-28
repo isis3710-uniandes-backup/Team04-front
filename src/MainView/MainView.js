@@ -1,17 +1,19 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './MainView.css';
 import ListLocations from './ListLocations.js';
-import MaterialIcon, {colorPalette} from 'material-icons-react';
+import MaterialIcon, { colorPalette } from 'material-icons-react';
 import DatePicker from "react-datepicker";
 import Stars from './Stars.js';
 import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
-import HostalData from './HostalData.js';
+import HostalData from './hostalData.js';
 import TransportData from './TransportData.js';
 import Busqueda from './Busqueda';
+import ReactDOM from 'react-dom';
+import Login from '../login/Login'
 
-class MainView extends Component{
-    constructor(props){
+class MainView extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             listLocations: [],
@@ -19,44 +21,53 @@ class MainView extends Component{
             fechaRegreso: new Date(),
             precioMaxNoche: 1008214,
             partida: 'Bogotá',
-            llegada: 'Cartagena',
-            resultadosBusqueda: {}
+            llegada: 'San Aandrés',
+            resultadosBusqueda: "",
+            user: ""
         }
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
         this.handleChangeRegreso = this.handleChangeRegreso.bind(this);
         this.addLocation = this.addLocation.bind(this);
-        this.compareHostales= this.compareHostales.bind(this);
+        this.compareHostales = this.compareHostales.bind(this);
         this.buscar = this.buscar.bind(this);
         this.renderBusqueda = this.renderBusqueda.bind(this);
-      
+        this.subViajes = this.subViajes.bind(this);
+        this.CrearViaje = this.CrearViaje.bind(this);
+
+        if (typeof this.props.usuario !== 'undefined') {
+            if (this.props.usuario.logueado) {
+                this.setState({ user: this.props.usuario });
+            }
+        }
+
     }
-    
-    handleChangePartida(date){
+
+    handleChangePartida(date) {
         this.setState({
             fechaPartida: date
         });
     }
 
-    handleChangeRegreso(date){
+    handleChangeRegreso(date) {
         this.setState({
             fechaRegreso: date
         });
     }
-    renderLocations(){
-        return this.state.listLocations.map( (location,i) =>{
+    renderLocations() {
+        return this.state.listLocations.map((location, i) => {
             return (<ListLocations data={location} key={i++}></ListLocations>)
         })
     }
 
-    addLocation(){
+    addLocation() {
         var partida = document.getElementById('inLocationPartida').value;
         var llegada = document.getElementById('inLocationLlegada').value;
         var fechaPartida = this.state.fechaPartida;
         var fechaRegreso = this.state.fechaRegreso;
         var tipoHabitacion = document.getElementById('controlHabitacion').value;
         var tipoTransporte = document.getElementById('controlTransporte').value;
-        var data = {partida: partida, llegada: llegada, fechaPartida: fechaPartida, fechaRegreso: fechaRegreso, tipoHabitacion: tipoHabitacion, tipoTransporte: tipoTransporte}
+        var data = { partida: partida, llegada: llegada, fechaPartida: fechaPartida, fechaRegreso: fechaRegreso, tipoHabitacion: tipoHabitacion, tipoTransporte: tipoTransporte }
         var locations = this.state.listLocations;
         locations.push(data);
         this.setState({
@@ -64,47 +75,100 @@ class MainView extends Component{
         })
     }
 
-    buscar(){
+
+    subViajes() {
+
+        const arraySubViajes = this.state.listLocations;
+        const subViajes2 = [];
+        let i = 0;
+        arraySubViajes.map(viaje => {
+            const viaje2 = {
+                nombre: "sub-viaje"+i,
+                empresa: "empresa",
+                metodoDeViaje: "Viaje "+viaje.tipoTransporte,
+                fechaInicio: viaje.fechaPartida,
+                fechaFin: viaje.fechaRegreso,
+                origen: viaje.partida,
+                destino: viaje.llegada,
+            }
+            subViajes2.push(viaje2);
+        })
+
+        return subViajes2;
+    }
+    CrearViaje() {
+        let me = this;
+        let subViajesact = this.subViajes();
+        fetch('/viajes', {
+            method: 'POST',
+            body: JSON.stringify({
+                idUsuario: me.state.user.id,
+                nombre: "viaje1",
+                empresa: "empresa1",
+                fechaInicio: me.state.listLocations[0].fechaPartida,
+                fechaFin: me.state.listLocations.slice(-1).pop().fechaRegreso,
+                origen: me.state.listLocations[0].partida,
+                destino: me.state.listLocations.slice(-1).pop().llegada,
+                subViajes: subViajesact,
+                viajeAgendado: true
+            }),
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(function (response) {
+                return response.json()
+            }).then(function (body) {
+                console.log(body);
+                
+            });
+    }
+
+    buscar() {
         var partida = document.getElementById('inLocationPartida').value;
         var llegada = document.getElementById('inLocationLlegada').value;
-        fetch('http://localhost:3001/hostales/cities/'+llegada).then(response =>{
+        let me = this;
+        fetch('http://localhost:3001/hostales/cities/' + llegada).then(response => {
             JSON.parse(response);
-        }).then( responseHostales =>{
-            fetch('http://localhost:3001/transportes/'+partida+'/'+llegada).then(response =>{
+        }).then(responseHostales => {
+            fetch('http://localhost:3001/transportes/' + partida + '/' + llegada).then(response => {
                 JSON.parse(response);
-            }).then(responseTransportes=>{
+            }).then(responseTransportes => {
+
                 //TODO después de tener los hostales de la ciudad de llegada --primer fetch -- y de tener los transportes de partida
                 // y llegada; cómo obtener los más baratos y renderizarlos en parejas. (Lo de renderizarlos en parejas es solo mandarlos al componente Busqueda --revisarlo--)
-                renderBusqueda(responseHostales,responseTransportes);
+                me.renderBusqueda(responseHostales, responseTransportes);
             })
         })
     }
 
-    compareHostales(a,b){
-        if(a.precio < b.precio){
+    compareHostales(a, b) {
+        if (a.precio < b.precio) {
             return -1;
-        }else if(a.precio > b.precio){
+        } else if (a.precio > b.precio) {
             return 1;
-        }else{return 0}
+        } else { return 0 }
     }
 
-    renderBusqueda(responseHostales, responseTransportes){
+    renderBusqueda(responseHostales, responseTransportes) {
 
         // TODO Cómo traer los hostale más baratos y los transportes más baratos? 
         //resultado.transporte es solo un ejemplo de lo que podría ser
-        return this.state.resultadosBusqueda.map( (resultado,i)=>{
+        return this.state.resultadosBusqueda.map((resultado, i) => {
             return (<Busqueda id={i++} key={i++} transporte={resultado.transporte} alojamiento={resultado.alojamiento}></Busqueda>);
         })
     }
 
-    render(){
+    sendLogin() {
+        ReactDOM.render(<Login />, document.getElementById('root'));
+    }
+
+    render() {
         //TODO a renderBusqueda en la linea 294 le hace falta los parametros
-        return( 
+        return (
             <div className="main">
                 <div className="container-fluid" id="containerLoginButtons">
                     <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign In</button>
                 </div>
-                <div className="banner" id="mainBanner">
+                <div className="bannerr" id="mainBanner">
                     <h1>MultiTravel</h1>
                 </div>
 
@@ -113,7 +177,7 @@ class MainView extends Component{
                     <div className="col-2 listSelectedLocations">
                         <div className="card" >
                             <div className="card-header">
-                            Lista de Lugares Seleccionados
+                                Lista de Lugares Seleccionados
                             </div>
                             <ul className="list-group list-group-flush">
                                 {this.renderLocations()}
@@ -137,16 +201,20 @@ class MainView extends Component{
                                             </div>
 
                                             <div className="modal-footer">
-                                                <button type="button"className="btn btn-primary">Save changes</button>
+                                                <button type="button" className="btn btn-primary">Save changes</button>
                                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="btn-agregarLocation">
                                 <button className="btn btn-primary" type="button" onClick={this.addLocation}> Agregar</button>
+                                <br></br>
+                            </div>
+                            <div className="btn-CrearViaje">
+                                <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> Crear Viaje</button>
                             </div>
 
                         </div>
@@ -156,69 +224,68 @@ class MainView extends Component{
                         <div className="row">
                             <div className=" text-left col">
                                 <label id="lbBuscarPartida">Lugar Partida:</label>
-                                
+
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     {/* <div className="input-group-prepend">
                                         <span className="input-group-text purple lighten-3" id="basic-text1">
                                             <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
                                         </span>
                                     </div> */}
-                                    <input id="inLocationPartida" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.partida} aria-label="Search"/>
+                                    <input id="inLocationPartida" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.partida} aria-label="Search" />
                                 </div>
                             </div>
 
                             <div className="text-left col">
                                 <label id="lbBuscarLlegada">Lugar Llegada:</label>
-                                
+
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     <div className="input-group-prepend">
                                         {/* <span className="input-group-text purple lighten-3" id="basic-text1">
                                             <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
                                         </span> */}
                                     </div>
-                                    <input id="inLocationLlegada" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.llegada} aria-label="Search"/>
+                                    <input id="inLocationLlegada" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.llegada} aria-label="Search" />
                                 </div>
                             </div>
-                            
+
                             <div className="text-left col">
                                 <label id="lbBuscarFechaPartida">Fecha Partida:</label>
                                 <DatePicker id="dateFechaPartida"
-                                    selected={this.state.fechaPartida} 
+                                    selected={this.state.fechaPartida}
                                     onChange={this.handleChangePartida}
                                 />
                             </div>
-                        
-                        
+
+
                             <div className="text-left col">
                                 <label id="lbBuscarFechaRegreso">Fecha Regreso:</label>
-                                <DatePicker id="dateFechaRegreso" 
-                                    selected={this.state.fechaRegreso} 
+                                <DatePicker id="dateFechaRegreso"
+                                    selected={this.state.fechaRegreso}
                                     onChange={this.handleChangeRegreso}
                                 />
                             </div>
 
                             <div className="text-left col">
                                 <label id="lbBuscarTipoHabitacion">Tipo de Habitación:</label>
-                                <Combobox id="controlHabitacion" options={['Individual', 'Doble','Familiar', 'Múltiple']}></Combobox>
+                                <Combobox id="controlHabitacion" options={['Individual', 'Doble', 'Familiar', 'Múltiple']}></Combobox>
                             </div>
 
                             <div className="text-left col">
                                 <label id="lbBuscarTipoTransporte">Tipo de Transporte:</label>
-                                 <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
+                                <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
                             </div>
 
                             <div className="text-left col">
                                 <button className="btn btn-primary" type="button" id="buscar">Buscar</button>
                             </div>
                         </div>
-
                         <div className="row ">
                             <div className="text-left col" id="precioMaxNoche">
                                 <label id="lbBuscarPrecioNoche">Precio por noche:</label>
                                 <div className="row">
-                                
-                                <input type="range" className="form-control-range col" id="formControlRange"></input>
-                                <label className="col">{this.state.precioMaxNoche}</label>
+
+                                    <input type="range" className="form-control-range col" id="formControlRange"></input>
+                                    <label className="col">{this.state.precioMaxNoche}</label>
                                 </div>
                             </div>
 
@@ -229,13 +296,13 @@ class MainView extends Component{
                             <div className=" text-left col">
                                 <label id="labelPuntuacion">Puntuación:</label>
 
-                                <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4','3.5 - 4.4','2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
+                                <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4', '3.5 - 4.4', '2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
 
                             <div className="text-left col">
                                 <label>Ubicación</label>
                                 <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#ubicacionModal">
-                                Ubicación</button>
+                                    Ubicación</button>
 
                                 {/* modal ubicación*/}
                                 <div className="modal fade" id="ubicacionModal" tabIndex="-1" role="dialog" aria-labelledby="ubicacionModalLabel" aria-hidden="true">
@@ -253,7 +320,7 @@ class MainView extends Component{
                                             </div>
 
                                             <div className="modal-footer">
-                                                <button type="button"className="btn btn-primary">Save changes</button>
+                                                <button type="button" className="btn btn-primary">Save changes</button>
                                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
@@ -264,7 +331,7 @@ class MainView extends Component{
                             <div className="text-left col">
                                 <label>Más filtros</label>
                                 <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#filtrosModal">
-                                Filtros</button>
+                                    Filtros</button>
 
                                 {/* modal ubicación*/}
                                 <div className="modal fade" id="filtrosModal" tabIndex="-1" role="dialog" aria-labelledby="filtrosModalLabel" aria-hidden="true">
@@ -282,7 +349,7 @@ class MainView extends Component{
                                             </div>
 
                                             <div className="modal-footer">
-                                                <button type="button"className="btn btn-primary">Save changes</button>
+                                                <button type="button" className="btn btn-primary">Save changes</button>
                                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
@@ -293,7 +360,7 @@ class MainView extends Component{
                         <br></br>
                         <div className="card">
                             <div className="accordion" id="accordionResultados">
-                                {this.state.resultadosBusqueda} 
+                                {this.state.resultadosBusqueda}
                             </div>
                         </div>
                     </div>

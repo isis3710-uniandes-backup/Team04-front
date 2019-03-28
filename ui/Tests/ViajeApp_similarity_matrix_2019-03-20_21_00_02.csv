@@ -1,0 +1,15 @@
+"",Viajes marítimos,Viajes terrestres,Viajes aereos,Empresas de transporte,Empresas de hospedaje,Contacto,Usuario,Ruta,Mapa,Lugar de destino,Hospedajes,Fechas,Ofertas,Actividad recreativa
+Viajes marítimos,"",92,84,69,30,30,42,57,50,46,46,38,38,53
+Viajes terrestres,92,"",84,61,30,38,50,64,57,46,46,38,38,46
+Viajes aereos,84,84,"",69,46,38,46,46,38,61,46,53,53,38
+Empresas de transporte,69,61,69,"",61,46,46,38,30,46,30,38,46,38
+Empresas de hospedaje,30,30,46,61,"",69,46,30,30,53,53,69,61,30
+Contacto,30,38,38,46,69,"",76,38,38,38,38,53,53,30
+Usuario,42,50,46,46,46,76,"",50,50,38,23,46,38,30
+Ruta,57,64,46,38,30,38,50,"",92,61,53,61,61,38
+Mapa,50,57,38,30,30,38,50,92,"",61,53,61,53,46
+Lugar de destino,46,46,61,46,53,38,38,61,61,"",76,69,50,38
+Hospedajes,46,46,46,30,53,38,23,53,53,76,"",61,46,61
+Fechas,38,38,53,38,69,53,46,61,61,69,61,"",69,30
+Ofertas,38,38,53,46,61,53,38,61,53,50,46,69,"",46
+Actividad recreativa,53,46,38,38,30,30,30,38,46,38,61,30,46,""

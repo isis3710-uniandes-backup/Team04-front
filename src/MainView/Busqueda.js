@@ -1,6 +1,6 @@
 import React,{ Component} from 'react';
 import TransportData from './TransportData';
-import HostalData from './HostalData.js';
+import HostalData from './hostalData.js';
 class Busqueda extends Component{
     constructor(props){
         super(props)
@@ -14,8 +14,8 @@ class Busqueda extends Component{
     setDataToState(){
         this.setState({
             id: this.props.id,
-            transporte = this.props.data.transporte,
-            alojamiento = this.props.data.alojamiento
+            transporte: this.props.data.transporte,
+            alojamiento: this.props.data.alojamiento
         })
     }
     render(){

@@ -16,42 +16,6 @@ class User extends React.Component {
 
         let idusuario = this.props.usuario.idUsuario;
         fetch('/viajes', {
-            method: 'POST',
-            body: JSON.stringify({
-                idUsuario: idusuario,
-                nombre: "viaje1",
-                empresa: "empresa",
-                fechaInicio: new Date(),
-                fechaFin: new Date(),
-                origen: "Bogotá",
-                destino: "San Andrés",
-                subViajes: [{
-                    nombre: "sub-viaje1",
-                    empresa: "empresa",
-                    metodoDeViaje: "Viaje aereo",
-                    fechaInicio: new Date(),
-                    fechaFin: new Date(),
-                    origen: "Bogotá",
-                    destino: "Medellín",
-                }, {
-                    nombre: "sub-viaje2",
-                    empresa: "empresa",
-                    metodoDeViaje: "Viaje Marítimo",
-                    fechaInicio: new Date(),
-                    fechaFin: new Date(),
-                    origen: "Medellín",
-                    destino: "San Andrés",
-                }],
-                viajeAgendado: false
-            }),
-            headers: { "Content-Type": "application/json" }
-        })
-            .then(function (response) {
-                return response.json()
-            }).then(function (body) {
-            });
-
-        fetch('/viajes', {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         })

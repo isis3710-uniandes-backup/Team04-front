@@ -3,6 +3,10 @@ import './App.css';
 import MaterialIcon, { colorPalette } from 'material-icons-react';
 import MainView from './MainView/MainView.js';
 
+import ReactDOM from 'react-dom';
+
+import Profile from './Profiles/UserProfile';
+
 
 let user = "";
 class App extends Component {
@@ -21,6 +25,11 @@ class App extends Component {
     return (<MainView usuario={user}></MainView>)
   }
 
+  Profile(e){
+    console.log("PROFILE?");
+    ReactDOM.render(<Profile usuario={user} />, document.getElementById('root'));
+  }
+
   render() {
     return (
       <div className="App">
@@ -34,7 +43,7 @@ class App extends Component {
             </div>
 
             <div className="col">
-              <a className="navbar-brand" href="/app">
+              <a className="navbar-brand"  onClick={this.Profile.bind(this)}>
                 <MaterialIcon icon="person" size={45} color='#272F32' alt="Profile"></MaterialIcon>
               </a>
             </div>
