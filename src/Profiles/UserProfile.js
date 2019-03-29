@@ -1,6 +1,6 @@
 import React from "react"
 
-import MaterialIcon, { colorPalette } from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 
 let viajes = [];
 class User extends React.Component {

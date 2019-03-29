@@ -1,35 +1,13 @@
 import React, { Component } from 'react';
 import './MainView.css';
 import ListLocations from './ListLocations.js';
-import MaterialIcon, { colorPalette } from 'material-icons-react';
 import DatePicker from "react-datepicker";
 import Stars from './Stars.js';
 import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
 import HostalData from './HostalData.js';
-import TransportData from './TransportData.js';
-import Busqueda from './Busqueda';
 import ReactDOM from 'react-dom';
 import Login from '../login/Login'
-import { resolve } from 'url';
-import { reject } from 'q';
-
-function new_script(src) {
-    return new Promise(function (resolve, reject) {
-        var script = document.createElement('script');
-        script.src = src;
-        script.addEventListener('load', function () {
-            resolve();
-        });
-        script.addEventListener('error', function (e) {
-            reject(e);
-        });
-        document.body.appendChild(script);
-    })
-};
-
-let my_script = new_script('http://js.api.here.com/v3/3.0/mapsjs-core.js');
-let my_script2 = new_script('http://js.api.here.com/v3/3.0/mapsjs-service.js');
 
 class MainView extends Component {
     constructor(props) {
@@ -40,7 +18,7 @@ class MainView extends Component {
             fechaRegreso: new Date(),
             precioMaxNoche: 1008214,
             partida: 'Bogotá',
-            llegada: 'San Andrés',
+            llegada: 'Cartagena',
             resultadosBusqueda: "",
             user: "",
             viajeCreado: false,
@@ -48,8 +26,6 @@ class MainView extends Component {
             status2: 'start',
             resultadosBusqueda: []
         }
-
-
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
         this.handleChangeRegreso = this.handleChangeRegreso.bind(this);
@@ -59,7 +35,6 @@ class MainView extends Component {
         this.renderBusqueda = this.renderBusqueda.bind(this);
         this.subViajes = this.subViajes.bind(this);
         this.CrearViaje = this.CrearViaje.bind(this);
-        this.MapaUbicacion = this.MapaUbicacion.bind(this);
 
         if (typeof this.props.usuario !== 'undefined') {
             if (this.props.usuario.logueado) {
@@ -67,47 +42,26 @@ class MainView extends Component {
             }
         }
 
-    }
-
-    do_load = () => {
-        var self = this;
-        my_script.then(function () {
-            self.setState({ 'status': 'done' });
-            console.log(self.state.status);
-        }).catch(function () {
-            self.setState({ 'status': 'error' });
-            
+        fetch('/hostales', {
+            method: 'POST',
+            body: JSON.stringify({
+                "nombre": "Casa Hogar Hostales",
+                "descripcion": "El centro de cartagena bien pinche bello",
+                "precio": "100000",
+                "telefono": "3002221234",
+                "sitioWeb": "casahogar.com",
+                "ciudad": "Cartagena",
+                "direccion": "Calle 1 #10-22",
+                "puntuacion": 5,
+                "imagenes": ["//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/40/10/4010756.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/90/11/9011312.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/59/75/5975238.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/41/05/4105462.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/83/79/8379904.jpeg"]
+            }),
+            headers: { "Content-Type": "application/json" }
         })
-    }
-
-    do_load2 = () => {
-        var self = this;
-        my_script2.then(function () {
-            self.setState({ 'status2': 'done' });
-            console.log(self.state.status2);
-        }).catch(function () {
-            self.setState({ 'status2': 'error' });
-        })
-    }
-
-    MapaUbicacion() {
-        // Initialize the platform object:
-        var platform = new H.service.Platform({
-            'app_id': '5Lv1fjsT6couwKfFfZaa',
-            'app_code': 'fb9p057aNhZJ6Srk5GnPdQ'
-        });
-
-        // Obtain the default map types from the platform object
-        var maptypes = platform.createDefaultLayers();
-
-        // Instantiate (and display) a map object:
-        var map = new H.Map(
-            document.getElementById('mapContainer'),
-            maptypes.normal.map,
-            {
-                zoom: 10,
-                center: { lng: 13.4, lat: 52.51 }
+            .then(function (response) {
+                return response.json();
+            }).then(function (body) {
             });
+        
 
     }
 
@@ -257,19 +211,10 @@ class MainView extends Component {
     }
 
     render() {
-
-        var self = this;
-        if (self.state.status === 'start' && self.state.status2 === 'start') {
-            self.state.status = 'loading';
-            setTimeout(function () {
-                self.do_load();
-                self.do_load2();
-            }, 0);
-        }
         //TODO a renderBusqueda en la linea 294 le hace falta los parametros
         let viajeConfirmation = false;
-
         if (this.state.viajeCreado === "Created") {
+            
             viajeConfirmation = "Viaje Creado";
         }
         else if (this.state.viajeCreado === "0") {
@@ -278,7 +223,7 @@ class MainView extends Component {
         return (
             <div className="main">
                 <div className="container-fluid" id="containerLoginButtons">
-                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign In</button>
+                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign Up</button>
                 </div>
                 <div className="bannerr" id="mainBanner">
                     <h1>MultiTravel</h1>
@@ -294,32 +239,7 @@ class MainView extends Component {
                             <ul className="list-group list-group-flush">
                                 {this.renderLocations()}
                             </ul>
-                            <div className=" btn-verMapa">
-                                <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#mapaCompleto"> Ver ruta completa</button>
-
-                                {/* modal mapa completo*/}
-                                <div className="modal fade" id="mapaCompleto" tabIndex="-1" role="dialog" aria-labelledby="mapaModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="ubicacionModalLabel">Mapa de ruta de todos los lugares seleccionados</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div className="modal-body">
-                                                <h2>Body</h2>
-                                            </div>
-
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary">Save changes</button>
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
 
                             <div className="btn-agregarLocation">
                                 <button className="btn btn-primary" type="button" onClick={this.addLocation}> Agregar</button>
@@ -413,68 +333,12 @@ class MainView extends Component {
                                 <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4', '3.5 - 4.4', '2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
 
-                            <div className="text-left col">
-                                <label>Ubicación</label>
-                                <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#ubicacionModal">
-                                    Ubicación</button>
-
-                                {/* modal ubicación*/}
-                                <div className="modal fade" id="ubicacionModal" tabIndex="-1" role="dialog" aria-labelledby="ubicacionModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="ubicacionModalLabel">Modal Title</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div className="modal-body">
-                                                <h2>Body</h2>
-                                            </div>
-
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary">Save changes</button>
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="text-left col">
-                                <label>Más filtros</label>
-                                <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#filtrosModal">
-                                    Filtros</button>
-
-                                {/* modal ubicación*/}
-                                <div className="modal fade" id="filtrosModal" tabIndex="-1" role="dialog" aria-labelledby="filtrosModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="filtrosModalLabel">Modal Title</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div className="modal-body" id="map">
-                                                {self.state.status}   {self.state.status === 'done' && this.MapaUbicacion}
-                                            </div>
-
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary">Save changes</button>
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                         <br></br>
                         <div className="card">
                             <div className="accordion" id="accordionResultados">
-                                {this.state.resultadosBusqueda}
+                                {/* {this.state.resultadosBusqueda} */}
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,6 @@ import React from "react"
 import DatePicker from "react-datepicker";
 import ReactDOM from 'react-dom';
 import "react-datepicker/dist/react-datepicker.css";
-import User from "../../src/Profiles/UserProfile"
 
 import '../../src/css/Style.css'
 import MainApp from "../App";
@@ -12,7 +11,10 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = { isLoginOpen: true, isRegisterOpen: false };
+
+
     }
+
 
     showLoginBox() {
         this.setState({ isLoginOpen: true, isRegisterOpen: false })
@@ -26,25 +28,25 @@ class App extends React.Component {
         return (
             <div className="bgi">
                 <div className="root-container">
-                <h1>MultiTravel</h1>
-                <div className="box-controller">
-                    <div className={"controller " + (this.state.isLoginOpen ? "selected-controller" : "")} onClick={this.showLoginBox.bind(this)}>
-                        Login
+                    <h1>MultiTravel</h1>
+                    <div className="box-controller">
+                        <div className={"controller " + (this.state.isLoginOpen ? "selected-controller" : "")} onClick={this.showLoginBox.bind(this)}>
+                            Login
                     </div>
-                    <div className={"controller " + (this.state.isRegisterOpen ? "selected-controller" : "")} onClick={this.showRegisterBox.bind(this)}>
-                        Register
+                        <div className={"controller " + (this.state.isRegisterOpen ? "selected-controller" : "")} onClick={this.showRegisterBox.bind(this)}>
+                            Register
                     </div>
+                    </div>
+
+                    <div className="box-container">
+
+                        {this.state.isLoginOpen && <LoginBox />}
+                        {this.state.isRegisterOpen && <RegisterBox />}
+                    </div>
+
                 </div>
-
-                <div className="box-container">
-
-                    {this.state.isLoginOpen && <LoginBox />}
-                    {this.state.isRegisterOpen && <RegisterBox />}
-                </div>
-
             </div>
-            </div>
-            
+
         )
     }
 }
@@ -132,6 +134,8 @@ class LoginBox extends React.Component {
 
     }
 
+
+
     render() {
 
         let usernameErr = null, passwordErr = null;
@@ -173,6 +177,7 @@ class LoginBox extends React.Component {
 
 }
 
+let tipo = "";
 class RegisterBox extends React.Component {
 
     constructor(props) {
@@ -189,6 +194,8 @@ class RegisterBox extends React.Component {
             pwdState: null,
             registerState: null
         };
+
+        this.onTypeChanged = this.onTypeChanged.bind(this);
     }
 
     showValidationError(elm, msg) {
@@ -237,9 +244,17 @@ class RegisterBox extends React.Component {
         }
     }
 
+
     onTypeChanged(e) {
-        this.setState({ type: e.target.value });
-        this.clearValidationError("type");
+        let radios = document.getElementsByName('materialExampleRadios');
+
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+
+                tipo = radios[i].value;
+                return tipo;
+            }
+        }
     }
 
     handleChange(date) {
@@ -249,6 +264,9 @@ class RegisterBox extends React.Component {
     }
 
     submitRegister(e) {
+
+        tipo = this.onTypeChanged();
+
         if (this.state.username === "") {
             this.showValidationError("username", "Username cannot be empty");
         } if (this.state.password === "") {
@@ -259,7 +277,7 @@ class RegisterBox extends React.Component {
             let dia = this.state.nacimiento.getDate();
             let month = this.state.nacimiento.getMonth();
             let year = this.state.nacimiento.getFullYear();
-            let dateString = dia + "-" +(month + 1) + "-" + year;
+            let dateString = dia + "-" + (month + 1) + "-" + year;
             fetch('/users', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -270,6 +288,7 @@ class RegisterBox extends React.Component {
                     fechaNacimiento: dateString,
                     username: this.state.username,
                     password: this.state.password,
+                    tipo: tipo
                 }),
                 headers: { "Content-Type": "application/json" }
             })
@@ -278,10 +297,12 @@ class RegisterBox extends React.Component {
                     return response.json()
                 }).then(function (body) {
                     body.logueado = true;
+                    body.tipo = tipo;
                     ReactDOM.render(<MainApp usuario={body} />, document.getElementById('root'));
                 });
         }
     }
+
 
     render() {
 
@@ -354,13 +375,13 @@ class RegisterBox extends React.Component {
 
                     <label htmlFor="type">Tipo de usuario</label>
                     <div className="form-check">
-                        <input type="radio" className="form-check-input" id="empresatype" name="materialExampleRadios" onChange={this.onTypeChanged.bind(this)} />
+                        <input type="radio" className="form-check-input" id="empresatype" name="materialExampleRadios" value="0" />
                         <label className="form-check-label" htmlFor="empresatype">Empresa</label>
                     </div>
 
                     <div className="form-check">
-                        <input type="radio" className="form-check-input" id="empresatype" name="materialExampleRadios" checked onChange={this.onTypeChanged.bind(this)} />
-                        <label className="form-check-label" htmlFor="empresatype">Usuario Regular</label>
+                        <input type="radio" className="form-check-input" id="usuarioType" name="materialExampleRadios" value="1" defaultChecked />
+                        <label className="form-check-label" htmlFor="usuarioType">Usuario Regular</label>
                     </div>
 
 

@@ -20,7 +20,7 @@ class CardCollapse extends Component{
     }
 
     isFirstCollapseItem(id){
-        if(id == 0){
+        if(id === 0){
             return "collapse show"
         }else{
             return "collapse"
