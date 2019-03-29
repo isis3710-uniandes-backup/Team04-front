@@ -44,7 +44,6 @@ class RegisterHostal extends React.Component {
                 imagenes: ""                
             },            
         };
-        this.handleTextArea = this.handleTextArea.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleClearForm = this.handleClearForm.bind(this);
         this.handleInput = this.handleInput.bind(this);

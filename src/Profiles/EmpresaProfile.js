@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import MainApp from "../App";
 import RegistrarHostal from "../RegisterHostal/RegisterHostal"
 import RegistrarServicio from "../RegisterService/RegisterService"
+import '../../src/css/Style.css';
 
 import MaterialIcon, { colorPalette } from 'material-icons-react';
 
@@ -21,7 +22,7 @@ class EmpresaProfile extends React.Component {
             idEmpresa: '',
             newEmpresa: {
                 nombre: '',
-                dueño: this.props.usuario.idUsuario,
+                dueño: '',
                 descripcion:  '',
                 serviciosT:  [],
                 serviciosM: [],
@@ -30,9 +31,9 @@ class EmpresaProfile extends React.Component {
             }
         };
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.handleClearForm = this.handleClearForm.bind(this);
         this.handleInput = this.handleInput.bind(this);
         this.agregarNuevoServicio = this.agregarNuevoServicio.bind(this);
+        this.agregarNuevoHostal = this.agregarNuevoHostal.bind(this);
     }
 
     agregarNuevoServicio(e) {
@@ -99,7 +100,7 @@ class EmpresaProfile extends React.Component {
                             idEmpresa: emp.idEmpresa,
                             newEmpresa: {
                                 nombre: emp.nombre,
-                                dueño: this.props.usuario.idUsuario,
+                                dueño: emp.dueño,
                                 descripcion:  emp.descripcion,
                                 serviciosT:  emp.serviciosT,
                                 serviciosM: emp.serviciosM,
@@ -136,7 +137,7 @@ class EmpresaProfile extends React.Component {
                                 idEmpresa: emp.idEmpresa,
                                 newEmpresa: {
                                     nombre: emp.nombre,
-                                    dueño: this.props.usuario.idUsuario,
+                                    dueño: emp.dueño,
                                     descripcion:  emp.descripcion,
                                     serviciosT:  emp.serviciosT,
                                     serviciosM: emp.serviciosM,
@@ -151,7 +152,6 @@ class EmpresaProfile extends React.Component {
     }
 
     render() {
-        let user = this.props.usuario;
 
         if (this.state.response) {
             return 'Loading...'
@@ -187,25 +187,16 @@ class EmpresaProfile extends React.Component {
                 <div className="content">
                     <div className="banner">
                         <img className="profile" src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" height="233px" width="200px" alt="profile pic" />
-                        <form className="container-fluid" onSubmit={this.handleFormSubmit}>
+                        <form className="container" onSubmit={this.handleFormSubmit}>
             <Input
               inputType={"text"}
               name={"nombre"}
-              title={"Nombre del Hospedaje"}
-              value={this.state.newHostal.nombre}
-              placeholder={"Ingresa el nombre de tu hospedaje"}
+              title={"Nombre:"}
+              value={this.state.newEmpresa.nombre}
+              placeholder={"Ingresa el nombre de tu empresa"}
               handleChange={this.handleInput}
             />{" "}
             {/* nombre */}
-            <TextArea
-              title={"Descripción:"}
-              rows={10}
-              value={this.state.newHostal.descripcion}
-              name={"descripcion"}
-              handleChange={this.handleInput}
-              placeholder={"Describe tu servicio de hospedaje."}
-            />{" "}
-            {/* Descripcion */}
             <Button
               action={this.handleFormSubmit}
               type={"primary"}
@@ -213,8 +204,7 @@ class EmpresaProfile extends React.Component {
               style={buttonStyle}
             />{" "}
             {/*Submit */}
-          </form>
-          <Button
+            <Button
               action={this.agregarNuevoServicio}
               type={"primary"}
               title={"Agregar Servicio"}
@@ -228,6 +218,16 @@ class EmpresaProfile extends React.Component {
               style={buttonStyle}
             />{" "}
             {/*Submit */}
+            <TextArea
+              title={"Descripción:"}
+              rows={10}
+              value={this.state.newEmpresa.descripcion}
+              name={"descripcion"}
+              handleChange={this.handleInput}
+              placeholder={"Describe tu empresa."}
+            />{" "}
+            {/* Descripcion */}
+          </form>
                     </div>
                 </div>
             </div>
