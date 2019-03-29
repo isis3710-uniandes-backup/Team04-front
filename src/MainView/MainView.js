@@ -12,6 +12,23 @@ import Busqueda from './Busqueda';
 import ReactDOM from 'react-dom';
 import Login from '../login/Login'
 
+function new_script(src) {
+    return new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.addEventListener('load', function () {
+            resolve();
+        });
+        script.addEventListener('error', function (e) {
+            reject(e);
+        });
+        document.body.appendChild(script);
+    })
+};
+
+let my_script = new_script('http://js.api.here.com/v3/3.0/mapsjs-core.js');
+let my_script2 = new_script('http://js.api.here.com/v3/3.0/mapsjs-service.js');
+
 class MainView extends Component {
     constructor(props) {
         super(props);
@@ -24,8 +41,12 @@ class MainView extends Component {
             llegada: 'San Andrés',
             resultadosBusqueda: "",
             user: "",
-            viajeCreado: false
+            viajeCreado: false,
+            status: 'start',
+            status2: 'start'
         }
+
+
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
         this.handleChangeRegreso = this.handleChangeRegreso.bind(this);
@@ -35,12 +56,55 @@ class MainView extends Component {
         this.renderBusqueda = this.renderBusqueda.bind(this);
         this.subViajes = this.subViajes.bind(this);
         this.CrearViaje = this.CrearViaje.bind(this);
+        this.MapaUbicacion = this.MapaUbicacion.bind(this);
 
         if (typeof this.props.usuario !== 'undefined') {
             if (this.props.usuario.logueado) {
                 this.state.user = this.props.usuario;
             }
         }
+
+    }
+
+    do_load = () => {
+        var self = this;
+        my_script.then(function () {
+            self.setState({ 'status': 'done' });
+            console.log(self.state.status);
+        }).catch(function () {
+            self.setState({ 'status': 'error' });
+            
+        })
+    }
+
+    do_load2 = () => {
+        var self = this;
+        my_script2.then(function () {
+            self.setState({ 'status2': 'done' });
+            console.log(self.state.status2);
+        }).catch(function () {
+            self.setState({ 'status2': 'error' });
+        })
+    }
+
+    MapaUbicacion() {
+        // Initialize the platform object:
+        var platform = new H.service.Platform({
+            'app_id': '5Lv1fjsT6couwKfFfZaa',
+            'app_code': 'fb9p057aNhZJ6Srk5GnPdQ'
+        });
+
+        // Obtain the default map types from the platform object
+        var maptypes = platform.createDefaultLayers();
+
+        // Instantiate (and display) a map object:
+        var map = new H.Map(
+            document.getElementById('mapContainer'),
+            maptypes.normal.map,
+            {
+                zoom: 10,
+                center: { lng: 13.4, lat: 52.51 }
+            });
 
     }
 
@@ -95,7 +159,7 @@ class MainView extends Component {
             let diaPartida = viaje.fechaRegreso.getDate();
             let monthPartida = viaje.fechaRegreso.getMonth();
             let yearPartida = viaje.fechaRegreso.getFullYear();
-            let dateStringPartida = diaPartida + "-" +(monthPartida + 1) + "-" + yearPartida;
+            let dateStringPartida = diaPartida + "-" + (monthPartida + 1) + "-" + yearPartida;
             const viaje2 = {
                 nombre: "sub-viaje" + i,
                 empresa: "empresa",
@@ -113,17 +177,15 @@ class MainView extends Component {
     CrearViaje() {
         let me = this;
         let subViajesact = this.subViajes();
-        if(this.state.listLocations.length === 0)
-        {
+        if (this.state.listLocations.length === 0) {
             this.setState({ viajeCreado: "0" });
         }
-        else
-        {
+        else {
             if (typeof this.state.user.idUsuario === 'undefined') {
                 ReactDOM.render(<Login />, document.getElementById('root'));
             }
             else {
-    
+
                 fetch('/viajes', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -148,7 +210,7 @@ class MainView extends Component {
             }
 
         }
-        
+
 
 
     }
@@ -193,13 +255,22 @@ class MainView extends Component {
     }
 
     render() {
+
+        var self = this;
+        if (self.state.status === 'start' && self.state.status2 === 'start') {
+            self.state.status = 'loading';
+            setTimeout(function () {
+                self.do_load();
+                self.do_load2();
+            }, 0);
+        }
         //TODO a renderBusqueda en la linea 294 le hace falta los parametros
         let viajeConfirmation = false;
 
-        if(this.state.viajeCreado === "Created"){
+        if (this.state.viajeCreado === "Created") {
             viajeConfirmation = "Viaje Creado";
         }
-        else if(this.state.viajeCreado === "0"){
+        else if (this.state.viajeCreado === "0") {
             viajeConfirmation = "No hay viajes agregados";
         }
         return (
@@ -255,7 +326,7 @@ class MainView extends Component {
                             <div className="btn-CrearViaje">
                                 <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> Crear Viaje</button>
                             </div>
-                            
+
                             <small className="confirmation">{viajeConfirmation ? viajeConfirmation : ""}</small>
 
                         </div>
@@ -386,7 +457,7 @@ class MainView extends Component {
                                             </div>
 
                                             <div className="modal-body" id="map">
-                                                
+                                                {self.state.status}   {self.state.status === 'done' && this.MapaUbicacion}
                                             </div>
 
                                             <div className="modal-footer">

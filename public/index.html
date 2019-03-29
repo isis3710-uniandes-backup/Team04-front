@@ -28,27 +28,7 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
-  <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
-  <script>
-    // Initialize the platform object:
-    let platform = new H.service.Platform({
-      'app_id': '5Lv1fjsT6couwKfFfZaa',
-      'app_code': 'fb9p057aNhZJ6Srk5GnPdQ'
-    });
-
-    // Obtain the default map types from the platform object
-    var maptypes = platform.createDefaultLayers();
-
-    // Instantiate (and display) a map object:
-    var map = new H.Map(
-      document.getElementById('map'),
-      maptypes.normal.map,
-      {
-        zoom: 10,
-        center: { lng: 13.4, lat: 52.51 }
-      });
-  </script>
+  
 
 </body>
 
