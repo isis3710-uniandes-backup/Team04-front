@@ -11,6 +11,8 @@ import TransportData from './TransportData.js';
 import Busqueda from './Busqueda';
 import ReactDOM from 'react-dom';
 import Login from '../login/Login'
+import { resolve } from 'url';
+import { reject } from 'q';
 
 function new_script(src) {
     return new Promise(function (resolve, reject) {
@@ -43,7 +45,8 @@ class MainView extends Component {
             user: "",
             viajeCreado: false,
             status: 'start',
-            status2: 'start'
+            status2: 'start',
+            resultadosBusqueda: []
         }
 
 
@@ -216,20 +219,19 @@ class MainView extends Component {
     }
 
     buscar() {
-        var partida = document.getElementById('inLocationPartida').value;
         var llegada = document.getElementById('inLocationLlegada').value;
-        let me = this;
-        fetch('http://localhost:3001/hostales/cities/' + llegada).then(response => {
-            JSON.parse(response);
-        }).then(responseHostales => {
-            fetch('http://localhost:3001/transportes/' + partida + '/' + llegada).then(response => {
-                JSON.parse(response);
-            }).then(responseTransportes => {
+        fetch('/hostales/cities/' + llegada).then(response => {
+            return response.json();
+        }).then(hostalesByCity => {
+            var array =[]
+            for(var hostal of hostalesByCity){
+                array.push(JSON.stringify(hostal));
+            }
+            this.setState({
+                resultadosBusqueda: array
+            });
 
-                //TODO después de tener los hostales de la ciudad de llegada --primer fetch -- y de tener los transportes de partida
-                // y llegada; cómo obtener los más baratos y renderizarlos en parejas. (Lo de renderizarlos en parejas es solo mandarlos al componente Busqueda --revisarlo--)
-                me.renderBusqueda(responseHostales, responseTransportes);
-            })
+            console.log("array en buscar: " + array);
         })
     }
 
@@ -241,12 +243,12 @@ class MainView extends Component {
         } else { return 0 }
     }
 
-    renderBusqueda(responseHostales, responseTransportes) {
-
+    renderBusqueda() {
         // TODO Cómo traer los hostale más baratos y los transportes más baratos? 
         //resultado.transporte es solo un ejemplo de lo que podría ser
-        return this.state.resultadosBusqueda.map((resultado, i) => {
-            return (<Busqueda id={i++} key={i++} transporte={resultado.transporte} alojamiento={resultado.alojamiento}></Busqueda>);
+        return this.state.resultadosBusqueda.map((hostal, i) => {
+            var data = JSON.parse(hostal)
+            return (<HostalData data={data} id={i++} key={i++}></HostalData>);
         })
     }
 
@@ -388,7 +390,7 @@ class MainView extends Component {
                             </div>
 
                             <div className="text-left col">
-                                <button className="btn btn-primary" type="button" id="buscar">Buscar</button>
+                                <button className="btn btn-primary" type="button" id="buscar" onClick={this.buscar}>Buscar</button>
                             </div>
                         </div>
                         <div className="row ">
@@ -476,6 +478,7 @@ class MainView extends Component {
                             </div>
                         </div>
                     </div>
+                    {this.renderBusqueda()}
                 </div>
             </div>
         )

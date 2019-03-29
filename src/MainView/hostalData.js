@@ -20,7 +20,7 @@ class HostalData extends Component{
             puntuacion: '',
             sitioWeb: '',
             telefono: '',
-            actividades: []
+            //actividades: []
         }
         
         this.setDataToState = this.setDataToState
@@ -32,8 +32,14 @@ class HostalData extends Component{
     }
     
     setDataToState(){
+       
+        
+        
+    }
+
+    componentDidMount(){
         var hostalData = this.props.data;
-    this.setState({
+        this.setState({
             id: this.props.id,
             nombre: hostalData.nombre,
             descripcion: hostalData.descripcion,
@@ -44,11 +50,10 @@ class HostalData extends Component{
             direccion: hostalData.direccion,
             puntuacion: hostalData.puntuacion,
             imagenes: hostalData.imagenes,
-            actividades: hostalData.actividades,
+           // actividades: hostalData.actividades,
             comentarios: hostalData.comentarios
         })
     }
-
     renderActividades(idParent){
         return this.state.actividades.map((actividad, i) =>{
             return(<CardCollapse id={i++} key={i++} idParent={idParent} data={actividad}></CardCollapse>)
@@ -137,6 +142,7 @@ class HostalData extends Component{
             <div className="card mb-12">
                 <div className="row no-gutters">
                     <div className="col-md-4">
+                    {console.log(this.state.imagenes)}
                         <img className="card-img" src={this.state.imagenes[0]} alt={this.state.nombre + " Main Image"} id={"mainImage" + this.state.id}/>
                     </div>
                     <div className="col-md-8">
@@ -199,7 +205,7 @@ class HostalData extends Component{
                                     {/** Creo que algo malo estoy haciendo llamando de esta forma los renders. Creo que debería simplemente llamar al arreglo
                                         Al igual creo que así puede funcionar. Así se está renderizando MainView dentro de App
                                     */}
-                                        {this.renderActividades("accordionActividades" + this.state.id)}
+                                        {/*this.renderActividades("accordionActividades" + this.state.id)*/}
                                     </div>
                                 </div>
                             </div>
