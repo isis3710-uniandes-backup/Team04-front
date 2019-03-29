@@ -1,6 +1,6 @@
 import React from "react"
 
-import MaterialIcon, { colorPalette } from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 
 let viajes = [];
 class User extends React.Component {
@@ -24,6 +24,7 @@ class User extends React.Component {
             }).then(function (body) {
                 for (let viaje of body) {
                     if (viaje.idUsuario === idusuario) {
+
                         viajes.push(viaje);
                     }
                 }

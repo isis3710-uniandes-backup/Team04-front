@@ -12,7 +12,8 @@
 } */
 
 .mainContainer{
-    margin: 10px;
+        margin: auto;
+        width: 50%;
 }
 
 iframe{

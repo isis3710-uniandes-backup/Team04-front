@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import './MainView.css';
 import ListLocations from './ListLocations.js';
-import MaterialIcon, { colorPalette } from 'material-icons-react';
 import DatePicker from "react-datepicker";
 import Stars from './Stars.js';
 import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
 import HostalData from './HostalData.js';
-import TransportData from './TransportData.js';
-import Busqueda from './Busqueda';
 import ReactDOM from 'react-dom';
 import Login from '../login/Login'
 
@@ -21,9 +18,13 @@ class MainView extends Component {
             fechaRegreso: new Date(),
             precioMaxNoche: 1008214,
             partida: 'Bogotá',
-            llegada: 'San Aandrés',
+            llegada: 'Cartagena',
             resultadosBusqueda: "",
-            user: ""
+            user: "",
+            viajeCreado: false,
+            status: 'start',
+            status2: 'start',
+            resultadosBusqueda: []
         }
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
@@ -37,9 +38,30 @@ class MainView extends Component {
 
         if (typeof this.props.usuario !== 'undefined') {
             if (this.props.usuario.logueado) {
-                this.setState({ user: this.props.usuario });
+                this.state.user = this.props.usuario;
             }
         }
+
+        fetch('/hostales', {
+            method: 'POST',
+            body: JSON.stringify({
+                "nombre": "Casa Hogar Hostales",
+                "descripcion": "El centro de cartagena bien pinche bello",
+                "precio": "100000",
+                "telefono": "3002221234",
+                "sitioWeb": "casahogar.com",
+                "ciudad": "Cartagena",
+                "direccion": "Calle 1 #10-22",
+                "puntuacion": 5,
+                "imagenes": ["//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/40/10/4010756.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/90/11/9011312.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/59/75/5975238.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/41/05/4105462.jpeg", "//imgcy.trivago.com/c_lfill,d_dummy.jpeg,f_auto,h_225,q_auto:eco,w_225/itemimages/83/79/8379904.jpeg"]
+            }),
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(function (response) {
+                return response.json();
+            }).then(function (body) {
+            });
+        
 
     }
 
@@ -81,13 +103,26 @@ class MainView extends Component {
         const arraySubViajes = this.state.listLocations;
         const subViajes2 = [];
         let i = 0;
+
+
+
         arraySubViajes.map(viaje => {
+
+            let diaLlegada = viaje.fechaPartida.getDate();
+            let monthLlegada = viaje.fechaPartida.getMonth();
+            let yearLlegada = viaje.fechaPartida.getFullYear();
+            let dateStringLlegada = diaLlegada + "-" + (monthLlegada + 1) + "-" + yearLlegada;
+
+            let diaPartida = viaje.fechaRegreso.getDate();
+            let monthPartida = viaje.fechaRegreso.getMonth();
+            let yearPartida = viaje.fechaRegreso.getFullYear();
+            let dateStringPartida = diaPartida + "-" + (monthPartida + 1) + "-" + yearPartida;
             const viaje2 = {
-                nombre: "sub-viaje"+i,
+                nombre: "sub-viaje" + i,
                 empresa: "empresa",
-                metodoDeViaje: "Viaje "+viaje.tipoTransporte,
-                fechaInicio: viaje.fechaPartida,
-                fechaFin: viaje.fechaRegreso,
+                metodoDeViaje: "Viaje " + viaje.tipoTransporte,
+                fechaInicio: dateStringLlegada,
+                fechaFin: dateStringPartida,
                 origen: viaje.partida,
                 destino: viaje.llegada,
             }
@@ -99,44 +134,58 @@ class MainView extends Component {
     CrearViaje() {
         let me = this;
         let subViajesact = this.subViajes();
-        fetch('/viajes', {
-            method: 'POST',
-            body: JSON.stringify({
-                idUsuario: me.state.user.id,
-                nombre: "viaje1",
-                empresa: "empresa1",
-                fechaInicio: me.state.listLocations[0].fechaPartida,
-                fechaFin: me.state.listLocations.slice(-1).pop().fechaRegreso,
-                origen: me.state.listLocations[0].partida,
-                destino: me.state.listLocations.slice(-1).pop().llegada,
-                subViajes: subViajesact,
-                viajeAgendado: true
-            }),
-            headers: { "Content-Type": "application/json" }
-        })
-            .then(function (response) {
-                return response.json()
-            }).then(function (body) {
-                console.log(body);
-                
-            });
+        if (this.state.listLocations.length === 0) {
+            this.setState({ viajeCreado: "0" });
+        }
+        else {
+            if (typeof this.state.user.idUsuario === 'undefined') {
+                ReactDOM.render(<Login />, document.getElementById('root'));
+            }
+            else {
+
+                fetch('/viajes', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        idUsuario: me.state.user.idUsuario,
+                        nombre: "viaje1",
+                        empresa: "empresa1",
+                        fechaInicio: me.state.listLocations[0].fechaPartida,
+                        fechaFin: me.state.listLocations.slice(-1).pop().fechaRegreso,
+                        origen: me.state.listLocations[0].partida,
+                        destino: me.state.listLocations.slice(-1).pop().llegada,
+                        subViajes: subViajesact,
+                        viajeAgendado: true
+                    }),
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(function (response) {
+                        me.setState({ viajeCreado: response.statusText });
+                        return response.json();
+                    }).then(function (body) {
+                        me.state.viajeCreado = true;
+                    });
+            }
+
+        }
+
+
+
     }
 
     buscar() {
-        var partida = document.getElementById('inLocationPartida').value;
         var llegada = document.getElementById('inLocationLlegada').value;
-        let me = this;
-        fetch('http://localhost:3001/hostales/cities/' + llegada).then(response => {
-            JSON.parse(response);
-        }).then(responseHostales => {
-            fetch('http://localhost:3001/transportes/' + partida + '/' + llegada).then(response => {
-                JSON.parse(response);
-            }).then(responseTransportes => {
+        fetch('/hostales/cities/' + llegada).then(response => {
+            return response.json();
+        }).then(hostalesByCity => {
+            var array =[]
+            for(var hostal of hostalesByCity){
+                array.push(JSON.stringify(hostal));
+            }
+            this.setState({
+                resultadosBusqueda: array
+            });
 
-                //TODO después de tener los hostales de la ciudad de llegada --primer fetch -- y de tener los transportes de partida
-                // y llegada; cómo obtener los más baratos y renderizarlos en parejas. (Lo de renderizarlos en parejas es solo mandarlos al componente Busqueda --revisarlo--)
-                me.renderBusqueda(responseHostales, responseTransportes);
-            })
+            console.log("array en buscar: " + array);
         })
     }
 
@@ -148,12 +197,12 @@ class MainView extends Component {
         } else { return 0 }
     }
 
-    renderBusqueda(responseHostales, responseTransportes) {
-
+    renderBusqueda() {
         // TODO Cómo traer los hostale más baratos y los transportes más baratos? 
         //resultado.transporte es solo un ejemplo de lo que podría ser
-        return this.state.resultadosBusqueda.map((resultado, i) => {
-            return (<Busqueda id={i++} key={i++} transporte={resultado.transporte} alojamiento={resultado.alojamiento}></Busqueda>);
+        return this.state.resultadosBusqueda.map((hostal, i) => {
+            var data = JSON.parse(hostal)
+            return (<HostalData data={data} id={i++} key={i++}></HostalData>);
         })
     }
 
@@ -163,10 +212,18 @@ class MainView extends Component {
 
     render() {
         //TODO a renderBusqueda en la linea 294 le hace falta los parametros
+        let viajeConfirmation = false;
+        if (this.state.viajeCreado === "Created") {
+            
+            viajeConfirmation = "Viaje Creado";
+        }
+        else if (this.state.viajeCreado === "0") {
+            viajeConfirmation = "No hay viajes agregados";
+        }
         return (
             <div className="main">
                 <div className="container-fluid" id="containerLoginButtons">
-                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign In</button>
+                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign Up</button>
                 </div>
                 <div className="bannerr" id="mainBanner">
                     <h1>MultiTravel</h1>
@@ -182,32 +239,7 @@ class MainView extends Component {
                             <ul className="list-group list-group-flush">
                                 {this.renderLocations()}
                             </ul>
-                            <div className=" btn-verMapa">
-                                <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#mapaCompleto"> Ver ruta completa</button>
-
-                                {/* modal mapa completo*/}
-                                <div className="modal fade" id="mapaCompleto" tabIndex="-1" role="dialog" aria-labelledby="mapaModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="ubicacionModalLabel">Mapa de ruta de todos los lugares seleccionados</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div className="modal-body">
-                                                <h2>Body</h2>
-                                            </div>
-
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary">Save changes</button>
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
 
                             <div className="btn-agregarLocation">
                                 <button className="btn btn-primary" type="button" onClick={this.addLocation}> Agregar</button>
@@ -216,6 +248,8 @@ class MainView extends Component {
                             <div className="btn-CrearViaje">
                                 <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> Crear Viaje</button>
                             </div>
+
+                            <small className="confirmation">{viajeConfirmation ? viajeConfirmation : ""}</small>
 
                         </div>
                     </div>
@@ -276,7 +310,7 @@ class MainView extends Component {
                             </div>
 
                             <div className="text-left col">
-                                <button className="btn btn-primary" type="button" id="buscar">Buscar</button>
+                                <button className="btn btn-primary" type="button" id="buscar" onClick={this.buscar}>Buscar</button>
                             </div>
                         </div>
                         <div className="row ">
@@ -299,71 +333,16 @@ class MainView extends Component {
                                 <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4', '3.5 - 4.4', '2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
 
-                            <div className="text-left col">
-                                <label>Ubicación</label>
-                                <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#ubicacionModal">
-                                    Ubicación</button>
-
-                                {/* modal ubicación*/}
-                                <div className="modal fade" id="ubicacionModal" tabIndex="-1" role="dialog" aria-labelledby="ubicacionModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="ubicacionModalLabel">Modal Title</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div className="modal-body">
-                                                <h2>Body</h2>
-                                            </div>
-
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary">Save changes</button>
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="text-left col">
-                                <label>Más filtros</label>
-                                <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#filtrosModal">
-                                    Filtros</button>
-
-                                {/* modal ubicación*/}
-                                <div className="modal fade" id="filtrosModal" tabIndex="-1" role="dialog" aria-labelledby="filtrosModalLabel" aria-hidden="true">
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="filtrosModalLabel">Modal Title</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div className="modal-body">
-                                                <h2>Body</h2>
-                                            </div>
-
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary">Save changes</button>
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                         <br></br>
                         <div className="card">
                             <div className="accordion" id="accordionResultados">
-                                {this.state.resultadosBusqueda}
+                                {/* {this.state.resultadosBusqueda} */}
                             </div>
                         </div>
                     </div>
+                    {this.renderBusqueda()}
                 </div>
             </div>
         )
