@@ -72,11 +72,11 @@ class RegisterService extends React.Component {
         serviceData.ruta = this.state.newService.ruta.split(",");
         let url = "";
         if(servicio === SERVICIO_AEREO){
-            url="localhost:3001/serviciosa";
+            url="/serviciosa";
         } else if (servicio === SERVICIO_MARITIMO){
-            url="localhost:3001/serviciosm";
+            url="/serviciosm";
         } else if (servicio === SERVICIO_TERRESTRE){
-            url="localhost:3001/serviciost";
+            url="/serviciost";
         }
     
         fetch(url, {

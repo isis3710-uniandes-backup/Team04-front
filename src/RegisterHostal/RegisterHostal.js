@@ -66,7 +66,7 @@ class RegisterHostal extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        const url = "localhost:3001/hostales/";
+        const url = "/hostales";
         const imgArray = this.state.newHostal.imagenes.split(",");
         let serviceData = this.state.newHostal;
         serviceData.imagenes = imgArray;     
