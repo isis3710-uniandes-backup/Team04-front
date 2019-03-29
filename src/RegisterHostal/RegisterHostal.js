@@ -40,7 +40,8 @@ class RegisterHostal extends React.Component {
                 telefono: "",
                 sitioweb:"",
                 ciudad: "",
-                direccion: ""                
+                direccion: "",
+                imagenes: ""                
             },            
         };
         this.handleTextArea = this.handleTextArea.bind(this);
@@ -66,7 +67,9 @@ class RegisterHostal extends React.Component {
     handleFormSubmit(e) {
         e.preventDefault();
         const url = "localhost:3001/hostales/";
-        const serviceData = this.state.newHostal;
+        const imgArray = this.state.newHostal.imagenes.split(",");
+        let serviceData = this.state.newHostal;
+        serviceData.imagenes = imgArray;     
     
         fetch(url, {
           method: "POST",
@@ -94,7 +97,8 @@ class RegisterHostal extends React.Component {
               telefono: "",
               sitioweb:"",
               ciudad: "",
-              direccion: ""    
+              direccion: "",
+              imagenes:""    
             },
         });
     }
@@ -156,6 +160,15 @@ class RegisterHostal extends React.Component {
               placeholder={"Describe tu servicio de hospedaje."}
             />{" "}
             {/* Descripcion */}
+            <TextArea
+              title={"Imagenes:"}
+              rows={10}
+              value={this.state.newHostal.imagenes}
+              name={"imagenes"}
+              handleChange={this.handleInput}
+              placeholder={"Ingresa las urls de tus imagenes separadas por comas."}
+            />{" "}
+            {/* Imagenes */}
             <Button
               action={this.handleFormSubmit}
               type={"primary"}

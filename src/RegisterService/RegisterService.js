@@ -3,6 +3,7 @@ import React from "react"
 import Input from "./Input";
 import Select from "./Select";
 import Button from "./Button";
+import TextArea from "./TextArea";
 import '../../src/css/Style.css'
 import MainApp from "../App";
 import ReactDOM from 'react-dom';
@@ -40,7 +41,7 @@ class RegisterService extends React.Component {
             newService: {                
                 origen: "",
                 destino: "",
-                ruta: [],
+                ruta: ""
             },            
             serviceOptions: [SERVICIO_AEREO,SERVICIO_MARITIMO,SERVICIO_TERRESTRE]
         };
@@ -66,7 +67,9 @@ class RegisterService extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        const servicio = this.state.serviceType
+        let servicio = this.state.serviceType
+        let serviceData = this.state.newService;
+        serviceData.ruta = this.state.newService.ruta.split(",");
         let url = "";
         if(servicio === SERVICIO_AEREO){
             url="localhost:3001/serviciosa";
@@ -75,7 +78,6 @@ class RegisterService extends React.Component {
         } else if (servicio === SERVICIO_TERRESTRE){
             url="localhost:3001/serviciost";
         }
-        let serviceData = this.state.newService;
     
         fetch(url, {
           method: "POST",
@@ -99,7 +101,7 @@ class RegisterService extends React.Component {
             newService: {                
                 origen: "",
                 destino: "",
-                ruta: [],
+                ruta: "",
             },
         });
     }
@@ -143,6 +145,15 @@ class RegisterService extends React.Component {
               handleChange={this.handleInput}
             />{" "}
             {/* Ruta */}
+            <TextArea
+              title={"Ruta:"}
+              rows={10}
+              value={this.state.newService.ruta}
+              name={"ruta"}
+              handleChange={this.handleInput}
+              placeholder={"Ingresa las rutas separadas por comas."}
+            />{" "}
+            {/* Imagenes */}
             <Button
               action={this.handleFormSubmit}
               type={"primary"}
