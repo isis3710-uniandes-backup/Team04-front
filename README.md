@@ -10,7 +10,7 @@ Antes de interactuar con la vista principal, se recomienda ir al botón "Iniciar
 
 ## Deployment
 
-Para ejecutar el proyecto, primero se debe clonar el último release (Entrega3_back) del repositorio repositorio [Team04-back](https://github.com/isis3710-uniandes/Team04-back)
+Para ejecutar el proyecto, primero se debe clonar el último release (Entrega3_back) del repositorio [Team04-back](https://github.com/isis3710-uniandes/Team04-back)
 
 Una vez clonado, se deben ejecutar los siguientes comandos para poder tener el back-end funcionando:
 
