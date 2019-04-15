@@ -11,8 +11,6 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = { isLoginOpen: true, isRegisterOpen: false };
-
-
     }
 
 
@@ -107,7 +105,7 @@ class LoginBox extends React.Component {
                 fechaNacimiento: new Date(),
                 password: pass,
                 idUsuario: "",
-                type: "",
+                tipo: "",
                 logueado: true
             };
             fetch('/users', {
@@ -125,6 +123,7 @@ class LoginBox extends React.Component {
                             actualUser.fechaNacimiento = user.fechaNacimiento;
                             actualUser.idUsuario = user.idUsuario;
                             actualUser.correo = user.correo;
+                            actualUser.tipo = user.tipo;
                             ReactDOM.render(<MainApp usuario={actualUser} />, document.getElementById('root'));
                             console.log("LOGIN EXITOSO");
                         }
@@ -252,6 +251,7 @@ class RegisterBox extends React.Component {
             if (radios[i].checked) {
 
                 tipo = radios[i].value;
+                console.log(tipo);
                 return tipo;
             }
         }
