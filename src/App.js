@@ -27,6 +27,7 @@ class App extends Component {
   }
 
   Profile(e) {
+    console.log(user);
     if (user.tipo === "1") {
       ReactDOM.render(<Profile usuario={user} />, document.getElementById('root'));
     } else if (user.tipo === "0") {

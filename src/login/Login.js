@@ -341,28 +341,28 @@ class RegisterBox extends React.Component {
                 </div>
                     <div className="input-group">
                         <label htmlFor="username">Username</label>
-                        <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.onUsernameChanged.bind(this)} />
+                        <input type="text" id="username" className="login-input" placeholder="Username" onChange={this.onUsernameChanged.bind(this)} />
                         <small className="danger-error">{usernameErr ? usernameErr : ""}</small>
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="nombres">Nombre Completo</label>
-                        <input type="text" name="nombres" className="login-input" placeholder="Nombres" onChange={this.onNameChanged.bind(this)} />
+                        <input type="text" id="nombres" className="login-input" placeholder="Nombres" onChange={this.onNameChanged.bind(this)} />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="nacionalidad">Nacionalidad</label>
-                        <input type="text" name="nacionalidad" className="login-input" placeholder="Nacionalidad" onChange={this.onNacionalidadChanged.bind(this)} />
+                        <input type="text" id="nacionalidad" className="login-input" placeholder="Nacionalidad" onChange={this.onNacionalidadChanged.bind(this)} />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="nacionalidad">Correo</label>
-                        <input type="text" name="correo" className="login-input" placeholder="Correo" onChange={this.onCorreoChange.bind(this)} />
+                        <label htmlFor="correo">Correo</label>
+                        <input type="text" id="correo" className="login-input" placeholder="Correo" onChange={this.onCorreoChange.bind(this)} />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.onPasswordChanged.bind(this)} />
+                        <input type="password" id="password" className="login-input" placeholder="Password" onChange={this.onPasswordChanged.bind(this)} />
                         <small className="danger-error">{passwordErr ? passwordErr : ""}</small>
 
                         {this.state.password && <div className="password-state">
@@ -373,21 +373,25 @@ class RegisterBox extends React.Component {
 
                     </div>
 
-                    <label htmlFor="type">Tipo de usuario</label>
-                    <div className="form-check">
-                        <input type="radio" className="form-check-input" id="empresatype" name="materialExampleRadios" value="0" />
-                        <label className="form-check-label" htmlFor="empresatype">Empresa</label>
-                    </div>
+                    <label htmlFor="type" htmlFor="types">Tipo de usuario</label>
+                    <div id="types">
+                        <div className="form-check">
+                            <input type="radio" className="form-check-input" id="empresatype"  value="0" />
+                            <label className="form-check-label" htmlFor="empresatype">Empresa</label>
+                        </div>
 
-                    <div className="form-check">
-                        <input type="radio" className="form-check-input" id="usuarioType" name="materialExampleRadios" value="1" defaultChecked />
-                        <label className="form-check-label" htmlFor="usuarioType">Usuario Regular</label>
+                        <div className="form-check">
+                            <input type="radio" className="form-check-input" id="usuarioType" value="1" defaultChecked />
+                            <label className="form-check-label" htmlFor="usuarioType">Usuario Regular</label>
+                        </div>
                     </div>
+                    
 
 
                     <div className="datepicker">
-                        <label htmlFor="type">Fecha de Nacimiento:&nbsp; </label>
+                        <label htmlFor="fechaNacimiento">Fecha de Nacimiento:&nbsp; </label>
                         <DatePicker
+                            id="fechaNacimiento"
                             selected={this.state.nacimiento}
                             onChange={this.handleChange.bind(this)}
                             peekNextMonth
