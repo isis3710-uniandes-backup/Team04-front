@@ -226,10 +226,10 @@ class MainView extends Component {
                     <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign Up</button>
                 </div>
                 <div className="bannerr" id="mainBanner">
-                    <h1>MultiTravel</h1>
+                    <h1 className="appName">MultiTravel</h1>
                 </div>
 
-                <div className="content row" id="contentMainView">
+                <div className="row contentMainView" id="contentMainView">
 
                     <div className="col-2 listSelectedLocations">
                         <div className="card" >
@@ -257,14 +257,9 @@ class MainView extends Component {
                     <div className="col-10 inputData text-left">
                         <div className="row">
                             <div className=" text-left col">
-                                <label id="lbBuscarPartida">Lugar Partida:</label>
+                                <label id="lbBuscarPartida" htmlFor="inLocationPartida">Lugar Partida:</label>
 
                                 <div className="input-group md-form form-sm form-1 pl-0">
-                                    {/* <div className="input-group-prepend">
-                                        <span className="input-group-text purple lighten-3" id="basic-text1">
-                                            <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
-                                        </span>
-                                    </div> */}
                                     <input id="inLocationPartida" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.partida} aria-label="Search" />
                                 </div>
                             </div>
@@ -274,16 +269,13 @@ class MainView extends Component {
 
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     <div className="input-group-prepend">
-                                        {/* <span className="input-group-text purple lighten-3" id="basic-text1">
-                                            <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
-                                        </span> */}
                                     </div>
                                     <input id="inLocationLlegada" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.llegada} aria-label="Search" />
                                 </div>
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarFechaPartida">Fecha Partida:</label>
+                                <label id="lbBuscarFechaPartida" htmlFor="dateFechaPartida">Fecha Partida:</label>
                                 <DatePicker id="dateFechaPartida"
                                     selected={this.state.fechaPartida}
                                     onChange={this.handleChangePartida}
@@ -292,7 +284,7 @@ class MainView extends Component {
 
 
                             <div className="text-left col">
-                                <label id="lbBuscarFechaRegreso">Fecha Regreso:</label>
+                                <label id="lbBuscarFechaRegreso" htmlFor="dateFechaRegreso">Fecha Regreso:</label>
                                 <DatePicker id="dateFechaRegreso"
                                     selected={this.state.fechaRegreso}
                                     onChange={this.handleChangeRegreso}
@@ -300,12 +292,12 @@ class MainView extends Component {
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarTipoHabitacion">Tipo de Habitación:</label>
+                                <label id="lbBuscarTipoHabitacion" htmlFor="controlHabitacion">Tipo de Habitación:</label>
                                 <Combobox id="controlHabitacion" options={['Individual', 'Doble', 'Familiar', 'Múltiple']}></Combobox>
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarTipoTransporte">Tipo de Transporte:</label>
+                                <label id="lbBuscarTipoTransporte" htmlFor="controlTransporte">Tipo de Transporte:</label>
                                 <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
                             </div>
 
@@ -315,7 +307,7 @@ class MainView extends Component {
                         </div>
                         <div className="row ">
                             <div className="text-left col" id="precioMaxNoche">
-                                <label id="lbBuscarPrecioNoche">Precio por noche:</label>
+                                <label id="lbBuscarPrecioNoche" htmlFor="formControlRange">Precio por noche:</label>
                                 <div className="row">
 
                                     <input type="range" className="form-control-range col" id="formControlRange"></input>
@@ -328,7 +320,7 @@ class MainView extends Component {
                             </div>
 
                             <div className=" text-left col">
-                                <label id="labelPuntuacion">Puntuación:</label>
+                                <label id="labelPuntuacion" htmlFor="controlPuntuacion">Puntuación:</label>
 
                                 <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4', '3.5 - 4.4', '2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
