@@ -251,7 +251,7 @@ class RegisterBox extends React.Component {
             if (radios[i].checked) {
 
                 tipo = radios[i].value;
-                console.log(tipo);
+                
                 return tipo;
             }
         }
@@ -374,17 +374,21 @@ class RegisterBox extends React.Component {
                     </div>
 
                     <label htmlFor="type" htmlFor="types">Tipo de usuario</label>
-                    <div id="types">
+                    <form id="types">
                         <div className="form-check">
-                            <input type="radio" className="form-check-input" id="empresatype"  value="0" />
-                            <label className="form-check-label" htmlFor="empresatype">Empresa</label>
+                            <label>
+                                <input type="radio" className="form-check-input" id="empresatype" name="materialExampleRadios" value="0" />
+                                Empresa
+                            </label>
                         </div>
 
                         <div className="form-check">
-                            <input type="radio" className="form-check-input" id="usuarioType" value="1" defaultChecked />
-                            <label className="form-check-label" htmlFor="usuarioType">Usuario Regular</label>
+                            <label>
+                            <input type="radio" className="form-check-input" id="usuarioType" value="1" name="materialExampleRadios" defaultChecked />
+                             Regular
+                             </label>
                         </div>
-                    </div>
+                    </form>
                     
 
 
