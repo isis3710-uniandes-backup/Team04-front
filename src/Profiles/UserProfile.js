@@ -111,19 +111,19 @@ class User extends React.Component {
                             ) : ("")
                         )}
                         <h2 className="subT">Viajes Realizados</h2>
-                        <div className="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                        <div className="accordion md-accordion" id="accordionEx2" role="tablist" aria-multiselectable="true">
                             {viajes.map(viaje =>
                                 !viaje.viajeAgendado ? (
                                     <div className="card">
                                         <div className="card-header" role="tab" id="headingTwo1">
-                                            <a className="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href={"#collapseTwo12" + viaje.id}
+                                            <a className="collapsed" data-toggle="collapse" data-parent="#accordionEx2" href={"#collapseTwo12" + viaje.id}
                                                 aria-expanded="false" aria-controls="collapseTwo12">
                                                 <h5 className="mb-0">
                                                     {viaje.origen + "-" + viaje.destino} <i className="fas fa-angle-down rotate-icon"></i>
                                                 </h5>
                                             </a>
                                         </div>
-                                        <div id={"collapseTwo12" + viaje.id} className="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordionEx1">
+                                        <div id={"collapseTwo12" + viaje.id} className="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordionEx2">
                                             <div className="card-body">
                                                 <div className="row">
                                                     <div className="col-sm-2 travelsParams ">Origen</div>

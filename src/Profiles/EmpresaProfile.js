@@ -219,6 +219,7 @@ class EmpresaProfile extends React.Component {
             />{" "}
             {/*Submit */}
             <TextArea
+              id= {"TextAreaDescripcion"}
               title={"Descripción:"}
               rows={10}
               value={this.state.newEmpresa.descripcion}
