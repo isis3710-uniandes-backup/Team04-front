@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './ListLocations.css';
+import { FormattedMessage } from 'react-intl';
 
 class ListLocations extends Component{
     constructor(props){
@@ -16,8 +17,8 @@ class ListLocations extends Component{
     render(){
         return(
             <a className="list-group-item list-group-item-action">
-                <h6>Punto de partida: {this.props.data.partida}</h6>
-                <h6>Punto de Llegada: {this.props.data.llegada}</h6>
+                <h6><FormattedMessage id="LugarPartida" />: {this.props.data.partida}</h6>
+                <h6><FormattedMessage id="LugarLlegada" />: {this.props.data.llegada}</h6>
             </a>
         )
     }

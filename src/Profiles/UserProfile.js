@@ -1,6 +1,7 @@
 import React from "react"
 
 import MaterialIcon from 'material-icons-react';
+import {FormattedMessage } from 'react-intl';
 
 let viajes = [];
 class User extends React.Component {
@@ -74,7 +75,7 @@ class User extends React.Component {
                         <p>{user.nacionalidad}</p>
                         <p>{user.fechaNacimiento}</p>
                     </div>
-                    <h2 className="subT">Viajes Agendados</h2>
+                    <h2 className="subT"><FormattedMessage id="ViajesAgendados" /></h2>
                     <div className="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
                         {viajes.map(viaje =>
                             viaje.viajeAgendado ? (<div className="card">
@@ -89,11 +90,11 @@ class User extends React.Component {
                                 <div id={"collapseTwo" + viaje.id} className="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordionEx1">
                                     <div className="card-body">
                                         <div className="row">
-                                            <div className="col-sm-2 travelsParams ">Origen</div>
-                                            <div className="col-sm-2 travelsParams">Destino</div>
-                                            <div className="col-sm-2 travelsParams">Tipo de viaje</div>
-                                            <div className="col-sm-2 travelsParams">Fecha llegada</div>
-                                            <div className="col-sm-2 travelsParams">Fecha salida</div>
+                                            <div className="col-sm-2 travelsParams "><FormattedMessage id="Origen" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="Destino" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="TipoViaje" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaPartida" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaSalida" /></div>
                                         </div>
                                         {viaje.subViajes.map(subV =>
                                             <div className="row">
@@ -110,7 +111,7 @@ class User extends React.Component {
                             </div>
                             ) : ("")
                         )}
-                        <h2 className="subT">Viajes Realizados</h2>
+                        <h2 className="subT"><FormattedMessage id="ViajesTerminados" /></h2>
                         <div className="accordion md-accordion" id="accordionEx2" role="tablist" aria-multiselectable="true">
                             {viajes.map(viaje =>
                                 !viaje.viajeAgendado ? (
@@ -126,11 +127,11 @@ class User extends React.Component {
                                         <div id={"collapseTwo12" + viaje.id} className="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordionEx2">
                                             <div className="card-body">
                                                 <div className="row">
-                                                    <div className="col-sm-2 travelsParams ">Origen</div>
-                                                    <div className="col-sm-2 travelsParams">Destino</div>
-                                                    <div className="col-sm-2 travelsParams">Tipo de viaje</div>
-                                                    <div className="col-sm-2 travelsParams">Fecha llegada</div>
-                                                    <div className="col-sm-2 travelsParams">Fecha salida</div>
+                                                    <div className="col-sm-2 travelsParams "><FormattedMessage id="Origen" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="Destino" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="TipoViaje" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaPartida" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaSalida" /></div>
                                                 </div>
                                                 {viaje.subViajes.map(subV =>
                                                     <div className="row">
