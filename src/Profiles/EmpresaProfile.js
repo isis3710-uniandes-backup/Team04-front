@@ -7,12 +7,20 @@ import MainApp from "../App";
 import RegistrarHostal from "../RegisterHostal/RegisterHostal"
 import RegistrarServicio from "../RegisterService/RegisterService"
 import '../../src/css/Style.css';
+import { IntlProvider, FormattedMessage } from 'react-intl';
+import localeEsMessages from "../locales/es";
+import localeEnMessages from "../locales/en";
 
-import MaterialIcon, { colorPalette } from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 
 let serviciosA = [];
 let serviciosM = [];
 let serviciosT = [];
+let userLang = navigator.language || navigator.userLanguage
+
+function getLocale() {
+    return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+}
 class EmpresaProfile extends React.Component {
 
     constructor(props) {
@@ -23,8 +31,8 @@ class EmpresaProfile extends React.Component {
             newEmpresa: {
                 nombre: '',
                 dueño: '',
-                descripcion:  '',
-                serviciosT:  [],
+                descripcion: '',
+                serviciosT: [],
                 serviciosM: [],
                 serviciosA: [],
                 viajes: ''
@@ -37,44 +45,50 @@ class EmpresaProfile extends React.Component {
     }
 
     agregarNuevoServicio(e) {
-        ReactDOM.render(<RegistrarServicio />, document.getElementById('root'));
+        ReactDOM.render(
+            <IntlProvider locale={userLang} messages={getLocale()}>
+                <RegistrarServicio />
+            </IntlProvider>, document.getElementById("root"));
     }
 
     agregarNuevoHostal(e) {
-        ReactDOM.render(<RegistrarHostal />, document.getElementById('root'))
+        ReactDOM.render(
+            <IntlProvider locale={userLang} messages={getLocale()}>
+                <RegistrarHostal />
+            </IntlProvider>, document.getElementById("root"));
     }
 
     handleInput(e) {
         let value = e.target.value;
         let name = e.target.name;
         this.setState(
-          prevState => ({
-            newEmpresa: {
-              ...prevState.newEmpresa,
-              [name]: value
-            }
-          }),
-          () => console.log(this.state.newEmpresa)
+            prevState => ({
+                newEmpresa: {
+                    ...prevState.newEmpresa,
+                    [name]: value
+                }
+            }),
+            () => console.log(this.state.newEmpresa)
         );
     }
 
     handleFormSubmit(e) {
         e.preventDefault();
         const url = `/empresas/${this.state.idEmpresa}`;
-        let serviceData = this.state.newEmpresa;  
-    
+        let serviceData = this.state.newEmpresa;
+
         fetch(url, {
-          method: "PUT",
-          body: JSON.stringify(serviceData),
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          }
+            method: "PUT",
+            body: JSON.stringify(serviceData),
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            }
         }).then(response => {
-          response.json().then(data => {
-            ReactDOM.render(<MainApp />, document.getElementById('root'));
-            console.log("Successful" + data);
-          });
+            response.json().then(data => {
+                ReactDOM.render(<MainApp />, document.getElementById('root'));
+                console.log("Successful" + data);
+            });
         });
     }
 
@@ -95,29 +109,29 @@ class EmpresaProfile extends React.Component {
                         serviciosA = emp.serviciosA;
                         serviciosT = emp.serviciosT;
                         serviciosM = emp.serviciosM;
-                        me.setState({ 
+                        me.setState({
                             response: false,
                             idEmpresa: emp.idEmpresa,
                             newEmpresa: {
                                 nombre: emp.nombre,
                                 dueño: emp.dueño,
-                                descripcion:  emp.descripcion,
-                                serviciosT:  emp.serviciosT,
+                                descripcion: emp.descripcion,
+                                serviciosT: emp.serviciosT,
                                 serviciosM: emp.serviciosM,
                                 serviciosA: emp.serviciosA,
                                 viajes: emp.viajes
                             }
                         });
                     }
-                } 
+                }
                 return encontrado;
-            }).then(function (existe){
-                if(existe === false){
-                    const empresaData ={
+            }).then(function (existe) {
+                if (existe === false) {
+                    const empresaData = {
                         nombre: '',
                         dueño: idusuario,
-                        descripcion:  '',
-                        serviciosT:  [],
+                        descripcion: '',
+                        serviciosT: [],
                         serviciosM: [],
                         serviciosA: [],
                         viajes: ''
@@ -126,20 +140,20 @@ class EmpresaProfile extends React.Component {
                         method: "POST",
                         body: JSON.stringify(empresaData),
                         headers: {
-                          Accept: "application/json",
-                          "Content-Type": "application/json"
+                            Accept: "application/json",
+                            "Content-Type": "application/json"
                         }
                     }).then(response => {
                         response.json().then(emp => {
                             console.log("Successful" + emp);
-                            me.setState({ 
+                            me.setState({
                                 response: false,
                                 idEmpresa: emp.idEmpresa,
                                 newEmpresa: {
                                     nombre: emp.nombre,
                                     dueño: emp.dueño,
-                                    descripcion:  emp.descripcion,
-                                    serviciosT:  emp.serviciosT,
+                                    descripcion: emp.descripcion,
+                                    serviciosT: emp.serviciosT,
                                     serviciosM: emp.serviciosM,
                                     serviciosA: emp.serviciosA,
                                     viajes: emp.viajes
@@ -160,75 +174,75 @@ class EmpresaProfile extends React.Component {
         return (
             <div>
                 <center>
-                <div>
-                    <nav className="navbar fixed-bottom navbar-light bg-light navbar-expand-lg" id="mainNavbar">
-                        <div className="container fluid">
-                            <div className="col">
-                                <a className="navbar-brand" href="/app" arial-label="MultiTravel">
-                                    <img className="iconHome" src="/icons/mainIcon.png" height="40px" width="60px" alt="Home"></img>
-                                </a>
-                            </div>
+                    <div>
+                        <nav className="navbar fixed-bottom navbar-light bg-light navbar-expand-lg" id="mainNavbar">
+                            <div className="container fluid">
+                                <div className="col">
+                                    <a className="navbar-brand" href="/app" arial-label="MultiTravel">
+                                        <img className="iconHome" src="/icons/mainIcon.png" height="40px" width="60px" alt="Home"></img>
+                                    </a>
+                                </div>
 
-                            <div className="col">
-                                <a className="navbar-brand" href="/app">
-                                    <MaterialIcon icon="person" size={45} color='#272F32' alt="Profile"></MaterialIcon>
-                                </a>
+                                <div className="col">
+                                    <a className="navbar-brand" href="/app">
+                                        <MaterialIcon icon="person" size={45} color='#272F32' alt="Profile"></MaterialIcon>
+                                    </a>
+                                </div>
+                                <div className="col">
+                                    <a className="navbar-brand" id="locationbutton" href="/app">
+                                        <MaterialIcon icon="location_on" size={40} color='#272F32' alt="Locations"></MaterialIcon>
+                                    </a>
+                                </div>
                             </div>
-                            <div className="col">
-                                <a className="navbar-brand" id="locationbutton" href="/app">
-                                    <MaterialIcon icon="location_on" size={40} color='#272F32' alt="Locations"></MaterialIcon>
-                                </a>
-                            </div>
-                        </div>
-                    </nav>
-                    
-                </div>
+                        </nav>
+
+                    </div>
                 </center>
                 <div className="content">
                     <div className="banner">
                         <img className="profile" src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" height="233px" width="200px" alt="profile pic" />
                         <form className="container" onSubmit={this.handleFormSubmit}>
-            <Input
-              inputType={"text"}
-              name={"nombre"}
-              title={"Nombre:"}
-              value={this.state.newEmpresa.nombre}
-              placeholder={"Ingresa el nombre de tu empresa"}
-              handleChange={this.handleInput}
-            />{" "}
-            {/* nombre */}
-            <Button
-              action={this.handleFormSubmit}
-              type={"primary"}
-              title={"Submit"}
-              style={buttonStyle}
-            />{" "}
-            {/*Submit */}
-            <Button
-              action={this.agregarNuevoServicio}
-              type={"primary"}
-              title={"Agregar Servicio"}
-              style={buttonStyle}
-            />{" "}
-            {/*Submit */}
-            <Button
-              action={this.agregarNuevoHostal}
-              type={"primary"}
-              title={"Agregar Hostal"}
-              style={buttonStyle}
-            />{" "}
-            {/*Submit */}
-            <TextArea
-              id= {"TextAreaDescripcion"}
-              title={"Descripción:"}
-              rows={10}
-              value={this.state.newEmpresa.descripcion}
-              name={"descripcion"}
-              handleChange={this.handleInput}
-              placeholder={"Describe tu empresa."}
-            />{" "}
-            {/* Descripcion */}
-          </form>
+                            <Input
+                                inputType={"text"}
+                                name={"nombre"}
+                                title={"Nombre:"}
+                                value={this.state.newEmpresa.nombre}
+                                placeholder={"Ingresa el nombre de tu empresa"}
+                                handleChange={this.handleInput}
+                            />{" "}
+                            {/* nombre */}
+                            <Button
+                                action={this.handleFormSubmit}
+                                type={"primary"}
+                                title={"Submit"}
+                                style={buttonStyle}
+                            />{" "}
+                            {/*Submit */}
+                            <Button
+                                action={this.agregarNuevoServicio}
+                                type={"primary"}
+                                title={"Agregar Servicio"}
+                                style={buttonStyle}
+                            />{" "}
+                            {/*Submit */}
+                            <Button
+                                action={this.agregarNuevoHostal}
+                                type={"primary"}
+                                title={"Agregar Hostal"}
+                                style={buttonStyle}
+                            />{" "}
+                            {/*Submit */}
+                            <TextArea
+                                id={"TextAreaDescripcion"}
+                                title={"Descripción:"}
+                                rows={10}
+                                value={this.state.newEmpresa.descripcion}
+                                name={"descripcion"}
+                                handleChange={this.handleInput}
+                                placeholder={"Describe tu empresa."}
+                            />{" "}
+                            {/* Descripcion */}
+                        </form>
                     </div>
                 </div>
             </div>
