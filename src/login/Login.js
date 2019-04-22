@@ -167,13 +167,13 @@ class LoginBox extends React.Component {
                 </div>
                     <div className="input-group">
                         <label htmlFor="username"><FormattedMessage id="Usuario" /></label>
-                        <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.onUsernameChanged.bind(this)} />
+                        <input type="text" id="username" name="username" className="login-input" placeholder="Username" onChange={this.onUsernameChanged.bind(this)} />
                         <small className="danger-error">{usernameErr ? usernameErr : ""}</small>
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="password"><FormattedMessage id="Contraseña" /></label>
-                        <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.onPasswordChanged.bind(this)} />
+                        <input type="password" id="password" name="password" className="login-input" placeholder="Password" onChange={this.onPasswordChanged.bind(this)} />
                         <small className="danger-error">{passwordErr ? passwordErr : ""}</small>
                     </div>
 
@@ -277,13 +277,14 @@ class RegisterBox extends React.Component {
     submitRegister(e) {
 
         tipo = this.onTypeChanged();
-
+        
         if (this.state.username === "") {
             this.showValidationError("username", "Username cannot be empty");
         } if (this.state.password === "") {
             this.showValidationError("password", "Password cannot be empty");
         }
         else {
+            
             let register = this;
             let dia = this.state.nacimiento.getDate();
             let month = this.state.nacimiento.getMonth();
