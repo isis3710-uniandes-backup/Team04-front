@@ -8,15 +8,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import HostalData from './HostalData.js';
 import ReactDOM from 'react-dom';
 import Login from '../login/Login';
-<<<<<<< HEAD
-
-import { FormattedMessage } from 'react-intl';
-=======
 import { IntlProvider, FormattedMessage } from 'react-intl';
 
 import localeEsMessages from "../locales/es";
 import localeEnMessages from "../locales/en";
->>>>>>> origin/master
 
 class MainView extends Component {
     constructor(props) {
