@@ -2,17 +2,18 @@ import React from "react"
 import DatePicker from "react-datepicker";
 import ReactDOM from 'react-dom';
 import "react-datepicker/dist/react-datepicker.css";
+import localeEsMessages from "../locales/es";
+import localeEnMessages from "../locales/en";
 
 import '../../src/css/Style.css'
 import MainApp from "../App";
+import { IntlProvider, FormattedMessage } from 'react-intl';
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = { isLoginOpen: true, isRegisterOpen: false };
-
-
     }
 
 
@@ -31,11 +32,11 @@ class App extends React.Component {
                     <h1>MultiTravel</h1>
                     <div className="box-controller">
                         <div className={"controller " + (this.state.isLoginOpen ? "selected-controller" : "")} onClick={this.showLoginBox.bind(this)}>
-                            Login
-                    </div>
+                            <FormattedMessage id="IniciarSesion" />
+                        </div>
                         <div className={"controller " + (this.state.isRegisterOpen ? "selected-controller" : "")} onClick={this.showRegisterBox.bind(this)}>
-                            Register
-                    </div>
+                            <FormattedMessage id="Registrarse" />
+                        </div>
                     </div>
 
                     <div className="box-container">
@@ -107,9 +108,14 @@ class LoginBox extends React.Component {
                 fechaNacimiento: new Date(),
                 password: pass,
                 idUsuario: "",
-                type: "",
+                tipo: "",
                 logueado: true
             };
+            let userLang = navigator.language || navigator.userLanguage
+
+            function getLocale() {
+                return userLang === "es-ES" ? localeEsMessages : localeEnMessages;
+            }
             fetch('/users', {
                 method: 'GET',
                 headers: { "Content-Type": "application/json" }
@@ -125,7 +131,11 @@ class LoginBox extends React.Component {
                             actualUser.fechaNacimiento = user.fechaNacimiento;
                             actualUser.idUsuario = user.idUsuario;
                             actualUser.correo = user.correo;
-                            ReactDOM.render(<MainApp usuario={actualUser} />, document.getElementById('root'));
+                            actualUser.tipo = user.tipo;
+                            ReactDOM.render(
+                                <IntlProvider locale={userLang} messages={getLocale()}>
+                                    <MainApp usuario={actualUser} />
+                                </IntlProvider>, document.getElementById("root"));
                             console.log("LOGIN EXITOSO");
                         }
                     }
@@ -153,21 +163,21 @@ class LoginBox extends React.Component {
             <div className="inner-container">
                 <div className="box">
                     <div className="header">
-                        Login
+                    <FormattedMessage id="IniciarSesion" />
                 </div>
                     <div className="input-group">
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="username"><FormattedMessage id="Usuario" /></label>
                         <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.onUsernameChanged.bind(this)} />
                         <small className="danger-error">{usernameErr ? usernameErr : ""}</small>
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password"><FormattedMessage id="Contraseña" /></label>
                         <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.onPasswordChanged.bind(this)} />
                         <small className="danger-error">{passwordErr ? passwordErr : ""}</small>
                     </div>
 
-                    <button type="button" className="login-btn" onClick={this.submitLogin.bind(this)}>Login</button>
+                    <button type="button" className="login-btn" onClick={this.submitLogin.bind(this)}><FormattedMessage id="IniciarSesion" /></button>
 
 
                 </div>
@@ -252,6 +262,7 @@ class RegisterBox extends React.Component {
             if (radios[i].checked) {
 
                 tipo = radios[i].value;
+
                 return tipo;
             }
         }
@@ -278,6 +289,11 @@ class RegisterBox extends React.Component {
             let month = this.state.nacimiento.getMonth();
             let year = this.state.nacimiento.getFullYear();
             let dateString = dia + "-" + (month + 1) + "-" + year;
+            let userLang = navigator.language || navigator.userLanguage
+
+            function getLocale() {
+                return userLang === "es-ES" ? localeEsMessages : localeEnMessages;
+            }
             fetch('/users', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -298,7 +314,10 @@ class RegisterBox extends React.Component {
                 }).then(function (body) {
                     body.logueado = true;
                     body.tipo = tipo;
-                    ReactDOM.render(<MainApp usuario={body} />, document.getElementById('root'));
+                    ReactDOM.render(
+                        <IntlProvider locale={userLang} messages={getLocale()}>
+                            <MainApp usuario={body} />
+                        </IntlProvider>, document.getElementById("root"));
                 });
         }
     }
@@ -337,32 +356,32 @@ class RegisterBox extends React.Component {
             <div className="inner-container">
                 <div className="box">
                     <div className="header">
-                        Register
+                    <FormattedMessage id="Registrarse" />
                 </div>
                     <div className="input-group">
-                        <label htmlFor="username">Username</label>
-                        <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.onUsernameChanged.bind(this)} />
+                        <label htmlFor="username"><FormattedMessage id="Usuario" /></label>
+                        <input type="text" id="username" className="login-input" placeholder="Username" onChange={this.onUsernameChanged.bind(this)} />
                         <small className="danger-error">{usernameErr ? usernameErr : ""}</small>
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="nombres">Nombre Completo</label>
-                        <input type="text" name="nombres" className="login-input" placeholder="Nombres" onChange={this.onNameChanged.bind(this)} />
+                        <label htmlFor="nombres"><FormattedMessage id="NombreC" /></label>
+                        <input type="text" id="nombres" className="login-input" placeholder="Nombres" onChange={this.onNameChanged.bind(this)} />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="nacionalidad">Nacionalidad</label>
-                        <input type="text" name="nacionalidad" className="login-input" placeholder="Nacionalidad" onChange={this.onNacionalidadChanged.bind(this)} />
+                        <label htmlFor="nacionalidad"><FormattedMessage id="Nacionalidad" /></label>
+                        <input type="text" id="nacionalidad" className="login-input" placeholder="Nacionalidad" onChange={this.onNacionalidadChanged.bind(this)} />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="nacionalidad">Correo</label>
-                        <input type="text" name="correo" className="login-input" placeholder="Correo" onChange={this.onCorreoChange.bind(this)} />
+                        <label htmlFor="correo"><FormattedMessage id="Correo" /></label>
+                        <input type="text" id="correo" className="login-input" placeholder="Correo" onChange={this.onCorreoChange.bind(this)} />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.onPasswordChanged.bind(this)} />
+                        <label htmlFor="password"><FormattedMessage id="Contraseña" /></label>
+                        <input type="password" id="password" className="login-input" placeholder="Password" onChange={this.onPasswordChanged.bind(this)} />
                         <small className="danger-error">{passwordErr ? passwordErr : ""}</small>
 
                         {this.state.password && <div className="password-state">
@@ -373,21 +392,29 @@ class RegisterBox extends React.Component {
 
                     </div>
 
-                    <label htmlFor="type">Tipo de usuario</label>
-                    <div className="form-check">
-                        <input type="radio" className="form-check-input" id="empresatype" name="materialExampleRadios" value="0" />
-                        <label className="form-check-label" htmlFor="empresatype">Empresa</label>
-                    </div>
+                    <label htmlFor="type" htmlFor="types"><FormattedMessage id="TipoU" /></label>
+                    <form id="types">
+                        <div className="form-check">
+                            <label>
+                                <input type="radio" className="form-check-input" id="empresatype" name="materialExampleRadios" value="0" />
+                                <FormattedMessage id="Empresa" />
+                            </label>
+                        </div>
 
-                    <div className="form-check">
-                        <input type="radio" className="form-check-input" id="usuarioType" name="materialExampleRadios" value="1" defaultChecked />
-                        <label className="form-check-label" htmlFor="usuarioType">Usuario Regular</label>
-                    </div>
+                        <div className="form-check">
+                            <label>
+                                <input type="radio" className="form-check-input" id="usuarioType" value="1" name="materialExampleRadios" defaultChecked />
+                                <FormattedMessage id="Regular" />
+                             </label>
+                        </div>
+                    </form>
+
 
 
                     <div className="datepicker">
-                        <label htmlFor="type">Fecha de Nacimiento:&nbsp; </label>
+                        <label htmlFor="fechaNacimiento"><FormattedMessage id="FechaNacimiento" />&nbsp; </label>
                         <DatePicker
+                            id="fechaNacimiento"
                             selected={this.state.nacimiento}
                             onChange={this.handleChange.bind(this)}
                             peekNextMonth
@@ -397,7 +424,7 @@ class RegisterBox extends React.Component {
                         />
                     </div>
 
-                    <button type="button" className="login-btn" onClick={this.submitRegister.bind(this)}>Register</button>
+                    <button type="button" className="login-btn" onClick={this.submitRegister.bind(this)}><FormattedMessage id="Registrarse" /></button>
                     <small className="confirmation">{formConfimation ? formConfimation : ""}</small>
 
 

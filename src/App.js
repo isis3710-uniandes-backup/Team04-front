@@ -7,6 +7,9 @@ import ReactDOM from 'react-dom';
 
 import Profile from './Profiles/UserProfile';
 import EmpresaProfile from './Profiles/EmpresaProfile';
+import { IntlProvider } from 'react-intl';
+import localeEsMessages from "./locales/es";
+import localeEnMessages from "./locales/en";
 
 
 let user = "";
@@ -27,10 +30,21 @@ class App extends Component {
   }
 
   Profile(e) {
+    let userLang = navigator.language || navigator.userLanguage
+
+    function getLocale() {
+      return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+    }
     if (user.tipo === "1") {
-      ReactDOM.render(<Profile usuario={user} />, document.getElementById('root'));
+      ReactDOM.render(
+        <IntlProvider locale={userLang} messages={getLocale()}>
+          <Profile usuario={user} />
+        </IntlProvider>, document.getElementById("root"));
     } else if (user.tipo === "0") {
-      ReactDOM.render(<EmpresaProfile usuario={user} />, document.getElementById('root'));
+      ReactDOM.render(
+        <IntlProvider locale={userLang} messages={getLocale()}>
+          <EmpresaProfile usuario={user} />
+        </IntlProvider>, document.getElementById("root"));
     }
   }
 

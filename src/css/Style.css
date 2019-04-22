@@ -5,17 +5,17 @@ html, body, #root {
 }
 
 a {
-  color: #79BDC6;
+  color: #26528C;
 }
 
 h1 {
   font-family: 'Oleo Script', Helvetica, sans-serif;
-  color: #272F32;
+  color: #FFF;
   font-size: 10vw;
 }
 
 .banner {
-  background-color: rgba(121, 189, 198, 0.5);
+  background-color: #DBEAEF;
   max-width: 90%;
   height: 100%;
   position: relative;
@@ -93,7 +93,7 @@ p {
   max-width: 24em;
   min-width: 21em;
   height: 35px;
-  background-color: rgba(218, 234, 239, 0.8);
+  background-color: rgba(219, 234, 239, 0.8);
   -webkit-box-shadow: 0px 0px 20px 0px rgba(15, 15, 15, 1);
   box-shadow: 0px 0px 20px 0px rgba(15, 15, 15, 1);
   margin-bottom: 30px;
@@ -110,7 +110,7 @@ p {
 
 .selected-controller {
   transition: border 0.5s ease-out;
-  border-bottom: 5px solid #79BDC6;
+  border-bottom: 5px solid #1E2526;
 }
 
 .box-container {
@@ -143,7 +143,7 @@ p {
   /* margin-right: 35px; */
   font-family: 'Work Sans', sans-serif;
   font-size: 22px;
-  border-bottom: 2px solid #79BDC6;
+  border-bottom: 2px solid #1E2526;
 }
 
 .box {
@@ -200,9 +200,10 @@ p {
   font-family: 'Work Sans', sans-serif;
   background-color: rgba(0, 0, 0, 0.3);
   margin-top: 20px;
-  border: 2px solid #272F32;
+  
   transition: background-color 0.3s ease-out;
   cursor: pointer;
+  color: #1E2526;
 }
 
 .login-btn:hover, .login-btn:focus {
