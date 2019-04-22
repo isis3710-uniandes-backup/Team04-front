@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+import localeEsMessages from "../locales/es";
+import localeEnMessages from "../locales/en";
 import './Stars.css';
 import { FormattedMessage } from 'react-intl';
 
@@ -8,7 +11,11 @@ class Stars extends Component{
         let i = Math.random() * (5 - 1) + 1;
         return(
         <div className="text-left">
+<<<<<<< HEAD
                 <label id="buscarSalida"><FormattedMessage id="NumeroEstrellas" /></label>
+=======
+                <label id="buscarSalida"><FormattedMessage id="NumEstrellas" /></label>
+>>>>>>> origin/master
 
                 <div className="starrating risingstar d-flex">
                     <input type="radio" id={"star1"+i} name="rating" value="1"/>
