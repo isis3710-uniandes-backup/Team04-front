@@ -258,7 +258,7 @@ class MainView extends Component {
 
                 <div className="row contentMainView" id="contentMainView">
 
-                    <div className="col-2 listSelectedLocations">
+                    <div className="col-2 listSelectedLocations sele">
                         <div className="card" >
                             <div className="card-header">
                                 <FormattedMessage id="LugaresSeleccionados" />
@@ -281,7 +281,7 @@ class MainView extends Component {
                         </div>
                     </div>
 
-                    <div className="col-10 inputData text-left">
+                    <div className="col-10 inputData text-left sele">
                         <div className="row">
                             <div className=" text-left col">
                                 <label id="lbBuscarPartida" htmlFor="inLocationPartida"><FormattedMessage id="LugarPartida" /></label>
