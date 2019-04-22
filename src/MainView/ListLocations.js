@@ -16,10 +16,13 @@ class ListLocations extends Component{
     }
     render(){
         return(
-            <a className="list-group-item list-group-item-action">
+            <li>
+                <a className="list-group-item list-group-item-action">
                 <h6><FormattedMessage id="LugarPartida" />: {this.props.data.partida}</h6>
                 <h6><FormattedMessage id="LugarLlegada" />: {this.props.data.llegada}</h6>
-            </a>
+                </a>
+            </li>
+            
         )
     }
 }
