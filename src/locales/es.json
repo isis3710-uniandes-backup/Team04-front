@@ -1,0 +1,15 @@
+{
+	"LoginSignUp": "Iniciar/Registrarse",
+	"Agregar": "Agregar",
+	"CrearViaje": "Crear Viaje",
+	"LugarPartida": "Lugar Partida: ",
+	"LugarDestino": "Lugar Destino: ",
+    "FechaPartida": "Fecha Salida: ",
+    "FechaRegreso": "Fecha Regreso: ",
+    "TipoHabitacion": "Tipo de Habitación: ",
+    "TipoTransporte": "Tipo de transporte",
+    "PrecioNoche": "Precio por Noche",
+    "Puntuacion": "Puntuación",
+    "LugaresSeleccionados": "Lista de lugares seleccionados", 
+    "NumeroEstrellas": "Número de estrellas"
+}

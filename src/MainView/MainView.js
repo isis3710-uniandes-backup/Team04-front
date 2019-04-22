@@ -5,9 +5,11 @@ import DatePicker from "react-datepicker";
 import Stars from './Stars.js';
 import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
-import HostalData from './hostalData.js';
+import HostalData from './HostalData.js';
 import ReactDOM from 'react-dom';
-import Login from '../login/Login'
+import Login from '../login/Login';
+
+import { FormattedMessage } from 'react-intl';
 
 class MainView extends Component {
     constructor(props) {
@@ -61,7 +63,7 @@ class MainView extends Component {
                 return response.json();
             }).then(function (body) {
             });
-        
+
 
     }
 
@@ -177,8 +179,8 @@ class MainView extends Component {
         fetch('/hostales/cities/' + llegada).then(response => {
             return response.json();
         }).then(hostalesByCity => {
-            var array =[]
-            for(var hostal of hostalesByCity){
+            var array = []
+            for (var hostal of hostalesByCity) {
                 array.push(JSON.stringify(hostal));
             }
             this.setState({
@@ -198,8 +200,7 @@ class MainView extends Component {
     }
 
     renderBusqueda() {
-        // TODO Cómo traer los hostale más baratos y los transportes más baratos? 
-        //resultado.transporte es solo un ejemplo de lo que podría ser
+
         return this.state.resultadosBusqueda.map((hostal, i) => {
             var data = JSON.parse(hostal)
             return (<HostalData data={data} id={i++} key={i++}></HostalData>);
@@ -211,10 +212,10 @@ class MainView extends Component {
     }
 
     render() {
-        //TODO a renderBusqueda en la linea 294 le hace falta los parametros
+
         let viajeConfirmation = false;
         if (this.state.viajeCreado === "Created") {
-            
+
             viajeConfirmation = "Viaje Creado";
         }
         else if (this.state.viajeCreado === "0") {
@@ -223,7 +224,7 @@ class MainView extends Component {
         return (
             <div className="main">
                 <div className="container-fluid" id="containerLoginButtons">
-                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign Up</button>
+                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} ><FormattedMessage id="LoginSignUp" /></button>
                 </div>
                 <div className="bannerr" id="mainBanner">
                     <h1>MultiTravel</h1>
@@ -234,19 +235,19 @@ class MainView extends Component {
                     <div className="col-2 listSelectedLocations">
                         <div className="card" >
                             <div className="card-header">
-                                Lista de Lugares Seleccionados
+                                <FormattedMessage id="LugaresSeleccionados" />
                             </div>
                             <ul className="list-group list-group-flush">
                                 {this.renderLocations()}
                             </ul>
-                           
+
 
                             <div className="btn-agregarLocation">
-                                <button className="btn btn-primary" type="button" onClick={this.addLocation}> Agregar</button>
+                                <button className="btn btn-primary" type="button" onClick={this.addLocation}><FormattedMessage id="Agregar" /></button>
                                 <br></br>
                             </div>
                             <div className="btn-CrearViaje">
-                                <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> Crear Viaje</button>
+                                <button className="btn btn-primary" type="button" onClick={this.CrearViaje}><FormattedMessage id="CrearViaje" /></button>
                             </div>
 
                             <small className="confirmation">{viajeConfirmation ? viajeConfirmation : ""}</small>
@@ -257,7 +258,7 @@ class MainView extends Component {
                     <div className="col-10 inputData text-left">
                         <div className="row">
                             <div className=" text-left col">
-                                <label id="lbBuscarPartida">Lugar Partida:</label>
+                                <label id="lbBuscarPartida"><FormattedMessage id="LugarPartida" /></label>
 
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     {/* <div className="input-group-prepend">
@@ -270,7 +271,7 @@ class MainView extends Component {
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarLlegada">Lugar Llegada:</label>
+                                <label id="lbBuscarLlegada"><FormattedMessage id="LugarDestino" /></label>
 
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     <div className="input-group-prepend">
@@ -283,7 +284,7 @@ class MainView extends Component {
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarFechaPartida">Fecha Partida:</label>
+                                <label id="lbBuscarFechaPartida"><FormattedMessage id="FechaPartida" /></label>
                                 <DatePicker id="dateFechaPartida"
                                     selected={this.state.fechaPartida}
                                     onChange={this.handleChangePartida}
@@ -292,7 +293,7 @@ class MainView extends Component {
 
 
                             <div className="text-left col">
-                                <label id="lbBuscarFechaRegreso">Fecha Regreso:</label>
+                                <label id="lbBuscarFechaRegreso"><FormattedMessage id="FechaRegreso" /></label>
                                 <DatePicker id="dateFechaRegreso"
                                     selected={this.state.fechaRegreso}
                                     onChange={this.handleChangeRegreso}
@@ -300,12 +301,12 @@ class MainView extends Component {
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarTipoHabitacion">Tipo de Habitación:</label>
+                                <label id="lbBuscarTipoHabitacion"><FormattedMessage id="TipoHabitacion" /></label>
                                 <Combobox id="controlHabitacion" options={['Individual', 'Doble', 'Familiar', 'Múltiple']}></Combobox>
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarTipoTransporte">Tipo de Transporte:</label>
+                                <label id="lbBuscarTipoTransporte"><FormattedMessage id="TipoTransporte" /></label>
                                 <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
                             </div>
 
@@ -315,7 +316,7 @@ class MainView extends Component {
                         </div>
                         <div className="row ">
                             <div className="text-left col" id="precioMaxNoche">
-                                <label id="lbBuscarPrecioNoche">Precio por noche:</label>
+                                <label id="lbBuscarPrecioNoche"><FormattedMessage id="PrecioNoche" /></label>
                                 <div className="row">
 
                                     <input type="range" className="form-control-range col" id="formControlRange"></input>
@@ -328,12 +329,12 @@ class MainView extends Component {
                             </div>
 
                             <div className=" text-left col">
-                                <label id="labelPuntuacion">Puntuación:</label>
+                                <label id="labelPuntuacion"><FormattedMessage id="Puntuacion" /></label>
 
                                 <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4', '3.5 - 4.4', '2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
 
-                            
+
                         </div>
                         <br></br>
                         <div className="card">
