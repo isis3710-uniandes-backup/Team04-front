@@ -217,8 +217,7 @@ class MainView extends Component {
     }
 
     renderBusqueda() {
-        // TODO Cómo traer los hostale más baratos y los transportes más baratos? 
-        //resultado.transporte es solo un ejemplo de lo que podría ser
+
         return this.state.resultadosBusqueda.map((hostal, i) => {
             var data = JSON.parse(hostal)
             return (<HostalData data={data} id={i++} key={i++}></HostalData>);
@@ -239,7 +238,7 @@ class MainView extends Component {
     }
 
     render() {
-        //TODO a renderBusqueda en la linea 294 le hace falta los parametros
+
         let viajeConfirmation = false;
         if (this.state.viajeCreado === "Created") {
 
@@ -259,7 +258,7 @@ class MainView extends Component {
 
                 <div className="row contentMainView" id="contentMainView">
 
-                    <div className="col-2 listSelectedLocations">
+                    <div className="col-2 listSelectedLocations sele">
                         <div className="card" >
                             <div className="card-header">
                                 <FormattedMessage id="LugaresSeleccionados" />
@@ -282,7 +281,7 @@ class MainView extends Component {
                         </div>
                     </div>
 
-                    <div className="col-10 inputData text-left">
+                    <div className="col-10 inputData text-left sele">
                         <div className="row">
                             <div className=" text-left col">
                                 <label id="lbBuscarPartida" htmlFor="inLocationPartida"><FormattedMessage id="LugarPartida" /></label>

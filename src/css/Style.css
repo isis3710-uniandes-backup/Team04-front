@@ -46,6 +46,16 @@ p {
   font-family: 'Work Sans', sans-serif;
   font-size: 3vw;
 }
+.main{
+  min-height: 100%;
+}
+.sele{
+  max-height: 30%;
+}
+.cont{
+  position: relative;
+  top: -30vh;
+}
 
 .subT {
   padding: 1vh;

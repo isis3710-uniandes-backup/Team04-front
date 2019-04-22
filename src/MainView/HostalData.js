@@ -136,7 +136,7 @@ class HostalData extends Component {
         //TODO agregar las actividades de forma correcta. -- Render en linea 114 --
         this.setDataToState();
         return (
-            <div  className="mainContainer" id={this.state.id} >
+            <div  className="mainContainer cont" id={this.state.id} >
                 <div className="card mb-12">
                     <div className="row no-gutters">
                         <div className="col-md-4">
