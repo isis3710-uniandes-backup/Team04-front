@@ -11,10 +11,13 @@ Paleta de colores usada en la realización del proyecto : https://color.adobe.co
 
 ## Videos informativos
 
+### Funcionalidades
+
 ### 8 Reglas de diseño
 https://youtu.be/pcJ4Z9ggqj4
 
 ### Norma Tecnica Colombiana
+https://youtu.be/xmwL-vJ28-M
 
 
 
