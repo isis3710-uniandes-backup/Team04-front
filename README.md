@@ -21,6 +21,11 @@ https://youtu.be/pcJ4Z9ggqj4
 ### Norma Tecnica Colombiana
 https://youtu.be/xmwL-vJ28-M
 
+### Pruebas de usabilidad
+https://www.youtube.com/watch?v=K8k8vqnfxRM&feature=youtu.be
+https://www.youtube.com/watch?v=nlXjWBTl0VQ&feature=youtu.be
+https://www.youtube.com/watch?v=so-wyXwnemI&feature=youtu.be
+
 
 
 ## Deployment
