@@ -7,11 +7,13 @@ El proyecto es un sitio web donde cualquier persona puede hacer un plan de viaje
 
 Antes de interactuar con la vista principal, se recomienda ir al botón "Iniciar sesión / Registrarse" para registrarse en el back-end con su información personal. Si intenta crear un viaje sin haber iniciado sesión, será redirigido a la vista de inicio de sesión para completar el proceso de autenticación.
 
-Paleta de colores usada en la realización del proyecto : https://color.adobe.com/es/Копия-Копия-clean-modern-color-theme-12168707/
+Paleta de colores usada en la realización del proyecto : https://color.adobe.com/es/PaletaColorMultiTravel-color-theme-12436097
+
 
 ## Videos informativos
 
 ### Funcionalidades
+https://www.youtube.com/watch?v=rXnxWiKfn_I&feature=youtu.be
 
 ### 8 Reglas de diseño
 https://youtu.be/pcJ4Z9ggqj4
