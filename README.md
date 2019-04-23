@@ -28,7 +28,7 @@ https://www.youtube.com/watch?v=nlXjWBTl0VQ&feature=youtu.be
 
 https://www.youtube.com/watch?v=so-wyXwnemI&feature=youtu.be
 
-
+En cuanto al soporte para los dos idiomas, la libreria vista en clase cuenta con un fallo en donde no toma el lenguaje que se encuentre seleccionado en el navegador, sino el primer lenguaje que aparece en la lista de lenguajes totales. Esto ocurre para los navegadores Chrome y Opera. Tener en cuenta esto al momento de realizar las pruebas del sporte inglés/español.
 
 ## Deployment
 
