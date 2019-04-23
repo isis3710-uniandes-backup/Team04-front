@@ -9,6 +9,14 @@ Antes de interactuar con la vista principal, se recomienda ir al botón "Iniciar
 
 Paleta de colores usada en la realización del proyecto : https://color.adobe.com/es/Копия-Копия-clean-modern-color-theme-12168707/
 
+## Videos informativos
+
+### 8 Reglas de diseño
+https://youtu.be/pcJ4Z9ggqj4
+
+### Norma Tecnica Colombiana
+
+
 
 ## Deployment
 
