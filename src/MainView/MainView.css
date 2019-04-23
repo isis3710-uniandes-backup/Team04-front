@@ -5,6 +5,14 @@
     border-color: #26528C;
     margin-left: 5px;
 }
+.link{
+    text-decoration: none;
+    color: black;
+}
+.link:hover { 
+    text-decoration: none;
+    color: black;
+ }
 .container-fluid{
     width: 100%;
     padding-right: 15px;

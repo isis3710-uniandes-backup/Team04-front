@@ -6,6 +6,7 @@ import localeEsMessages from "../locales/es";
 import localeEnMessages from "../locales/en";
 
 import '../../src/css/Style.css'
+import './Login.css'
 import MainApp from "../App";
 import { IntlProvider, FormattedMessage } from 'react-intl';
 
@@ -14,6 +15,19 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = { isLoginOpen: true, isRegisterOpen: false };
+    }
+
+    return(){
+        let userLang = navigator.language || navigator.userLanguage
+
+        function getLocale() {
+            return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+        }
+        
+        ReactDOM.render(
+        <IntlProvider locale={userLang} messages={getLocale()}>
+            <MainApp />
+        </IntlProvider>, document.getElementById("root"));
     }
 
 
@@ -29,7 +43,7 @@ class App extends React.Component {
         return (
             <div className="bgi">
                 <div className="root-container">
-                    <h1>MultiTravel</h1>
+                    <h1 onClick={this.return.bind(this)}><a className="linkl" href="#main">MultiTravel</a></h1>
                     <div className="box-controller">
                         <div className={"controller " + (this.state.isLoginOpen ? "selected-controller" : "")} onClick={this.showLoginBox.bind(this)}>
                             <FormattedMessage id="IniciarSesion" />

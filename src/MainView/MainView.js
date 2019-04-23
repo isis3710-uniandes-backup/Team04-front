@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import HostalData from './HostalData.js';
 import ReactDOM from 'react-dom';
 import Login from '../login/Login';
+import MainApp from "../App";
 import { IntlProvider, FormattedMessage } from 'react-intl';
 
 import localeEsMessages from "../locales/es";
@@ -237,6 +238,19 @@ class MainView extends Component {
             </IntlProvider>, document.getElementById("root"));
     }
 
+    return(){
+        let userLang = navigator.language || navigator.userLanguage
+
+        function getLocale() {
+            return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+        }
+        
+        ReactDOM.render(
+        <IntlProvider locale={userLang} messages={getLocale()}>
+            <MainApp />
+        </IntlProvider>, document.getElementById("root"));
+    }
+
     render() {
 
         let viajeConfirmation = false;
@@ -248,12 +262,12 @@ class MainView extends Component {
             viajeConfirmation = <FormattedMessage id="NoViajesAgg" />;
         }
         return (
-            <div className="main">
+            <div className="main" id="main">
                 <div  className="container-fluid" id="containerLoginButtons">
                     <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} ><FormattedMessage id="Login/SignUp" /></button>
                 </div>
                 <div className="bannerr" id="mainBanner">
-                    <h1 className="appName">MultiTravel</h1>
+                    <h1 className="appName" onClick={this.return.bind(this)}><a className="link" href="#main">MultiTravel</a></h1>
                 </div>
 
                 <div className="row contentMainView" id="contentMainView">
