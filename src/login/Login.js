@@ -193,7 +193,6 @@ class LoginBox extends React.Component {
 
                     <button type="button" className="login-btn" onClick={this.submitLogin.bind(this)}><FormattedMessage id="IniciarSesion" /></button>
 
-
                 </div>
             </div>
         );

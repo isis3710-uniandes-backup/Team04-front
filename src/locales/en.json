@@ -30,5 +30,7 @@
 	"Destino": "Destination",
 	"TipoViaje":"Travel Type",
 	"ViajesTerminados":"Completed Travels",
-	"NumEstrellas": "Stars"
+	"NumEstrellas": "Stars",
+	"logout": "Logout",
+	"noLogin": "You need to Login first"
 }
