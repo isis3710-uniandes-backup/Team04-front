@@ -70,10 +70,9 @@ class User extends React.Component {
                 <div className="content">
                     <div className="banner">
                         <img className="profile" src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" height="233px" width="200px" alt="profile pic" />
-                        <h2 className="nombres">{user.nombres}</h2>
-                        <p className="right">{user.correo}</p>
-                        <p>{user.nacionalidad}</p>
-                        <p>{user.fechaNacimiento}</p>
+                        <h2 className="nombres">{user.name}</h2>
+                        <p className="right">{user.nickname + "@gmail.com"}</p>
+                        <p>Colombia</p>
                     </div>
                     <h2 className="subT"><FormattedMessage id="ViajesAgendados" /></h2>
                     <div className="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">

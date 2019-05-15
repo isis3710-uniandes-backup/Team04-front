@@ -30,6 +30,8 @@
 	"Destino": "Destino",
 	"TipoViaje":"Tipo de Viaje",
 	"ViajesTerminados":"Viajes Finalizados",
-	"NumEstrellas": "Número de estrellas"
+	"NumEstrellas": "Número de estrellas",
+	"logout": "Cerrar Sesión",
+	"noLogin": "Debe inciar sesión primero"
 	
 }

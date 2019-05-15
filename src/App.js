@@ -10,8 +10,9 @@ import EmpresaProfile from './Profiles/EmpresaProfile';
 import { IntlProvider } from 'react-intl';
 import localeEsMessages from "./locales/es";
 import localeEnMessages from "./locales/en";
+import Auth from "./Auth";
 
-
+const auth = new Auth();
 let user = "";
 class App extends Component {
 
@@ -24,6 +25,9 @@ class App extends Component {
     }
     this.state = {};
   }
+  componentDidMount() {
+    auth.handleAuthentication();
+  }
 
   renderMainView() {
     return (<MainView usuario={user}></MainView>)
@@ -35,12 +39,14 @@ class App extends Component {
     function getLocale() {
       return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
     }
-    if (user.tipo === "1") {
+
+    if ( auth.isAuthenticated()) {
+      
       ReactDOM.render(
         <IntlProvider locale={userLang} messages={getLocale()}>
-          <Profile usuario={user} />
+          <Profile usuario={auth.getProfile()} />
         </IntlProvider>, document.getElementById("root"));
-    } else if (user.tipo === "0") {
+    } else if (user.tipo === "0" && auth.isAuthenticated()) {
       ReactDOM.render(
         <IntlProvider locale={userLang} messages={getLocale()}>
           <EmpresaProfile usuario={user} />

@@ -10,11 +10,16 @@ import ReactDOM from 'react-dom';
 import Login from '../login/Login';
 import MainApp from "../App";
 import { IntlProvider, FormattedMessage } from 'react-intl';
-
+import Auth from "../Auth";
 import localeEsMessages from "../locales/es";
 import localeEnMessages from "../locales/en";
 
+
+const auth = new Auth()
 class MainView extends Component {
+
+    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -147,26 +152,18 @@ class MainView extends Component {
         let me = this;
         let subViajesact = this.subViajes();
         if (this.state.listLocations.length === 0) {
-            this.setState({ viajeCreado: "0" });
+            
         }
         else {
-            if (typeof this.state.user.idUsuario === 'undefined') {
-                let userLang = navigator.language || navigator.userLanguage
-
-                function getLocale() {
-                    return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
-                }
-                ReactDOM.render(
-                    <IntlProvider locale={userLang} messages={getLocale()}>
-                        <Login />
-                    </IntlProvider>, document.getElementById("root"));
+            if (!auth.isAuthenticated()) {
+                this.setState({ viajeCreado: "2" });
             }
             else {
 
                 fetch('/viajes', {
                     method: 'POST',
                     body: JSON.stringify({
-                        idUsuario: me.state.user.idUsuario,
+                        idUsuario: auth.getProfile().idToken,
                         nombre: "viaje1",
                         empresa: "empresa1",
                         fechaInicio: me.state.listLocations[0].fechaPartida,
@@ -261,10 +258,14 @@ class MainView extends Component {
         else if (this.state.viajeCreado === "0") {
             viajeConfirmation = <FormattedMessage id="NoViajesAgg" />;
         }
+        else if(this.state.viajeCreado === "2") {
+            viajeConfirmation = <FormattedMessage id="noLogin" />;
+        }
         return (
             <div className="main" id="main">
                 <div  className="container-fluid" id="containerLoginButtons">
-                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} ><FormattedMessage id="Login/SignUp" /></button>
+                    <button className="btn btn-primary" id="loginButton" type="button" onClick={auth.login} ><FormattedMessage id="Login/SignUp" /></button>
+                    <button className="btn btn-primary" id="logoutButton" type="button" onClick={auth.logout} ><FormattedMessage id="logout" /></button>
                 </div>
                 <div className="bannerr" id="mainBanner">
                     <h1 className="appName" onClick={this.return.bind(this)}><a className="link" href="#main">MultiTravel</a></h1>
