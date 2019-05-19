@@ -9,6 +9,7 @@ import esLocaleData from 'react-intl/locale-data/es';
 import localeEsMessages from "./locales/es";
 import localeEnMessages from "./locales/en";
 
+
 addLocaleData(esLocaleData);
 
 let userLang = navigator.language || navigator.userLanguage
