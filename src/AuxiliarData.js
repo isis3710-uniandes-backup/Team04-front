@@ -18,24 +18,24 @@ export default class DataShowModel extends Component{
                 let categoriaPorUsuario = d3.scalePoint()
                                 .domain(d3.set(network.nodes.map(d=>d.userID)).values()
                                 .sort((a,b) => d3.ascending(a, b)))
-                                .range([0, svgWidth])
+                                .range([420, svgWidth - 420])
     
     
                 let categoriaPorEmpresa = d3.scalePoint()
                             .domain(d3.set(network.nodes.map(d=>d.empresa)).values()
                             .sort((a,b) => d3.ascending(a, b)))
-                            .range([0, svgWidth])
+                            .range([420, svgWidth - 420])
     
     
                 let categoriaPorLocalizacion =  d3.scalePoint()
                                                 .domain(d3.set(network.nodes.map(d=>d.location)).values()
                                                 .sort((a,b) => d3.ascending(a, b)))
-                                                .range([0, svgWidth])
+                                                .range([420, svgWidth - 420])
     
                 let categoriaPorTipo =  d3.scalePoint()
                                     .domain(d3.set(network.nodes.map(d=>d.tipoViaje)).values()
                                     .sort((a,b) => d3.ascending(a, b)))
-                                    .range([0, svgWidth])
+                                    .range([420, svgWidth - 420])
     
                 let r = 12;
                 const c = d3.scaleOrdinal(d3.schemePastel1)
