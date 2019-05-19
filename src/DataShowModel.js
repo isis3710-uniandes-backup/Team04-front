@@ -6,15 +6,25 @@ export default class DataShowModel extends Component{
 
     state = {
         categorizar: "user",
-        network: null
-    
+        network: null,
+        linksSel: null,
+        nodesSel: null
     }
 
     handleOptionChange = (changeEvent) => {
         console.log("onHandleOptionChange");
-        this.setState({
-            categorizar: changeEvent.target.value
+        let context = this;
+        let promise = new Promise(function(resolve,reject){
+            context.setState({
+                categorizar: changeEvent.target.value
+            })
+            resolve(context)
         })
+
+        promise.then(function(context2){
+            context2.graphElements();
+        })
+        
     }
     componentDidMount= () => {
         let url= "/datosHistoricos";
@@ -51,21 +61,131 @@ export default class DataShowModel extends Component{
                 context.setState({
                     network: network
                 })
+
+                var svgWidth  = document.getElementById('innerContainer').offsetWidth, svgHeight = document.getElementById('innerContainer').offsetHeight;
+                let r = 5;
+                
+                const c = d3.scaleOrdinal(d3.schemePastel1)
+                            .domain(d3.set(network.nodes.map(d=>d.userID)).values()
+                            .sort((a,b) => d3.ascending(a, b)));
+        
+                var svg = d3.select('#innerContainer')
+                            .append('svg')
+                            .attr('width', svgWidth)
+                            .attr('height', svgHeight)
+                            .style('border', 200);
+        
+                let linksSel = svg.selectAll('.link')
+                                .data(network.links)
+                                .enter()
+                                .append('line')
+                                .attr('class', 'link')
+                                .attr('stroke-width', 0)
+        
+                let nodesSel = svg.selectAll('.node')
+                                .data(network.nodes)
+                                .enter()
+                                .append('circle')
+                                .attr('class', 'node')
+                                .attr('r', r)
+                                .style('fill',d => c(d.userID))
+                context.setState({
+                    linksSel: linksSel,
+                    nodesSel: nodesSel
+                })
+                if(context.state.network != null ){
+                    context.graphElements();
+                }
+                
             });
         })
     }
+
+    graphElements = () =>{
+        var svgWidth  = document.getElementById('innerContainer').offsetWidth, svgHeight = document.getElementById('innerContainer').offsetHeight;
+        let r = 12;
+        const c = d3.scaleOrdinal(d3.schemePastel1)
+                    .domain(d3.set(this.state.network.nodes.map(d=>d.userID)).values()
+                    .sort((a,b) => d3.ascending(a, b)));
+
+        let categoriaPorUsuario = d3.scalePoint()
+                        .domain(d3.set(this.state.network.nodes.map(d=>d.userID)).values()
+                        .sort((a,b) => d3.ascending(a, b)))
+                        .range([420, svgWidth - 420])
+
+
+        let categoriaPorEmpresa = d3.scalePoint()
+                    .domain(d3.set(this.state.network.nodes.map(d=>d.empresa)).values()
+                    .sort((a,b) => d3.ascending(a, b)))
+                    .range([420, svgWidth - 420])
+
+
+        let categoriaPorLocalizacion =  d3.scalePoint()
+                                        .domain(d3.set(this.state.network.nodes.map(d=>d.location)).values()
+                                        .sort((a,b) => d3.ascending(a, b)))
+                                        .range([420, svgWidth - 420])
+
+        let categoriaPorTipo =  d3.scalePoint()
+                            .domain(d3.set(this.state.network.nodes.map(d=>d.tipoViaje)).values()
+                            .sort((a,b) => d3.ascending(a, b)))
+                            .range([420, svgWidth - 420])
+
+        let ticked = () => {
+            this.state.nodesSel
+            .attr("cx",d => {
+                    return d.x
+                })
+            .attr("cy", d => {
+                return d.y
+                });
+
+            this.state.linksSel
+                .attr("x1", l=> l.source.x)
+                .attr("y1", l=> l.source.y)
+                .attr("x2", l=> l.target.x)
+                .attr("y2", l=> l.target.y)
+                .style("stroke", l => c(l.source.userID))
+        }
+                            
+        let simulation = d3.forceSimulation(this.state.network.nodes)
+                        .force("links", d3.forceLink(this.state.network.links).strength(0.0000001))
+                        .force("x", d3.forceX(d => {
+                                if(this.state.categorizar == "empresa"){
+                                    return  categoriaPorEmpresa(d.empresa);
+                                }else if(this.state.categorizar == "location"){
+                                    return categoriaPorLocalizacion(d.location);
+                                }else if(this.state.categorizar == "tipoViaje"){
+                                    return categoriaPorTipo(d.tipoViaje);
+                                }else if(this.state.categorizar == "user"){
+                                    return categoriaPorUsuario(d.userID);
+                                }else{
+                                    return svgWidth/2;
+                                }
+                        }))
+                        .force("y", d3.forceY(svgHeight/2)) 
+                        .force("collide", d3.forceCollide(r) )
+                        .force("charge", d3.forceManyBody().strength(-20))
+                        .on("tick", ticked)
+    
+        
+    }
+
+
     render(){
         let style = {
             width: '100%',
             height: '100%'
         }
-        let grafico = (<AuxiliarData style ={style} selectedOption={this.state.categorizar} network={this.state.network }></AuxiliarData>);
-        if(this.state.network == null) grafico = null;
+        
         return(
-            
             <div style={style}>
-                {console.log(this.state.network)}
-                {grafico}
+
+                <div style={style}>
+                        <div className="modal-content" id="innerContainer" style={style}>
+                            {console.log("categoria aux", this.state.categorizar)}
+                        </div>
+                </div>
+
                 <div style={{height: "30%", width: "100%"}} >
                     <form>
                         <div className="radio">
