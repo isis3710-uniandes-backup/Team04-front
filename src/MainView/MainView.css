@@ -70,3 +70,11 @@
     width: 100%;
     height: 100%;
 }
+
+#cardLugares, #divLugares{
+    height: 100%;
+}
+
+.button-lugares{
+    bottom: 0;
+}

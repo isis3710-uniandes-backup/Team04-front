@@ -13,6 +13,7 @@ import { IntlProvider, FormattedMessage } from 'react-intl';
 import Auth from "../Auth";
 import localeEsMessages from "../locales/es";
 import localeEnMessages from "../locales/en";
+import DataShowModel from '../DataShowModel';
 
 
 const auth = new Auth()
@@ -33,7 +34,8 @@ class MainView extends Component {
             viajeCreado: false,
             status: 'start',
             status2: 'start',
-            resultadosBusqueda: []
+            resultadosBusqueda: [],
+            openGraphModal: false
         }
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
@@ -247,7 +249,6 @@ class MainView extends Component {
             <MainApp />
         </IntlProvider>, document.getElementById("root"));
     }
-
     render() {
 
         let viajeConfirmation = false;
@@ -261,8 +262,9 @@ class MainView extends Component {
         else if(this.state.viajeCreado === "2") {
             viajeConfirmation = <FormattedMessage id="noLogin" />;
         }
-        return (
-            <div className="main" id="main">
+        let rend = (
+            <div className="main" id="main" style={style}>
+                
                 <div  className="container-fluid" id="containerLoginButtons">
                     <button className="btn btn-primary" id="loginButton" type="button" onClick={auth.login} ><FormattedMessage id="Login/SignUp" /></button>
                     <button className="btn btn-primary" id="logoutButton" type="button" onClick={auth.logout} ><FormattedMessage id="logout" /></button>
@@ -270,11 +272,11 @@ class MainView extends Component {
                 <div className="bannerr" id="mainBanner">
                     <h1 className="appName" onClick={this.return.bind(this)}><a className="link" href="#main">MultiTravel</a></h1>
                 </div>
-
+                
                 <div className="row contentMainView" id="contentMainView">
-
-                    <div className="col-2 listSelectedLocations sele">
-                        <div className="card" >
+                    
+                    <div className="col-sm-2 listSelectedLocations" id="divLugares">
+                        <div className="card" id="cardLugares">
                             <div className="card-header">
                                 <FormattedMessage id="LugaresSeleccionados" />
                             </div>
@@ -283,11 +285,11 @@ class MainView extends Component {
                             </ul>
 
 
-                            <div className="btn-agregarLocation">
+                            <div className="btn-agregarLocation button-lugares">
                                 <button className="btn btn-primary" type="button" onClick={this.addLocation}> <FormattedMessage id="Agregar" /></button>
                                 <br></br>
                             </div>
-                            <div className="btn-CrearViaje">
+                            <div className="btn-CrearViaje button-lugares">
                                 <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> <FormattedMessage id="CrearViaje" /></button>
                             </div>
 
@@ -325,7 +327,7 @@ class MainView extends Component {
                             </div>
 
 
-                            <div className="text-left col">
+                            <div className="text-left col-sm">
                                 <label id="lbBuscarFechaRegreso" htmlFor="dateFechaRegreso"><FormattedMessage id="FechaSalida" /></label>
                                 <DatePicker id="dateFechaRegreso"
                                     selected={this.state.fechaRegreso}
@@ -333,19 +335,23 @@ class MainView extends Component {
                                 />
                             </div>
 
-                            <div className="text-left col">
+                            <div className="text-left col-sm">
                                 <label id="lbBuscarTipoHabitacion" htmlFor="controlHabitacion"><FormattedMessage id="TipoHab" /></label>
                                 <Combobox id="controlHabitacion" options={['Individual', 'Doble', 'Familiar', 'Múltiple']}></Combobox>
                             </div>
 
-                            <div className="text-left col">
+                            <div className="text-left col-sm">
                                 <label id="lbBuscarTipoTransporte" htmlFor="controlTransporte"><FormattedMessage id="TipoTrans" /></label>
-                                <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
+                                <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} ></Combobox>
                             </div>
 
-                            <div className="text-left col">
+                            <div className="text-left col-sm">
                                 <button className="btn btn-primary" type="button" id="buscar" onClick={this.buscar}><FormattedMessage id="Buscar" /></button>
                             </div>
+                            <div className="text-left col-sm">
+                                <button type="button" className="btn btn-primary" onClick={(e) =>{this.setState({openGraphModal: !this.state.openGraphModal})}}>Ver Datos</button>
+                            </div>
+
                         </div>
                         <div className="row ">
                             <div className="text-left col" id="precioMaxNoche">
@@ -366,8 +372,6 @@ class MainView extends Component {
 
                                 <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4', '3.5 - 4.4', '2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
-
-
                         </div>
                         <br></br>
                         <div className="card">
@@ -376,9 +380,25 @@ class MainView extends Component {
                             </div>
                         </div>
                     </div>
-                    {this.renderBusqueda()}
+                    
+                    {this.renderBusqueda()} 
                 </div>
+               
             </div>
+        )
+
+        if(this.state.openGraphModal){
+            rend = (<DataShowModel></DataShowModel>);
+        }
+        let style = {
+            width: '100%',
+            height: '100%'
+        }
+        return (
+            <div style={style}>
+                {rend}
+            </div>
+            
         )
     }
 }
