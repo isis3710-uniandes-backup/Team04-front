@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import AuxiliarData from './AuxiliarData'
 import * as d3 from 'd3';
-import { ftruncate } from 'fs';
 export default class DataShowModel extends Component{
 
     state = {
@@ -63,7 +61,7 @@ export default class DataShowModel extends Component{
                 })
 
                 var svgWidth  = document.getElementById('innerContainer').offsetWidth, svgHeight = document.getElementById('innerContainer').offsetHeight;
-                let r = 5;
+                let r = 12;
                 
                 const c = d3.scaleOrdinal(d3.schemePastel1)
                             .domain(d3.set(network.nodes.map(d=>d.userID)).values()
