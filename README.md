@@ -3,6 +3,13 @@
 ### URL Front: https://multitravel-front.herokuapp.com/
 ### URL Back: https://multitravel-back.herokuapp.com/
 
+[Video Funcionalidad D3](https://uniandes-my.sharepoint.com/personal/ms_osorio_uniandes_edu_co/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fms_osorio_uniandes_edu_co%2FDocuments%2FMultiTravel%20-%20Mozilla%20Firefox%202019-05-19%2012-44-55%2Emp4&parent=%2Fpersonal%2Fms_osorio_uniandes_edu_co%2FDocuments&cid=5e801779-941f-468b-90a7-d8bd157ac75e)
+
+[Video funcionalidad Auth0]()
+
+[Video funcionalidad PWA]()
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 El proyecto es un sitio web donde cualquier persona puede hacer un plan de viaje considerando múltiples destinos y diferentes rutas para cada uno (viajes aéreos, viajes marítimos o viajes terrestres). Además, el sitio web le sugerirá algunos de los mejores alojamientos en la ciudad de destino (Cartagena se ha utilizado como ejemplo y ya se ha publicado en el servidor). En el sitio web puede agregar viajes con múltiples destinos a su plan y confirmar la reserva. Luego vea sus reservaciones activas y viajes terminados en su perfil.
