@@ -5,7 +5,7 @@
 
 [Video Funcionalidad D3](https://uniandes-my.sharepoint.com/personal/ms_osorio_uniandes_edu_co/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fms_osorio_uniandes_edu_co%2FDocuments%2FMultiTravel%20-%20Mozilla%20Firefox%202019-05-19%2012-44-55%2Emp4&parent=%2Fpersonal%2Fms_osorio_uniandes_edu_co%2FDocuments&cid=5e801779-941f-468b-90a7-d8bd157ac75e)
 
-[Video funcionalidad Auth0]()
+[Video funcionalidad Auth0](https://www.youtube.com/watch?v=J2F1bpoc-NA&feature=youtu.be)
 
 [Video funcionalidad PWA](https://uniandes-my.sharepoint.com/:v:/g/personal/a_garcia13_uniandes_edu_co/EVIvkzj37OJCmqLlEr9IM64BopT7zD-DcPyKDFktuCj-7Q?e=pPXjz1)
 
