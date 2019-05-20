@@ -190,24 +190,28 @@ export default class DataShowModel extends Component{
                             <label htmlFor="radioEmpresa">
                                 <label>Empresa </label>
                                 <input id="radioEmpresa" type="radio" value="empresa" checked={this.state.categorizar == "empresa"} onChange={this.handleOptionChange}></input>
+                                <label htmlFor="radioEmpresa">(ColViajes, ColTures, ViajaMas, TravesIA)</label>
                             </label>
                         </div>
                         <div className="radio">
                             <label>
                                 <label>Location </label> 
-                                <input type="radio" value="location" checked={this.state.categorizar == "location"} onChange={this.handleOptionChange}></input>
+                                <input id="radioLocation" type="radio" value="location" checked={this.state.categorizar == "location"} onChange={this.handleOptionChange}></input>
+                                <label htmlFor="radioLocation">(Barichara, Leticia, Bogota, Bucaramanga, Santa Marta, Cartagena, Cabo de la Vela)</label>
                             </label>
                         </div>
                         <div className="radio">
                             <label>
                                 <label>Tipo Viaje </label>
-                                <input type="radio" value="tipoViaje" checked={this.state.categorizar == "tipoViaje"} onChange={this.handleOptionChange}></input>
+                                <input id="radioViaje" type="radio" value="tipoViaje" checked={this.state.categorizar == "tipoViaje"} onChange={this.handleOptionChange}></input>
+                                <label htmlFor="radioViaje">(Aereo, Terrestre, Maritimo)</label>
                             </label>
                         </div>
                         <div className="radio">
                             <label>
                                 <label>Usuario </label>
-                                <input type="radio" value="user" checked={this.state.categorizar == "user"} onChange={this.handleOptionChange}></input>
+                                <input id ="radioUser"type="radio" value="user" checked={this.state.categorizar == "user"} onChange={this.handleOptionChange}></input>
+                                <label htmlFor="radioUser" >(1233999254, 2016162765, 52394648, 1233900572)</label>
                             </label>
                         </div>
                     </form>
