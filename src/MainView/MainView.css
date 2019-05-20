@@ -1,10 +1,18 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 
 .btn-primary{
-    background-color: #79BDC6;
-    border-color: #79BDC6;
+    background-color:#26528C;
+    border-color: #26528C;
     margin-left: 5px;
 }
+.link{
+    text-decoration: none;
+    color: black;
+}
+.link:hover { 
+    text-decoration: none;
+    color: black;
+ }
 .container-fluid{
     width: 100%;
     padding-right: 15px;
@@ -15,8 +23,8 @@
 }
 
 .btn-primary:hover{
-    background-color: #DAEAEF;
-    border-color: #79BDC6;  
+    background-color: #26528C;
+    border-color: #26528C;  
 }
 
 #containerLoginButtons{
@@ -28,14 +36,14 @@
     margin-left: auto;
 }
 
-.content{
+.contentMainView{
     z-index: 10px;
-    background: #DAEAEF;
+    background: #DBEAEF;
 }
 
 .bannerr{
     z-index: 10px;
-    background: #DAEAEF;
+    background: #DBEAEF;
 }
 
 .container-fluid.text-left{
@@ -53,4 +61,20 @@
 
 .form-control{
     width: 100% !important;
+}
+.main{
+    width: 100%;
+    height: 100%;
+}
+#contentMainView{
+    width: 100%;
+    height: 100%;
+}
+
+#cardLugares, #divLugares{
+    height: 100%;
+}
+
+.button-lugares{
+    bottom: 0;
 }

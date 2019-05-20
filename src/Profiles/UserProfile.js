@@ -1,6 +1,7 @@
 import React from "react"
 
 import MaterialIcon from 'material-icons-react';
+import {FormattedMessage } from 'react-intl';
 
 let viajes = [];
 class User extends React.Component {
@@ -69,12 +70,11 @@ class User extends React.Component {
                 <div className="content">
                     <div className="banner">
                         <img className="profile" src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" height="233px" width="200px" alt="profile pic" />
-                        <h2 className="nombres">{user.nombres}</h2>
-                        <p className="right">{user.correo}</p>
-                        <p>{user.nacionalidad}</p>
-                        <p>{user.fechaNacimiento}</p>
+                        <h2 className="nombres">{user.name}</h2>
+                        <p className="right">{user.nickname + "@gmail.com"}</p>
+                        <p>Colombia</p>
                     </div>
-                    <h2 className="subT">Viajes Agendados</h2>
+                    <h2 className="subT"><FormattedMessage id="ViajesAgendados" /></h2>
                     <div className="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
                         {viajes.map(viaje =>
                             viaje.viajeAgendado ? (<div className="card">
@@ -89,11 +89,11 @@ class User extends React.Component {
                                 <div id={"collapseTwo" + viaje.id} className="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordionEx1">
                                     <div className="card-body">
                                         <div className="row">
-                                            <div className="col-sm-2 travelsParams ">Origen</div>
-                                            <div className="col-sm-2 travelsParams">Destino</div>
-                                            <div className="col-sm-2 travelsParams">Tipo de viaje</div>
-                                            <div className="col-sm-2 travelsParams">Fecha llegada</div>
-                                            <div className="col-sm-2 travelsParams">Fecha salida</div>
+                                            <div className="col-sm-2 travelsParams "><FormattedMessage id="Origen" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="Destino" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="TipoViaje" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaPartida" /></div>
+                                            <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaSalida" /></div>
                                         </div>
                                         {viaje.subViajes.map(subV =>
                                             <div className="row">
@@ -110,27 +110,27 @@ class User extends React.Component {
                             </div>
                             ) : ("")
                         )}
-                        <h2 className="subT">Viajes Realizados</h2>
-                        <div className="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                        <h2 className="subT"><FormattedMessage id="ViajesTerminados" /></h2>
+                        <div className="accordion md-accordion" id="accordionEx2" role="tablist" aria-multiselectable="true">
                             {viajes.map(viaje =>
                                 !viaje.viajeAgendado ? (
                                     <div className="card">
                                         <div className="card-header" role="tab" id="headingTwo1">
-                                            <a className="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href={"#collapseTwo12" + viaje.id}
+                                            <a className="collapsed" data-toggle="collapse" data-parent="#accordionEx2" href={"#collapseTwo12" + viaje.id}
                                                 aria-expanded="false" aria-controls="collapseTwo12">
                                                 <h5 className="mb-0">
                                                     {viaje.origen + "-" + viaje.destino} <i className="fas fa-angle-down rotate-icon"></i>
                                                 </h5>
                                             </a>
                                         </div>
-                                        <div id={"collapseTwo12" + viaje.id} className="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordionEx1">
+                                        <div id={"collapseTwo12" + viaje.id} className="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#accordionEx2">
                                             <div className="card-body">
                                                 <div className="row">
-                                                    <div className="col-sm-2 travelsParams ">Origen</div>
-                                                    <div className="col-sm-2 travelsParams">Destino</div>
-                                                    <div className="col-sm-2 travelsParams">Tipo de viaje</div>
-                                                    <div className="col-sm-2 travelsParams">Fecha llegada</div>
-                                                    <div className="col-sm-2 travelsParams">Fecha salida</div>
+                                                    <div className="col-sm-2 travelsParams "><FormattedMessage id="Origen" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="Destino" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="TipoViaje" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaPartida" /></div>
+                                                    <div className="col-sm-2 travelsParams"><FormattedMessage id="FechaSalida" /></div>
                                                 </div>
                                                 {viaje.subViajes.map(subV =>
                                                     <div className="row">

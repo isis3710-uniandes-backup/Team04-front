@@ -2,8 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/Style.css';
 import './css/_timerSty.css';
-import App from './App.js'
-import HostalData from './MainView/HostalData';
+import App from './App.js';
+import {IntlProvider, addLocaleData} from 'react-intl';
+
+import esLocaleData from 'react-intl/locale-data/es';
+import localeEsMessages from "./locales/es";
+import localeEnMessages from "./locales/en";
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+addLocaleData(esLocaleData);
+
+let userLang = navigator.language || navigator.userLanguage
+
+function getLocale(){
+    return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+}
+
+ReactDOM.render(
+    <IntlProvider locale={userLang} messages= {getLocale()}>
+        <App/>
+    </IntlProvider>, document.getElementById("root"));

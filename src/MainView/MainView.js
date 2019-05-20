@@ -7,9 +7,20 @@ import Combobox from './Combobox.js';
 import "react-datepicker/dist/react-datepicker.css";
 import HostalData from './HostalData.js';
 import ReactDOM from 'react-dom';
-import Login from '../login/Login'
+import Login from '../login/Login';
+import MainApp from "../App";
+import { IntlProvider, FormattedMessage } from 'react-intl';
+import Auth from "../Auth";
+import localeEsMessages from "../locales/es";
+import localeEnMessages from "../locales/en";
+import DataShowModel from '../DataShowModel';
 
+
+const auth = new Auth()
 class MainView extends Component {
+
+    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -19,12 +30,12 @@ class MainView extends Component {
             precioMaxNoche: 1008214,
             partida: 'Bogotá',
             llegada: 'Cartagena',
-            resultadosBusqueda: "",
             user: "",
             viajeCreado: false,
             status: 'start',
             status2: 'start',
-            resultadosBusqueda: []
+            resultadosBusqueda: [],
+            openGraphModal: false
         }
 
         this.handleChangePartida = this.handleChangePartida.bind(this);
@@ -61,7 +72,7 @@ class MainView extends Component {
                 return response.json();
             }).then(function (body) {
             });
-        
+
 
     }
 
@@ -78,7 +89,15 @@ class MainView extends Component {
     }
     renderLocations() {
         return this.state.listLocations.map((location, i) => {
-            return (<ListLocations data={location} key={i++}></ListLocations>)
+            let userLang = navigator.language || navigator.userLanguage
+
+            function getLocale() {
+                return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+            }
+            return (
+                <IntlProvider locale={userLang} messages={getLocale()}>
+                    <ListLocations data={location} key={i++}></ListLocations>
+                </IntlProvider>);
         })
     }
 
@@ -135,18 +154,18 @@ class MainView extends Component {
         let me = this;
         let subViajesact = this.subViajes();
         if (this.state.listLocations.length === 0) {
-            this.setState({ viajeCreado: "0" });
+            
         }
         else {
-            if (typeof this.state.user.idUsuario === 'undefined') {
-                ReactDOM.render(<Login />, document.getElementById('root'));
+            if (!auth.isAuthenticated()) {
+                this.setState({ viajeCreado: "2" });
             }
             else {
 
                 fetch('/viajes', {
                     method: 'POST',
                     body: JSON.stringify({
-                        idUsuario: me.state.user.idUsuario,
+                        idUsuario: auth.getProfile().idToken,
                         nombre: "viaje1",
                         empresa: "empresa1",
                         fechaInicio: me.state.listLocations[0].fechaPartida,
@@ -177,8 +196,8 @@ class MainView extends Component {
         fetch('/hostales/cities/' + llegada).then(response => {
             return response.json();
         }).then(hostalesByCity => {
-            var array =[]
-            for(var hostal of hostalesByCity){
+            var array = []
+            for (var hostal of hostalesByCity) {
                 array.push(JSON.stringify(hostal));
             }
             this.setState({
@@ -198,8 +217,7 @@ class MainView extends Component {
     }
 
     renderBusqueda() {
-        // TODO Cómo traer los hostale más baratos y los transportes más baratos? 
-        //resultado.transporte es solo un ejemplo de lo que podría ser
+
         return this.state.resultadosBusqueda.map((hostal, i) => {
             var data = JSON.parse(hostal)
             return (<HostalData data={data} id={i++} key={i++}></HostalData>);
@@ -207,46 +225,72 @@ class MainView extends Component {
     }
 
     sendLogin() {
-        ReactDOM.render(<Login />, document.getElementById('root'));
+
+        let userLang = navigator.language || navigator.userLanguage
+
+        function getLocale() {
+            return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+        }
+        ReactDOM.render(
+            <IntlProvider locale={userLang} messages={getLocale()}>
+                <Login />
+            </IntlProvider>, document.getElementById("root"));
     }
 
+    return(){
+        let userLang = navigator.language || navigator.userLanguage
+
+        function getLocale() {
+            return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+        }
+        
+        ReactDOM.render(
+        <IntlProvider locale={userLang} messages={getLocale()}>
+            <MainApp />
+        </IntlProvider>, document.getElementById("root"));
+    }
     render() {
-        //TODO a renderBusqueda en la linea 294 le hace falta los parametros
+
         let viajeConfirmation = false;
         if (this.state.viajeCreado === "Created") {
-            
-            viajeConfirmation = "Viaje Creado";
+
+            viajeConfirmation = <FormattedMessage id="ViajeCreado" />;
         }
         else if (this.state.viajeCreado === "0") {
-            viajeConfirmation = "No hay viajes agregados";
+            viajeConfirmation = <FormattedMessage id="NoViajesAgg" />;
         }
-        return (
-            <div className="main">
-                <div className="container-fluid" id="containerLoginButtons">
-                    <button className="btn btn-primary" id="loginButton" type="button" onClick={this.sendLogin.bind(this)} > Login/Sign Up</button>
+        else if(this.state.viajeCreado === "2") {
+            viajeConfirmation = <FormattedMessage id="noLogin" />;
+        }
+        let rend = (
+            <div className="main" id="main" style={style}>
+                
+                <div  className="container-fluid" id="containerLoginButtons">
+                    <button className="btn btn-primary" id="loginButton" type="button" onClick={auth.login} ><FormattedMessage id="Login/SignUp" /></button>
+                    <button className="btn btn-primary" id="logoutButton" type="button" onClick={auth.logout} ><FormattedMessage id="logout" /></button>
                 </div>
                 <div className="bannerr" id="mainBanner">
-                    <h1>MultiTravel</h1>
+                    <h1 className="appName" onClick={this.return.bind(this)}><a className="link" href="#main">MultiTravel</a></h1>
                 </div>
-
-                <div className="content row" id="contentMainView">
-
-                    <div className="col-2 listSelectedLocations">
-                        <div className="card" >
+                
+                <div className="row contentMainView" id="contentMainView">
+                    
+                    <div className="col-sm-2 listSelectedLocations" id="divLugares">
+                        <div className="card" id="cardLugares">
                             <div className="card-header">
-                                Lista de Lugares Seleccionados
+                                <FormattedMessage id="LugaresSeleccionados" />
                             </div>
                             <ul className="list-group list-group-flush">
                                 {this.renderLocations()}
                             </ul>
-                           
 
-                            <div className="btn-agregarLocation">
-                                <button className="btn btn-primary" type="button" onClick={this.addLocation}> Agregar</button>
+
+                            <div className="btn-agregarLocation button-lugares">
+                                <button className="btn btn-primary" type="button" onClick={this.addLocation}> <FormattedMessage id="Agregar" /></button>
                                 <br></br>
                             </div>
-                            <div className="btn-CrearViaje">
-                                <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> Crear Viaje</button>
+                            <div className="btn-CrearViaje button-lugares">
+                                <button className="btn btn-primary" type="button" onClick={this.CrearViaje}> <FormattedMessage id="CrearViaje" /></button>
                             </div>
 
                             <small className="confirmation">{viajeConfirmation ? viajeConfirmation : ""}</small>
@@ -254,36 +298,28 @@ class MainView extends Component {
                         </div>
                     </div>
 
-                    <div className="col-10 inputData text-left">
+                    <div className="col-10 inputData text-left sele">
                         <div className="row">
                             <div className=" text-left col">
-                                <label id="lbBuscarPartida">Lugar Partida:</label>
+                                <label id="lbBuscarPartida" htmlFor="inLocationPartida"><FormattedMessage id="LugarPartida" /></label>
 
                                 <div className="input-group md-form form-sm form-1 pl-0">
-                                    {/* <div className="input-group-prepend">
-                                        <span className="input-group-text purple lighten-3" id="basic-text1">
-                                            <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
-                                        </span>
-                                    </div> */}
                                     <input id="inLocationPartida" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.partida} aria-label="Search" />
                                 </div>
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarLlegada">Lugar Llegada:</label>
+                                <label id="lbBuscarLlegada"><FormattedMessage id="LugarLlegada" /></label>
 
                                 <div className="input-group md-form form-sm form-1 pl-0">
                                     <div className="input-group-prepend">
-                                        {/* <span className="input-group-text purple lighten-3" id="basic-text1">
-                                            <MaterialIcon icon="search" color="#272F32" size={30}></MaterialIcon>
-                                        </span> */}
                                     </div>
                                     <input id="inLocationLlegada" className="form-control my-0 py-1" type="text" placeholder="Search" defaultValue={this.state.llegada} aria-label="Search" />
                                 </div>
                             </div>
 
                             <div className="text-left col">
-                                <label id="lbBuscarFechaPartida">Fecha Partida:</label>
+                                <label id="lbBuscarFechaPartida" htmlFor="dateFechaPartida"><FormattedMessage id="FechaPartida" /></label>
                                 <DatePicker id="dateFechaPartida"
                                     selected={this.state.fechaPartida}
                                     onChange={this.handleChangePartida}
@@ -291,31 +327,35 @@ class MainView extends Component {
                             </div>
 
 
-                            <div className="text-left col">
-                                <label id="lbBuscarFechaRegreso">Fecha Regreso:</label>
+                            <div className="text-left col-sm">
+                                <label id="lbBuscarFechaRegreso" htmlFor="dateFechaRegreso"><FormattedMessage id="FechaSalida" /></label>
                                 <DatePicker id="dateFechaRegreso"
                                     selected={this.state.fechaRegreso}
                                     onChange={this.handleChangeRegreso}
                                 />
                             </div>
 
-                            <div className="text-left col">
-                                <label id="lbBuscarTipoHabitacion">Tipo de Habitación:</label>
+                            <div className="text-left col-sm">
+                                <label id="lbBuscarTipoHabitacion" htmlFor="controlHabitacion"><FormattedMessage id="TipoHab" /></label>
                                 <Combobox id="controlHabitacion" options={['Individual', 'Doble', 'Familiar', 'Múltiple']}></Combobox>
                             </div>
 
-                            <div className="text-left col">
-                                <label id="lbBuscarTipoTransporte">Tipo de Transporte:</label>
-                                <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} id="controlTransporte"></Combobox>
+                            <div className="text-left col-sm">
+                                <label id="lbBuscarTipoTransporte" htmlFor="controlTransporte"><FormattedMessage id="TipoTrans" /></label>
+                                <Combobox id="controlTransporte" options={['Aire', 'Mar', 'Tierra']} ></Combobox>
                             </div>
 
-                            <div className="text-left col">
-                                <button className="btn btn-primary" type="button" id="buscar" onClick={this.buscar}>Buscar</button>
+                            <div className="text-left col-sm">
+                                <button className="btn btn-primary" type="button" id="buscar" onClick={this.buscar}><FormattedMessage id="Buscar" /></button>
                             </div>
+                            <div className="text-left col-sm">
+                                <button type="button" className="btn btn-primary" onClick={(e) =>{this.setState({openGraphModal: !this.state.openGraphModal})}}>Ver Datos</button>
+                            </div>
+
                         </div>
                         <div className="row ">
                             <div className="text-left col" id="precioMaxNoche">
-                                <label id="lbBuscarPrecioNoche">Precio por noche:</label>
+                                <label id="lbBuscarPrecioNoche" htmlFor="formControlRange"><FormattedMessage id="Precio" /></label>
                                 <div className="row">
 
                                     <input type="range" className="form-control-range col" id="formControlRange"></input>
@@ -328,12 +368,10 @@ class MainView extends Component {
                             </div>
 
                             <div className=" text-left col">
-                                <label id="labelPuntuacion">Puntuación:</label>
+                                <label id="labelPuntuacion" htmlFor="controlPuntuacion"><FormattedMessage id="Puntuacion" /></label>
 
                                 <Combobox options={['8.5+', '7.5 - 8.4', '6.5 - 7.4', '5.5 - 6.4', '4.5 - 5.4', '3.5 - 4.4', '2.5 - 3.4', '1.5 - 2.4', '0 - 1.4']} id="controlPuntuacion"></Combobox>
                             </div>
-
-                            
                         </div>
                         <br></br>
                         <div className="card">
@@ -342,9 +380,25 @@ class MainView extends Component {
                             </div>
                         </div>
                     </div>
-                    {this.renderBusqueda()}
+                    
+                    {this.renderBusqueda()} 
                 </div>
+               
             </div>
+        )
+
+        if(this.state.openGraphModal){
+            rend = (<DataShowModel></DataShowModel>);
+        }
+        let style = {
+            width: '100%',
+            height: '100%'
+        }
+        return (
+            <div style={style}>
+                {rend}
+            </div>
+            
         )
     }
 }

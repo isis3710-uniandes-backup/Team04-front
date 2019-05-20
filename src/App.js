@@ -7,8 +7,12 @@ import ReactDOM from 'react-dom';
 
 import Profile from './Profiles/UserProfile';
 import EmpresaProfile from './Profiles/EmpresaProfile';
+import { IntlProvider } from 'react-intl';
+import localeEsMessages from "./locales/es";
+import localeEnMessages from "./locales/en";
+import Auth from "./Auth";
 
-
+const auth = new Auth();
 let user = "";
 class App extends Component {
 
@@ -21,16 +25,32 @@ class App extends Component {
     }
     this.state = {};
   }
+  componentDidMount() {
+    auth.handleAuthentication();
+  }
 
   renderMainView() {
     return (<MainView usuario={user}></MainView>)
   }
 
   Profile(e) {
-    if (user.tipo === "1") {
-      ReactDOM.render(<Profile usuario={user} />, document.getElementById('root'));
-    } else if (user.tipo === "0") {
-      ReactDOM.render(<EmpresaProfile usuario={user} />, document.getElementById('root'));
+    let userLang = navigator.language || navigator.userLanguage
+
+    function getLocale() {
+      return userLang.startsWith("es") ? localeEsMessages : localeEnMessages;
+    }
+
+    if ( auth.isAuthenticated()) {
+      
+      ReactDOM.render(
+        <IntlProvider locale={userLang} messages={getLocale()}>
+          <Profile usuario={auth.getProfile()} />
+        </IntlProvider>, document.getElementById("root"));
+    } else if (user.tipo === "0" && auth.isAuthenticated()) {
+      ReactDOM.render(
+        <IntlProvider locale={userLang} messages={getLocale()}>
+          <EmpresaProfile usuario={user} />
+        </IntlProvider>, document.getElementById("root"));
     }
   }
 

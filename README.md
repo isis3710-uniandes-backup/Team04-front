@@ -7,10 +7,32 @@ El proyecto es un sitio web donde cualquier persona puede hacer un plan de viaje
 
 Antes de interactuar con la vista principal, se recomienda ir al botón "Iniciar sesión / Registrarse" para registrarse en el back-end con su información personal. Si intenta crear un viaje sin haber iniciado sesión, será redirigido a la vista de inicio de sesión para completar el proceso de autenticación.
 
+Paleta de colores usada en la realización del proyecto : https://color.adobe.com/es/PaletaColorMultiTravel-color-theme-12436097
+
+
+## Videos informativos
+
+### Funcionalidades
+https://www.youtube.com/watch?v=rXnxWiKfn_I&feature=youtu.be
+
+### 8 Reglas de diseño
+https://youtu.be/pcJ4Z9ggqj4
+
+### Norma Tecnica Colombiana
+https://youtu.be/xmwL-vJ28-M
+
+### Pruebas de usabilidad
+https://www.youtube.com/watch?v=K8k8vqnfxRM&feature=youtu.be
+
+https://www.youtube.com/watch?v=nlXjWBTl0VQ&feature=youtu.be
+
+https://www.youtube.com/watch?v=so-wyXwnemI&feature=youtu.be
+
+En cuanto al soporte para los dos idiomas, la libreria vista en clase cuenta con un fallo en donde no toma el lenguaje que se encuentre seleccionado en el navegador, sino el primer lenguaje que aparece en la lista de lenguajes totales. Esto ocurre para los navegadores Chrome y Opera. Tener en cuenta esto al momento de realizar las pruebas del sporte inglés/español.
 
 ## Deployment
 
-Para ejecutar el proyecto, primero se debe clonar el último release (Entrega3_back) del repositorio repositorio [Team04-back](https://github.com/isis3710-uniandes/Team04-back)
+Para ejecutar el proyecto, primero se debe clonar el último release (Entrega3_back) del repositorio [Team04-back](https://github.com/isis3710-uniandes/Team04-back)
 
 Una vez clonado, se deben ejecutar los siguientes comandos para poder tener el back-end funcionando:
 
